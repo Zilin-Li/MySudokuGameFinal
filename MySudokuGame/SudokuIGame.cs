@@ -12,6 +12,7 @@ namespace MySudokuGame
         public int squareHeight;
         public int squareWidth;
         public int[] sudokuArray, CSVArray;
+        public List<int> defIndexList;
 
         //Realize interface IGame.
         public void SetMaxValue(int maximum)
@@ -52,10 +53,20 @@ namespace MySudokuGame
         public void Set(int[] cellValues)
         {
             sudokuArray = new int[maxValue * maxValue];
+            defIndexList = new List<int>();
 
             for (int i = 0; i < maxValue * maxValue; i++)
             {
                 sudokuArray[i] = cellValues[i + 3];
+
+                //if there is a default value, store the index of this value in the list.
+                //When we want to change the value in the array
+                //we first need to determine if the value is the game default
+
+                if (cellValues[i + 3] != 0)
+                {
+                    defIndexList.Add(i);
+                }
             }
 
         }

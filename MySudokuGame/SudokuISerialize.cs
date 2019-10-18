@@ -21,7 +21,6 @@ namespace MySudokuGame
         //Load the game value from a CSV file
         public void FromCSV(string csv)
         {
-
             CSVFile = csv;
         }
 
@@ -66,58 +65,72 @@ namespace MySudokuGame
             {
                 cellValue = sudokuArray[gridIndex];
             }
-
             else
             {
                 cellValue = 0;
             }
-
             return cellValue;
         }
 
-        // To dispaly a game board
-        public string ToPrettyString()
-        {
-            PrettyString = "";
-            for (int i = 0; i < maxValue * maxValue; i++)
-            {
-                //cellArray[i] = 7;
-                if ((i + 1) % maxValue == 0)
-                {
-                    PrettyString += " " + sudokuArray[i].ToString();
-                    PrettyString += "\n";
-                }
-                else
-                {
-                    if ((i + 1) % squareWidth == 0)
-                    {
-                        PrettyString += " " + sudokuArray[i].ToString() + " |";
-                    }
-                    else
-                    {
-                        PrettyString += " " + sudokuArray[i].ToString();
-                    }
-                }
 
-                if ((i + 1) % (squareHeight * maxValue) == 0 && (i + 1) % (maxValue * maxValue) != 0)
-                {
-                    for (int j = 0; j < maxValue / squareWidth; j++)
-                    {
-                        for (int k = 0; k < squareWidth * 2 + 1; k++)
-                        {
-                            PrettyString += "-";
-                        }
-                        if (j != maxValue / squareWidth - 1)
-                        {
-                            PrettyString += "+";
-                        }
-                    }
-                    PrettyString += "\n";
-                }
-            }
-            PrettyString = PrettyString.Replace('0', '*');
-            return PrettyString;
+        public void ToPrettyBoard()
+        {
+
         }
+
+        public bool ValueExist(int index)
+        {
+            bool valueExist = true;
+            if (sudokuArray[index] == 0)
+            {
+                valueExist = false;
+            }
+            return valueExist;
+        }
+
+        // To dispaly a game board
+        //public string ToPrettyString()
+        //{
+        //    PrettyString = "";
+        //    for (int i = 0; i < maxValue * maxValue; i++)
+        //    {
+        //        //cellArray[i] = 7;
+        //        if ((i + 1) % maxValue == 0)
+        //        {
+        //            PrettyString += " " + sudokuArray[i].ToString();
+        //            PrettyString += "\n";
+        //        }
+        //        else
+        //        {
+        //            if ((i + 1) % squareWidth == 0)
+        //            {
+        //                PrettyString += " " + sudokuArray[i].ToString() + " |";
+        //            }
+        //            else
+        //            {
+        //                PrettyString += " " + sudokuArray[i].ToString();
+        //            }
+        //        }
+
+        //        if ((i + 1) % (squareHeight * maxValue) == 0 && (i + 1) % (maxValue * maxValue) != 0)
+        //        {
+        //            for (int j = 0; j < maxValue / squareWidth; j++)
+        //            {
+        //                for (int k = 0; k < squareWidth * 2 + 1; k++)
+        //                {
+        //                    PrettyString += "-";
+        //                }
+        //                if (j != maxValue / squareWidth - 1)
+        //                {
+        //                    PrettyString += "+";
+        //                }
+        //            }
+        //            PrettyString += "\n";
+        //        }
+        //    }
+        //    PrettyString = PrettyString.Replace('0', '*');
+        //    return PrettyString;
+        //}
     }
 }
 

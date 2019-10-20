@@ -12,8 +12,6 @@ namespace MySudokuGame
         string ToCSV();
         void SetCell(int value, int gridIndex);
         int GetCell(int gridIndex);
-
-        void ToPrettyBoard();
-        //string ToPrettyString();
+        string ToPrettyString();
     }
 }

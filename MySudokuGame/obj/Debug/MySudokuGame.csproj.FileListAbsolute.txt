@@ -1,10 +1,10 @@
 C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\bin\Debug\MySudokuGame.exe.config
 C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\bin\Debug\MySudokuGame.exe
 C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\bin\Debug\MySudokuGame.pdb
-C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\obj\Debug\MySudokuGame.csprojAssemblyReference.cache
 C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\obj\Debug\MySudokuGame.FormMain.resources
 C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\obj\Debug\MySudokuGame.Properties.Resources.resources
 C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\obj\Debug\MySudokuGame.csproj.GenerateResource.cache
 C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\obj\Debug\MySudokuGame.csproj.CoreCompileInputs.cache
 C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\obj\Debug\MySudokuGame.exe
 C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\obj\Debug\MySudokuGame.pdb
+C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\obj\Debug\MySudokuGame.csprojAssemblyReference.cache

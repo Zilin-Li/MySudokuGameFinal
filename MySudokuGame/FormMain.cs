@@ -13,7 +13,6 @@ namespace MySudokuGame
     public partial class FormMain : Form, IView
     {
         private Controller theController;
-        private SudokuGame theGame;
         string ClickedText;
 
         public FormMain()
@@ -24,24 +23,24 @@ namespace MySudokuGame
         {
             theController = contr;
         }
-        public void SetModel(SudokuGame theModel)
-        {
-            theGame = theModel;
-        }
 
-        public void MakeButtons(int num)
+
+        //创建数字板按键
+        public void MakeButtons(string text, int num)
         {
             Button btnNew = new Button();
-            btnNew.Name = "iptBtn_" + num.ToString(); 
+            btnNew.Name = "iptBtn_" + text; 
             btnNew.Height = 50;
             btnNew.Width = 50;
             btnNew.Font = new Font("Arial", 20);
-            btnNew.Text = (num + 1).ToString();
+            btnNew.Text = text;
             btnNew.Visible = true;
-            btnNew.Location = new Point(10 + 50 * num, 50 + 50 * theGame.maxValue);
+            btnNew.Location = new Point(10 + 50 * num, 50 + 50 * theController.maxValue);
 
             GameBoard.Controls.Add(btnNew);
         }
+
+        //创建游戏按键
 
         public void MakeButtons2(string name, string text, int row, int column)
         {
@@ -52,48 +51,75 @@ namespace MySudokuGame
             btnNew.Font = new Font("Arial", 20);
             btnNew.Text = text;
             btnNew.Visible = true;
-            btnNew.Location = new Point(10 + 50 * row, 10 + 50 * column);
+            btnNew.Location = new Point(10 + 50 * column, 10 + 50 * row);
 
             GameBoard.Controls.Add(btnNew);
         }
 
-        public void GameBoardDisplay(string text)
+        //创建游戏版面
+        public void GameBoardDisplay(string gameDataString)
         {
-            
-            for (int i = 0; i < theGame.maxValue; ++i)
+            string cellValueS = "";
+            for (int row = 0; row < theController.maxValue; row++)
             {
-                for (int j = 0; j < theGame.maxValue; ++j)
+                for (int col = 0; col < theController.maxValue; col++)
                 {
-                    int arrayIndex = i + j * theGame.maxValue;
-                    if (theGame.ValueExist(arrayIndex))
-                    {
-                        text = theGame.sudokuArray[arrayIndex].ToString();
-                        MakeButtons2("btn_", text, i, j);
+                    int cellIndex = col + row * theController.maxValue;
+
+                    cellValueS = gameDataString[cellIndex].ToString();
+
+                    if (cellValueS != "0")
+                    {                      
+                        MakeButtons2("btn_", cellValueS, row, col);
                     }
                     else
                     {
-                        text = "";
-                        MakeButtons2("btn_", text, i, j);
+                        MakeButtons2("btn_", "", row, col);
                     }
                 }
             }
-
-            for (int a = 0; a < theGame.maxValue; a++)
-            {
-                MakeButtons(a);
-            }
-
         }
+
+        //创建数字版面
+
+        public void NumberBoardDisplay()
+        {
+            for(int i = 0; i<= theController.maxValue; i++)
+            {
+                
+                string text =(i + 1).ToString();
+
+                if (i != theController.maxValue)
+                {
+                    MakeButtons(text,i);
+                }
+                else
+                {
+                    MakeButtons("", i);
+                }                
+            }
+        }
+
+
 
         public void WhoClicked(object sender, EventArgs e)
         {
             Button btnWho = sender as Button;
 
             this.Text = btnWho.Name;
+           
 
             if (btnWho.Name.StartsWith("btn"))
             {
-                btnWho.Text = ClickedText;
+                //btnWho.Text = ClickedText;
+                //Try to change value.
+                if(ClickedText != "")
+                {
+                    theController.ChangeValue(ClickedText, btnWho.Name);
+                    this.GameBoardDisplay(theController.sudokuString);
+
+                }
+                
             }
             else if (btnWho.Name.StartsWith("iptBtn_"))
             {
@@ -106,8 +132,7 @@ namespace MySudokuGame
             foreach (Control c in GameBoard.Controls)
             {
                 if (c is Button)
-                {
-                   
+                {         
                     Button who = c as Button;
                     who.Click += new EventHandler(WhoClicked);
                 }
@@ -117,14 +142,17 @@ namespace MySudokuGame
         private void EasyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             theController.InitGameData();
-            this.GameBoardDisplay();//Here should link to controller， controller:1, get game infor for csv，2,sent the info to this project)
+            this.GameBoardDisplay(theController.sudokuString);
+            this.NumberBoardDisplay();
             SetClicks();
+
+
         }
 
         private void MediumToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             theController.InitGameData();
-            this.GameBoardDisplay();
+           // this.GameBoardDisplay();
            
         }
     }

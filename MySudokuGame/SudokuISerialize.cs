@@ -49,12 +49,12 @@ namespace MySudokuGame
         {
             if (value >= 0 && value <= maxValue && gridIndex >= 0 && gridIndex < maxValue * maxValue)
             {
-                sudokuArray[gridIndex] = value;
+                sudokuArray[gridIndex+3] = value;
             }
-            else
-            {
-                Console.WriteLine("Out of range");
-            }
+            //else
+            //{
+            //    Console.WriteLine("Out of range");
+            //}
 
         }
 
@@ -73,11 +73,6 @@ namespace MySudokuGame
         }
 
 
-        public void ToPrettyBoard()
-        {
-
-        }
-
         public bool ValueExist(int index)
         {
             bool valueExist = true;
@@ -88,49 +83,18 @@ namespace MySudokuGame
             return valueExist;
         }
 
-        // To dispaly a game board
-        //public string ToPrettyString()
-        //{
-        //    PrettyString = "";
-        //    for (int i = 0; i < maxValue * maxValue; i++)
-        //    {
-        //        //cellArray[i] = 7;
-        //        if ((i + 1) % maxValue == 0)
-        //        {
-        //            PrettyString += " " + sudokuArray[i].ToString();
-        //            PrettyString += "\n";
-        //        }
-        //        else
-        //        {
-        //            if ((i + 1) % squareWidth == 0)
-        //            {
-        //                PrettyString += " " + sudokuArray[i].ToString() + " |";
-        //            }
-        //            else
-        //            {
-        //                PrettyString += " " + sudokuArray[i].ToString();
-        //            }
-        //        }
+        //这个功能是用来把sudokuArray的数据转变成string格式的
+        public string ToPrettyString()
+        {
+            PrettyString = "";
 
-        //        if ((i + 1) % (squareHeight * maxValue) == 0 && (i + 1) % (maxValue * maxValue) != 0)
-        //        {
-        //            for (int j = 0; j < maxValue / squareWidth; j++)
-        //            {
-        //                for (int k = 0; k < squareWidth * 2 + 1; k++)
-        //                {
-        //                    PrettyString += "-";
-        //                }
-        //                if (j != maxValue / squareWidth - 1)
-        //                {
-        //                    PrettyString += "+";
-        //                }
-        //            }
-        //            PrettyString += "\n";
-        //        }
-        //    }
-        //    PrettyString = PrettyString.Replace('0', '*');
-        //    return PrettyString;
-        //}
+            for (int i = 3; i < sudokuArray.Length; i++)
+            {             
+                PrettyString += sudokuArray[i];                
+            }
+            return PrettyString;
+        }
+
     }
 }
 

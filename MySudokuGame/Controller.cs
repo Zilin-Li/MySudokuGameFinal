@@ -14,24 +14,24 @@ namespace MySudokuGame
     {
         protected IView view;
         protected SudokuGame game;
-        protected FormMain form;
 
-        protected int maxValue, SquareHeight, SquareWidth;
-        protected string vaildValue;
-        
+        public int maxValue, SquareHeight, SquareWidth;
+        public string sudokuString;
+        //public int rowIndex, colIndex, cellIndex;
+      
+        //public string vaildValue;
+        public int[] sudokuArray;
+        public List<int> defIndexList;
 
         public Controller(IView theView, SudokuGame theGame)
         {
             view = theView;
             view.SetController(this);
             game = theGame;
-            view.SetModel(theGame);
         }
 
-
-
-        public void InitGameData() {
-
+        public void InitGameData()
+        {
             string CSVFile = "";
             // 2 by 2 file
             CSVFile = "4,2,2" + '\n';
@@ -50,30 +50,51 @@ namespace MySudokuGame
             //CSVFile += ("0,0,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,1,3,4,5,6,7,8,9,1,2,4,5,6,7,8,9,1,2,3,5,6,7,8,9,1,2,3,4,6,7,8,9,1,2,3,4,5,7,8,9,1,2,3,4,5,6,8,9,1,2,3,4,5,6,7,9,1,2,3,4,5,6,7,8" + '\n');
 
             game.FromCSV(CSVFile);
-            game.ToArray();
-           
+            sudokuArray = game.ToArray();
+
             maxValue = game.GetMaxValue();
             SquareHeight = game.GetSquareHeight();
             SquareWidth = game.GetSquareWidth();
+            defIndexList = game.GetdefIndex(sudokuArray);
+            sudokuString = game.ToPrettyString();
 
-            game.SetMaxValue(maxValue); 
+            game.SetMaxValue(maxValue);
             game.SetSquareHeight(SquareHeight);
-            game.SetSquareWidth(SquareWidth); 
-            game.Set(game.ToArray());
-           
-            /*缺：
-             *1,文档读取方法
-             *2,四种类型游戏如何同时调用该功能时区分打开不同的CSV 文档。
-             *3，按键命名
-             * 4，按键替换
-             * 5，如何设置默认数字无法更改
-             */
+            game.SetSquareWidth(SquareWidth);
+            game.Set(sudokuArray);
         }
 
-
-        public void Go()
-        {
+        //public bool IsDefault(string buttonName)
+        //{
+        //    string buttonValue = "";
             
+        //    for (int i = 0; i < buttonName.Length; i++)
+        //    {
+        //        if (Char.IsNumber(buttonName, i) == true)
+        //        {
+        //            buttonValue += buttonName.Substring(i, 1);
+        //        }
+        //    }
+
+        //    rowIndex = Int32.Parse(buttonValue[0].ToString());
+        //    colIndex = Int32.Parse(buttonValue[1].ToString());
+        //    cellIndex = colIndex + rowIndex * maxValue;
+        //}
+
+
+
+        public void ChangeValue(string value, string buttonName)
+        {
+            game.GetButtonInfo(buttonName);
+            if (!game.IsDefault())
+            {
+                int cellvalue = int.Parse(value);
+                game.SetCell(cellvalue, game.cellIndex);
+                sudokuString = game.ToPrettyString();
+
+            }
+
         }
+
     }
 }

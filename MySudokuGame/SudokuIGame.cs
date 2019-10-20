@@ -11,7 +11,8 @@ namespace MySudokuGame
         public int maxValue;
         public int squareHeight;
         public int squareWidth;
-        public int[] sudokuArray, CSVArray;
+       
+        public int[] sudokuArray;
         public List<int> defIndexList;
 
         //Realize interface IGame.
@@ -20,61 +21,47 @@ namespace MySudokuGame
             maxValue = maximum;
         }
 
-        //Get max value from CSVArray
+        //直接从defData提取最大值
         public int GetMaxValue()
         {
-            int Value = CSVArray[0];
+            int Value = sudokuArray[0];
             return Value;
         }
 
-        //We get a string "CSVFile", Which including ',' and '\n'
-        //This function to change the string to an int[]
-        public int[] ToArray()
+        
+        public int[] ToArray()//返回含有游戏默认值的int 数组
         {
-            //trans the CSVFile into a string which only including cellvalue.
-            string cellValueStr = "";
+            //  defData 是用来储存初始游戏数据的字符串。
+            string defData = "";
+
             for (int i = 0; i < CSVFile.Length; i++)
             {
                 if (Char.IsNumber(CSVFile, i) == true)
                 {
-                    cellValueStr += CSVFile.Substring(i, 1);
+                    defData += CSVFile.Substring(i, 1);
                 }
             }
-            // put the cellvalue into a int array.
 
-            CSVArray = new int[cellValueStr.Length];
-            for (int i = 0; i < cellValueStr.Length; i++)
-                CSVArray[i] = Int32.Parse(cellValueStr[i].ToString());
+            //全局变量sudokuArray 是包含游戏所有值的数组，包含最大值，squareW/H，以及cellvalue.
 
-            return CSVArray;
+            sudokuArray = new int[defData.Length];
+            for (int i = 0; i < defData.Length; i++)
+                sudokuArray[i] = Int32.Parse(defData[i].ToString());
+
+            return sudokuArray;
+
         }
 
         //Get the initial game value, and input to the program 
         public void Set(int[] cellValues)
         {
-            sudokuArray = new int[maxValue * maxValue];
-            defIndexList = new List<int>();
-
-            for (int i = 0; i < maxValue * maxValue; i++)
-            {
-                sudokuArray[i] = cellValues[i + 3];
-
-                //if there is a default value, store the index of this value in the list.
-                //When we want to change the value in the array
-                //we first need to determine if the value is the game default
-
-                if (cellValues[i + 3] != 0)
-                {
-                    defIndexList.Add(i);
-                }
-            }
-
+            sudokuArray = cellValues;
         }
 
-        //Get SquareWidth from CSVArray
+        //直接从defData提取 SquareWidth 
         public int GetSquareWidth()
         {
-            int Width = CSVArray[2];
+            int Width = sudokuArray[2];
             return Width;
         }
 
@@ -84,10 +71,10 @@ namespace MySudokuGame
             squareWidth = Width;
         }
 
-        //Get SquareHeight from CSVArray
+        //直接从defData提取 SquareHeight 
         public int GetSquareHeight()
         {
-            int Height = CSVArray[1];
+            int Height = sudokuArray[1];
             return Height;
         }
 
@@ -97,6 +84,7 @@ namespace MySudokuGame
             squareHeight = Height;
         }
 
+
         //Restart the game.
         public void Restart()
         {
@@ -104,5 +92,19 @@ namespace MySudokuGame
 
         }
 
+        public List<int> GetdefIndex(int[] gameArray)
+        {
+            //defIndexList 是用来记录游戏默认值位置的。
+            defIndexList = new List<int>();
+            
+            for (int i = 0; i < gameArray.Length; i++)
+            {
+                if (gameArray[i] != 0)
+                {
+                    defIndexList.Add(i);
+                }
+            }
+            return defIndexList;
+        }
     }
 }

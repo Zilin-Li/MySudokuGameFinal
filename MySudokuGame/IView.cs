@@ -9,7 +9,6 @@ namespace MySudokuGame
     public interface IView
     {
   
-        void SetModel(SudokuGame theGame);
         void SetController(Controller controller);
     }
 }

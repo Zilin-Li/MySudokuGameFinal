@@ -6,8 +6,38 @@ using System.Threading.Tasks;
 
 namespace MySudokuGame
 {
+   
     public partial class SudokuGame
     {
+        public int rowIndex, colIndex, cellIndex;
+        public void GetButtonInfo(string buttonName)
+        {
+            string buttonValue = "";
+
+            for (int i = 0; i < buttonName.Length; i++)
+            {
+                if (Char.IsNumber(buttonName, i) == true)
+                {
+                    buttonValue += buttonName.Substring(i, 1);
+                }
+            }
+
+            rowIndex = Int32.Parse(buttonValue[0].ToString());
+            colIndex = Int32.Parse(buttonValue[1].ToString());
+            cellIndex = colIndex + rowIndex * maxValue;
+        }
+
+        public bool IsDefault()
+        {
+            bool isDef = false;
+            if (defIndexList.Contains(cellIndex))
+            {
+                isDef = true;
+            }
+            return isDef;
+            
+        }
+
         //Other features
 
         //feature 1: check whether a row is vaild.

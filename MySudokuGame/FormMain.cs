@@ -13,7 +13,7 @@ namespace MySudokuGame
     public partial class FormMain : Form, IView
     {
         private Controller theController;
-        string ClickedText;
+        string ClickedText="";
 
         public FormMain()
         {
@@ -29,7 +29,7 @@ namespace MySudokuGame
         public void MakeButtons(string text, int num)
         {
             Button btnNew = new Button();
-            btnNew.Name = "iptBtn_" + text; 
+            btnNew.Name = "iptBtn_" + text;
             btnNew.Height = 50;
             btnNew.Width = 50;
             btnNew.Font = new Font("Arial", 20);
@@ -56,74 +56,52 @@ namespace MySudokuGame
             GameBoard.Controls.Add(btnNew);
         }
 
-        //创建游戏版面
-        public void GameBoardDisplay(string gameDataString)
+        public void GameBoardDisplay()
         {
             string cellValueS = "";
             for (int row = 0; row < theController.maxValue; row++)
             {
                 for (int col = 0; col < theController.maxValue; col++)
                 {
-                    int cellIndex = col + row * theController.maxValue;
-
-                    cellValueS = gameDataString[cellIndex].ToString();
-
-                    if (cellValueS != "0")
-                    {                      
-                        MakeButtons2("btn_", cellValueS, row, col);
-                    }
-                    else
-                    {
-                        MakeButtons2("btn_", "", row, col);
-                    }
+                    MakeButtons2("btn_", cellValueS, row, col);                   
                 }
             }
-        }
 
-        //创建数字版面
-
-        public void NumberBoardDisplay()
-        {
-            for(int i = 0; i<= theController.maxValue; i++)
+            for (int i = 0; i <= theController.maxValue; i++)
             {
-                
-                string text =(i + 1).ToString();
-
+                string text = (i + 1).ToString();
                 if (i != theController.maxValue)
                 {
-                    MakeButtons(text,i);
+                    MakeButtons(text, i);
                 }
                 else
                 {
                     MakeButtons("", i);
-                }                
+                }
             }
         }
-
-
-
-        public void WhoClicked(object sender, EventArgs e)
+        public void GameValueDisplay(string gameDataString)
         {
-            Button btnWho = sender as Button;
+            string btnName;
+            string cellValueS;
 
-            this.Text = btnWho.Name;
-           
-
-            if (btnWho.Name.StartsWith("btn"))
+            for (int row = 0; row < theController.maxValue; row++)
             {
-                //btnWho.Text = ClickedText;
-                //Try to change value.
-                if(ClickedText != "")
+                for (int col = 0; col < theController.maxValue; col++)
                 {
-                    theController.ChangeValue(ClickedText, btnWho.Name);
-                    this.GameBoardDisplay(theController.sudokuString);
-
+                    int cellIndex = col + row * theController.maxValue;
+                    cellValueS = gameDataString[cellIndex].ToString();
+                    btnName = "btn_" + row.ToString() + "_" + col.ToString();
+                    Control c = Controls.Find(btnName, true)[0];
+                    if (cellValueS == "0")
+                    {
+                        c.Text = "";
+                    }
+                    else
+                    {
+                        c.Text = cellValueS;
+                    }   
                 }
-                
-            }
-            else if (btnWho.Name.StartsWith("iptBtn_"))
-            {
-                ClickedText = btnWho.Text;
             }
         }
 
@@ -132,28 +110,74 @@ namespace MySudokuGame
             foreach (Control c in GameBoard.Controls)
             {
                 if (c is Button)
-                {         
+                {
                     Button who = c as Button;
                     who.Click += new EventHandler(WhoClicked);
                 }
             }
         }
 
-        private void EasyToolStripMenuItem_Click(object sender, EventArgs e)
+        public void WhoClicked(object sender, EventArgs e)
         {
-            theController.InitGameData();
-            this.GameBoardDisplay(theController.sudokuString);
-            this.NumberBoardDisplay();
+            Button btnWho = sender as Button;
+            Text = btnWho.Name;
+
+            if (btnWho.Name.StartsWith("btn"))
+            {
+               theController.ChangeValue(ClickedText, btnWho.Name);
+               GameValueDisplay(theController.sudokuString);
+
+
+            }
+            else if (btnWho.Name.StartsWith("iptBtn_"))
+            {
+                ClickedText = btnWho.Text;
+            }
+
+        }
+
+        //public void WhoClicked(object sender, EventArgs e)
+        //{
+        //    Button btnWho = sender as Button;
+        //    this.Text = btnWho.Name;
+
+        //    if (btnWho.Name.StartsWith("btn"))
+        //    {
+        //        //btnWho.Text = ClickedText;
+        //        //Try to change value.
+        //        if (ClickedText != "")
+        //        {
+        //            theController.ChangeValue(ClickedText, btnWho.Name);
+        //            UploadGameBoard(theController.sudokuString);
+
+        //        }
+        //    }
+        //    else if (btnWho.Name.StartsWith("iptBtn_"))
+        //    {
+        //        ClickedText = btnWho.Text;
+        //    }
+        //}
+        
+
+
+        private void EasyToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        theController.InitGameData();
+        this.GameBoardDisplay();
+            this.GameValueDisplay(theController.sudokuString);
             SetClicks();
 
 
-        }
 
-        private void MediumToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            theController.InitGameData();
-           // this.GameBoardDisplay();
-           
-        }
+
+
     }
+
+    private void MediumToolStripMenuItem1_Click(object sender, EventArgs e)
+    {
+        theController.InitGameData();
+        // this.GameBoardDisplay();
+
+    }
+}
 }

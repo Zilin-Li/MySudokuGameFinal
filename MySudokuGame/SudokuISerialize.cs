@@ -26,23 +26,23 @@ namespace MySudokuGame
 
         //the function to save the game;
         //change the current sudoku array to CSVfile(a string)
-        public string ToCSV()
-        {
-            string saveFile = "";
-            for (int i = 0; i < sudokuArray.Length; i++)
-            {
-                saveFile += sudokuArray[i] + ",";
-            }
-            saveFile += '\n';
+        //public string ToCSV()
+        //{
+        //    string saveFile = "";
+        //    for (int i = 0; i < sudokuArray.Length; i++)
+        //    {
+        //        saveFile += sudokuArray[i] + ",";
+        //    }
+        //    saveFile += '\n';
 
-            var csv = new StringBuilder();
-            csv.AppendLine(saveFile);
-            //get current working directory
-            string path = Directory.GetCurrentDirectory();
-            string filePath = path + "/mysudoku.csv";
-            File.WriteAllText(filePath, csv.ToString());
-            return saveFile;
-        }
+        //    var csv = new StringBuilder();
+        //    csv.AppendLine(saveFile);
+        //    //get current working directory
+        //    string path = Directory.GetCurrentDirectory();
+        //    string filePath = path + "/mysudoku.csv";
+        //    File.WriteAllText(filePath, csv.ToString());
+        //    return saveFile;
+        //}
 
         //Set a value by cell
         public void SetCell(int value, int gridIndex)
@@ -51,37 +51,24 @@ namespace MySudokuGame
             {
                 sudokuArray[gridIndex+3] = value;
             }
-            //else
-            //{
-            //    Console.WriteLine("Out of range");
-            //}
-
+            
         }
 
-        //Get a value by cell
-        public int GetCell(int gridIndex)
-        {
-            if (gridIndex >= 0 && gridIndex < maxValue * maxValue)
-            {
-                cellValue = sudokuArray[gridIndex];
-            }
-            else
-            {
-                cellValue = 0;
-            }
-            return cellValue;
-        }
+        ////Get a value by cell
+        //public int GetCell(int gridIndex)
+        //{
+        //    if (gridIndex >= 0 && gridIndex < maxValue * maxValue)
+        //    {
+        //        cellValue = sudokuArray[gridIndex];
+        //    }
+        //    else
+        //    {
+        //        cellValue = 0;
+        //    }
+        //    return cellValue;
+        //}
 
 
-        public bool ValueExist(int index)
-        {
-            bool valueExist = true;
-            if (sudokuArray[index] == 0)
-            {
-                valueExist = false;
-            }
-            return valueExist;
-        }
 
         //这个功能是用来把sudokuArray的数据转变成string格式的
         public string ToPrettyString()

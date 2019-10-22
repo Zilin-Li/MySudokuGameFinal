@@ -56,6 +56,7 @@ namespace MySudokuGame
             SquareHeight = game.GetSquareHeight();
             SquareWidth = game.GetSquareWidth();
             defIndexList = game.GetdefIndex(sudokuArray);
+            
             sudokuString = game.ToPrettyString();
 
             game.SetMaxValue(maxValue);
@@ -64,35 +65,24 @@ namespace MySudokuGame
             game.Set(sudokuArray);
         }
 
-        //public bool IsDefault(string buttonName)
-        //{
-        //    string buttonValue = "";
-            
-        //    for (int i = 0; i < buttonName.Length; i++)
-        //    {
-        //        if (Char.IsNumber(buttonName, i) == true)
-        //        {
-        //            buttonValue += buttonName.Substring(i, 1);
-        //        }
-        //    }
-
-        //    rowIndex = Int32.Parse(buttonValue[0].ToString());
-        //    colIndex = Int32.Parse(buttonValue[1].ToString());
-        //    cellIndex = colIndex + rowIndex * maxValue;
-        //}
-
-
-
         public void ChangeValue(string value, string buttonName)
         {
+            int cellvalue;
             game.GetButtonInfo(buttonName);
             if (!game.IsDefault())
             {
-                int cellvalue = int.Parse(value);
+                if (value == "")
+                {
+                    cellvalue = 0;
+                }
+                else
+                {
+                    cellvalue = int.Parse(value);
+                }
                 game.SetCell(cellvalue, game.cellIndex);
                 sudokuString = game.ToPrettyString();
-
             }
+           
 
         }
 

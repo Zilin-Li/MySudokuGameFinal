@@ -97,11 +97,11 @@ namespace MySudokuGame
             //defIndexList 是用来记录游戏默认值位置的。
             defIndexList = new List<int>();
             
-            for (int i = 0; i < gameArray.Length; i++)
+            for (int i = 3; i < gameArray.Length; i++)
             {
                 if (gameArray[i] != 0)
                 {
-                    defIndexList.Add(i);
+                    defIndexList.Add(i-3);
                 }
             }
             return defIndexList;

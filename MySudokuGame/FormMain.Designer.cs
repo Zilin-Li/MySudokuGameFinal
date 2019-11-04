@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.difficToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,9 +42,13 @@
             this.RestoreButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
             this.HintButton = new System.Windows.Forms.Button();
+            this.UndoButton = new System.Windows.Forms.Button();
             this.PauseButton = new System.Windows.Forms.Button();
             this.RedoButton = new System.Windows.Forms.Button();
-            this.UndoButton = new System.Windows.Forms.Button();
+            this.Mytime = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.TimeBox = new System.Windows.Forms.TextBox();
+            this.btnTimeStart = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.GameOption.SuspendLayout();
             this.SuspendLayout();
@@ -61,7 +66,7 @@
             this.exitToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(2019, 45);
+            this.menuStrip1.Size = new System.Drawing.Size(1634, 45);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -87,27 +92,27 @@
             // easyToolStripMenuItem
             // 
             this.easyToolStripMenuItem.Name = "easyToolStripMenuItem";
-            this.easyToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
+            this.easyToolStripMenuItem.Size = new System.Drawing.Size(257, 46);
             this.easyToolStripMenuItem.Text = "Easy";
             this.easyToolStripMenuItem.Click += new System.EventHandler(this.EasyToolStripMenuItem_Click);
             // 
             // mediumToolStripMenuItem1
             // 
             this.mediumToolStripMenuItem1.Name = "mediumToolStripMenuItem1";
-            this.mediumToolStripMenuItem1.Size = new System.Drawing.Size(315, 46);
+            this.mediumToolStripMenuItem1.Size = new System.Drawing.Size(257, 46);
             this.mediumToolStripMenuItem1.Text = "Medium";
             this.mediumToolStripMenuItem1.Click += new System.EventHandler(this.MediumToolStripMenuItem1_Click);
             // 
             // hardToolStripMenuItem1
             // 
             this.hardToolStripMenuItem1.Name = "hardToolStripMenuItem1";
-            this.hardToolStripMenuItem1.Size = new System.Drawing.Size(315, 46);
+            this.hardToolStripMenuItem1.Size = new System.Drawing.Size(257, 46);
             this.hardToolStripMenuItem1.Text = "Hard";
             // 
             // xSudokuToolStripMenuItem1
             // 
             this.xSudokuToolStripMenuItem1.Name = "xSudokuToolStripMenuItem1";
-            this.xSudokuToolStripMenuItem1.Size = new System.Drawing.Size(315, 46);
+            this.xSudokuToolStripMenuItem1.Size = new System.Drawing.Size(257, 46);
             this.xSudokuToolStripMenuItem1.Text = "X Sudoku";
             // 
             // exitToolStripMenuItem
@@ -120,9 +125,9 @@
             // GameBoard
             // 
             this.GameBoard.AutoSize = true;
-            this.GameBoard.Location = new System.Drawing.Point(82, 75);
+            this.GameBoard.Location = new System.Drawing.Point(451, 134);
             this.GameBoard.Name = "GameBoard";
-            this.GameBoard.Size = new System.Drawing.Size(1464, 950);
+            this.GameBoard.Size = new System.Drawing.Size(944, 924);
             this.GameBoard.TabIndex = 1;
             // 
             // GameOption
@@ -132,12 +137,12 @@
             this.GameOption.Controls.Add(this.RestoreButton);
             this.GameOption.Controls.Add(this.SaveButton);
             this.GameOption.Controls.Add(this.HintButton);
+            this.GameOption.Controls.Add(this.UndoButton);
             this.GameOption.Controls.Add(this.PauseButton);
             this.GameOption.Controls.Add(this.RedoButton);
-            this.GameOption.Controls.Add(this.UndoButton);
-            this.GameOption.Location = new System.Drawing.Point(1615, 75);
+            this.GameOption.Location = new System.Drawing.Point(45, 170);
             this.GameOption.Name = "GameOption";
-            this.GameOption.Size = new System.Drawing.Size(392, 823);
+            this.GameOption.Size = new System.Drawing.Size(283, 744);
             this.GameOption.TabIndex = 3;
             // 
             // RestoreButton
@@ -147,7 +152,7 @@
             this.RestoreButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.RestoreButton.Location = new System.Drawing.Point(50, 602);
             this.RestoreButton.Name = "RestoreButton";
-            this.RestoreButton.Size = new System.Drawing.Size(306, 75);
+            this.RestoreButton.Size = new System.Drawing.Size(189, 75);
             this.RestoreButton.TabIndex = 5;
             this.RestoreButton.Text = "Restore";
             this.RestoreButton.UseVisualStyleBackColor = false;
@@ -159,7 +164,7 @@
             this.SaveButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.SaveButton.Location = new System.Drawing.Point(50, 488);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(306, 75);
+            this.SaveButton.Size = new System.Drawing.Size(189, 75);
             this.SaveButton.TabIndex = 4;
             this.SaveButton.Text = "Save Game";
             this.SaveButton.UseVisualStyleBackColor = false;
@@ -171,10 +176,22 @@
             this.HintButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.HintButton.Location = new System.Drawing.Point(50, 384);
             this.HintButton.Name = "HintButton";
-            this.HintButton.Size = new System.Drawing.Size(306, 75);
+            this.HintButton.Size = new System.Drawing.Size(189, 75);
             this.HintButton.TabIndex = 3;
             this.HintButton.Text = "Hint";
             this.HintButton.UseVisualStyleBackColor = false;
+            // 
+            // UndoButton
+            // 
+            this.UndoButton.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.UndoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UndoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.UndoButton.Location = new System.Drawing.Point(50, 60);
+            this.UndoButton.Name = "UndoButton";
+            this.UndoButton.Size = new System.Drawing.Size(189, 75);
+            this.UndoButton.TabIndex = 0;
+            this.UndoButton.Text = "Undo";
+            this.UndoButton.UseVisualStyleBackColor = false;
             // 
             // PauseButton
             // 
@@ -183,7 +200,7 @@
             this.PauseButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.PauseButton.Location = new System.Drawing.Point(50, 279);
             this.PauseButton.Name = "PauseButton";
-            this.PauseButton.Size = new System.Drawing.Size(306, 75);
+            this.PauseButton.Size = new System.Drawing.Size(189, 75);
             this.PauseButton.TabIndex = 2;
             this.PauseButton.Text = "Pause";
             this.PauseButton.UseVisualStyleBackColor = false;
@@ -195,29 +212,48 @@
             this.RedoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.RedoButton.Location = new System.Drawing.Point(50, 171);
             this.RedoButton.Name = "RedoButton";
-            this.RedoButton.Size = new System.Drawing.Size(306, 75);
+            this.RedoButton.Size = new System.Drawing.Size(189, 75);
             this.RedoButton.TabIndex = 1;
             this.RedoButton.Text = "Redo";
             this.RedoButton.UseVisualStyleBackColor = false;
             // 
-            // UndoButton
+            // label1
             // 
-            this.UndoButton.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.UndoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UndoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.UndoButton.Location = new System.Drawing.Point(50, 67);
-            this.UndoButton.Name = "UndoButton";
-            this.UndoButton.Size = new System.Drawing.Size(306, 75);
-            this.UndoButton.TabIndex = 0;
-            this.UndoButton.Text = "Undo";
-            this.UndoButton.UseVisualStyleBackColor = false;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.857143F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(927, 77);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(89, 29);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Timer:";
+            // 
+            // TimeBox
+            // 
+            this.TimeBox.Location = new System.Drawing.Point(1032, 77);
+            this.TimeBox.Name = "TimeBox";
+            this.TimeBox.Size = new System.Drawing.Size(255, 29);
+            this.TimeBox.TabIndex = 5;
+            // 
+            // btnTimeStart
+            // 
+            this.btnTimeStart.Location = new System.Drawing.Point(677, 66);
+            this.btnTimeStart.Name = "btnTimeStart";
+            this.btnTimeStart.Size = new System.Drawing.Size(75, 40);
+            this.btnTimeStart.TabIndex = 6;
+            this.btnTimeStart.Text = "button1";
+            this.btnTimeStart.UseVisualStyleBackColor = true;
+
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(2019, 1190);
+            this.ClientSize = new System.Drawing.Size(1634, 1159);
+            this.Controls.Add(this.btnTimeStart);
+            this.Controls.Add(this.TimeBox);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.GameOption);
             this.Controls.Add(this.GameBoard);
             this.Controls.Add(this.menuStrip1);
@@ -250,6 +286,10 @@
         private System.Windows.Forms.Button HintButton;
         private System.Windows.Forms.Button PauseButton;
         private System.Windows.Forms.Button RedoButton;
+        private System.Windows.Forms.Timer Mytime;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox TimeBox;
+        private System.Windows.Forms.Button btnTimeStart;
     }
 }
 

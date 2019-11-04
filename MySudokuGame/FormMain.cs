@@ -8,12 +8,34 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace MySudokuGame
 {
+   
     public partial class FormMain : Form, IView
     {
+        //timer 
+        public delegate void OnPublishGameTimeDelegate(string timeDescription);
+        public event OnPublishGameTimeDelegate OnPublishGameTimeEvent;
+        private DateTime gameStartTime;
+        private System.Windows.Forms.Timer gameTimer = new System.Windows.Forms.Timer();
+        private void SetGameTimer()
+        {
+            Mytime.Interval = 1000;
+            Mytime.Enabled = true;
+            Mytime.Tick += (sender, args) =>
+            {
+                long dMillisecond = DateTime.Now.Millisecond - gameStartTime.Millisecond;
+                long hour = dMillisecond / 60 / 60 / 1000;
+                long minute = (dMillisecond - hour * (60 * 60 * 1000)) / (60 * 1000);
+                long second = ((dMillisecond - hour * (60 * 60 * 1000)) % (60 * 1000)) / 1000;
+                OnPublishGameTimeEvent?.Invoke((hour > 0 ? (hour > 9 ? hour.ToString() : "0" + hour) + ":" : "")
+                                + (minute > 9 ? minute.ToString() : "0" + minute) + "：" + (second > 9 ? second.ToString() : "0" + second));
+            };
+        }
+        //end here
         private Controller theController;
-        string ClickedText="";
+        string ClickedText = "";
 
         public FormMain()
         {
@@ -63,7 +85,7 @@ namespace MySudokuGame
             {
                 for (int col = 0; col < theController.maxValue; col++)
                 {
-                    MakeButtons2("btn_", cellValueS, row, col);                   
+                    MakeButtons2("btn_", cellValueS, row, col);
                 }
             }
 
@@ -100,7 +122,7 @@ namespace MySudokuGame
                     else
                     {
                         c.Text = cellValueS;
-                    }   
+                    }
                 }
             }
         }
@@ -124,8 +146,8 @@ namespace MySudokuGame
 
             if (btnWho.Name.StartsWith("btn"))
             {
-               theController.ChangeValue(ClickedText, btnWho.Name);
-               GameValueDisplay(theController.sudokuString);
+                theController.ChangeValue(ClickedText, btnWho.Name);
+                GameValueDisplay(theController.sudokuString);
 
 
             }
@@ -136,48 +158,26 @@ namespace MySudokuGame
 
         }
 
-        //public void WhoClicked(object sender, EventArgs e)
-        //{
-        //    Button btnWho = sender as Button;
-        //    this.Text = btnWho.Name;
-
-        //    if (btnWho.Name.StartsWith("btn"))
-        //    {
-        //        //btnWho.Text = ClickedText;
-        //        //Try to change value.
-        //        if (ClickedText != "")
-        //        {
-        //            theController.ChangeValue(ClickedText, btnWho.Name);
-        //            UploadGameBoard(theController.sudokuString);
-
-        //        }
-        //    }
-        //    else if (btnWho.Name.StartsWith("iptBtn_"))
-        //    {
-        //        ClickedText = btnWho.Text;
-        //    }
-        //}
-        
-
-
         private void EasyToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        theController.InitGameData();
-        this.GameBoardDisplay();
+        {
+            theController.InitGameData();
+            this.GameBoardDisplay();
             this.GameValueDisplay(theController.sudokuString);
             SetClicks();
+            gameStartTime = DateTime.Now;
+            gameTimer.Start();
+            SetGameTimer();
 
 
 
+        }
 
+        private void MediumToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            theController.InitGameData();
+            // this.GameBoardDisplay();
+
+        }
 
     }
-
-    private void MediumToolStripMenuItem1_Click(object sender, EventArgs e)
-    {
-        theController.InitGameData();
-        // this.GameBoardDisplay();
-
-    }
-}
 }

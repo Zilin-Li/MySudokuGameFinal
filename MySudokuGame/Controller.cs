@@ -14,6 +14,7 @@ namespace MySudokuGame
     {
         protected IView view;
         protected SudokuGame game;
+        public List<int[]> sudokuList;
 
         public int maxValue, SquareHeight, SquareWidth;
         public string sudokuString;

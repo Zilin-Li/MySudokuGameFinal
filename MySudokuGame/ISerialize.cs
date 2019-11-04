@@ -8,7 +8,7 @@ namespace MySudokuGame
 {
     interface ISerialize
     {
-        void FromCSV(string csv);
+        void FromCSV(string csvFile);
         //string ToCSV();
         void SetCell(int value, int gridIndex);
         //int GetCell(int gridIndex);

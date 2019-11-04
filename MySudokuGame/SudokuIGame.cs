@@ -92,6 +92,7 @@ namespace MySudokuGame
 
         }
 
+
         public List<int> GetdefIndex(int[] gameArray)
         {
             //defIndexList 是用来记录游戏默认值位置的。

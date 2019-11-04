@@ -19,9 +19,44 @@ namespace MySudokuGame
         //Realize interface ISerialize
 
         //Load the game value from a CSV file
-        public void FromCSV(string csv)
+        public void FromCSV(string gameselect)
         {
-            CSVFile = csv;
+            string path = System.AppDomain.CurrentDomain.BaseDirectory;
+            string fileName = "";
+            if (gameselect == "easy")
+            {
+                fileName = path +"easy.csv";
+            }
+
+            else if(gameselect == "medium")
+            {
+                fileName = path + "medium.csv";
+            }
+
+            else if (gameselect == "hard")
+            {
+                fileName = path + "hard.csv";
+            }
+
+
+            //string fileName = string.Empty;
+            //OpenFileDialog dlg = new OpenFileDialog();
+            //dlg.DefaultExt = "csv";
+            //dlg.Filter = "Csv Files|*.csv";
+            //if (dlg.ShowDialog() == DialogResult.OK)
+            //    fileName = dlg.FileName;
+            //if (fileName == null)
+            //    return;
+
+            //读取文件内容
+            StreamReader sr = new StreamReader(fileName, System.Text.Encoding.Default);
+            String ls_input = sr.ReadToEnd().TrimStart();
+            if (!string.IsNullOrEmpty(ls_input))
+            {
+                CSVFile = ls_input;
+            }
+
+            sr.Close();
         }
 
         //the function to save the game;

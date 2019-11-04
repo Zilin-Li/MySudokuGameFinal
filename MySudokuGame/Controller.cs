@@ -30,27 +30,13 @@ namespace MySudokuGame
             view.SetController(this);
             game = theGame;
         }
+        public void GameSelect(string gameselect)
+        {
+            game.FromCSV(gameselect);
+        }
 
         public void InitGameData()
         {
-            string CSVFile = "";
-            // 2 by 2 file
-            CSVFile = "4,2,2" + '\n';
-            CSVFile += ("1,0,3,4,2,3,0,1,0,4,1,2,0,1,2,0" + '\n');
-
-            // section 2 high by 3 wide file
-            //CSVFile = "6,2,3" + '\n';
-            //CSVFile += ("0,0,3,4,5,6,0,3,4,5,6,1,0,4,5,6,1,2,0,5,6,1,2,3,5,0,1,2,3,4,6,1,2,3,0,0" + '\n');
-
-            // section 3 high by 2 wide file
-            //CSVFile = "6,3,2" + '\n';
-            //CSVFile += ("0,0,3,4,5,6,0,3,4,5,6,1,0,4,5,6,1,2,0,5,6,1,2,3,5,0,1,2,3,4,6,1,2,3,0,0" + '\n');
-
-            // 3 by 3 file
-            //CSVFile = "9,3,3" + '\n';
-            //CSVFile += ("0,0,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,1,3,4,5,6,7,8,9,1,2,4,5,6,7,8,9,1,2,3,5,6,7,8,9,1,2,3,4,6,7,8,9,1,2,3,4,5,7,8,9,1,2,3,4,5,6,8,9,1,2,3,4,5,6,7,9,1,2,3,4,5,6,7,8" + '\n');
-
-            game.FromCSV(CSVFile);
             sudokuArray = game.ToArray();
 
             maxValue = game.GetMaxValue();
@@ -65,6 +51,7 @@ namespace MySudokuGame
             game.SetSquareWidth(SquareWidth);
             game.Set(sudokuArray);
         }
+        
 
         public void ChangeValue(string value, string buttonName)
         {

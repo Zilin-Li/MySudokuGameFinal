@@ -62,7 +62,6 @@ namespace MySudokuGame
                     isVaildRow = false;
                 }
             }
-
             return isVaildRow;
         }
 
@@ -118,6 +117,30 @@ namespace MySudokuGame
                 }
             }
             return isVaildSquare;
+        }
+
+        public bool AllVaild()
+        {
+            bool isAllVaild = true;
+            for(int a = 0; a < maxValue; a++)
+            {
+                if (!RowVaild(a))
+                {
+                    isAllVaild = false;
+                    return isAllVaild;
+                }
+                if (!ColumnVaild(a))
+                {
+                    isAllVaild = false;
+                    return isAllVaild;
+                }
+                if (!SquareVaild(a))
+                {
+                    isAllVaild = false;
+                    return isAllVaild;
+                }
+            }
+            return isAllVaild;
         }
 
         //feature 4: list vaild value by Row.

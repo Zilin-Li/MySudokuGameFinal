@@ -85,6 +85,10 @@ namespace MySudokuGame
             return game.SquareVaild(cellindex);
         }
 
+        public bool CheckAllVaild()
+        {
+            return game.AllVaild();
+        }
 
 
     }

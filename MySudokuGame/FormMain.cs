@@ -40,7 +40,6 @@ namespace MySudokuGame
             btnNew.Text = text;
             btnNew.Visible = true;
             btnNew.Location = new Point(10 + 60 * num, 60 + 60 * theController.maxValue);
-
             GameBoard.Controls.Add(btnNew);
         }
 
@@ -127,6 +126,7 @@ namespace MySudokuGame
                 theController.ChangeValue(ClickedText, btnWho.Name);
                 GameValueDisplay(theController.sudokuString);
                 this.DisplayVaildArea();
+                this.IsComplete();
             }
             else if (btnWho.Name.StartsWith("iptBtn_"))
             {
@@ -158,10 +158,9 @@ namespace MySudokuGame
                         c.Text = cellValueS;
                     }
                 }
-            }
-            
+            }   
         }
-
+        // Show the vaild area, including vaild row,col,square.
         private void DisplayVaildArea()
         {
             string btnName;
@@ -181,7 +180,6 @@ namespace MySudokuGame
                         c.BackColor = Color.DarkSeaGreen;
                     }
                 }
-
                 if (isColVaild)
                 {
                     for (int j = 0; j < theController.maxValue; j++)
@@ -191,7 +189,6 @@ namespace MySudokuGame
                         c.BackColor = Color.DarkSeaGreen;
                     }
                 }
-
                 if (isSquareVaild)
                 {
                     for (int j = 0; j < theController.maxValue; j++)
@@ -205,6 +202,15 @@ namespace MySudokuGame
                 }
             }
         }
+
+        private void IsComplete()
+        {
+            if (theController.CheckAllVaild())
+            {
+                testbox.Text = "You win!!";
+            }
+        }
+
         // User choose easy game.
         private void EasyToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -214,8 +220,7 @@ namespace MySudokuGame
             theController.InitGameData();
             this.GameBoardDisplay();
             this.GameValueDisplay(theController.sudokuString);
-            SetClicks();
-            
+            SetClicks();        
         }
 
         // User choose medium game.

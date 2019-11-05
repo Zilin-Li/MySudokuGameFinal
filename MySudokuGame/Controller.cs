@@ -70,9 +70,22 @@ namespace MySudokuGame
                 game.SetCell(cellvalue, game.cellIndex);
                 sudokuString = game.ToPrettyString();
             }
-           
-
         }
+
+        public bool CheckRowVaild(int row)
+        {
+            return game.RowVaild(row);
+        }
+        public bool CheckColVaild(int col)
+        {
+            return game.ColumnVaild(col);
+        }
+        public bool CheckSquareVaild(int cellindex)
+        {
+            return game.SquareVaild(cellindex);
+        }
+
+
 
     }
 }

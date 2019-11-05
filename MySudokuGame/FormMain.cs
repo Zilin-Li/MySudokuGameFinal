@@ -29,7 +29,7 @@ namespace MySudokuGame
         }
 
 
-        //创建数字板按键
+        // Creat number buttons
         public void MakeButtons(string text, int num)
         {
             Button btnNew = new Button();
@@ -44,7 +44,7 @@ namespace MySudokuGame
             GameBoard.Controls.Add(btnNew);
         }
 
-        //创建游戏按键
+        //Create game buttons
 
         public void MakeButtons2(string name, string text, int row, int column)
         {
@@ -77,6 +77,7 @@ namespace MySudokuGame
             GameBoard.Controls.Add(btnNew);
         }
 
+        // Create a gameboard and numberboard.
         public void GameBoardDisplay()
         {
             string cellValueS = "";
@@ -101,31 +102,8 @@ namespace MySudokuGame
                 }
             }
         }
-        public void GameValueDisplay(string gameDataString)
-        {
-            string btnName;
-            string cellValueS;
 
-            for (int row = 0; row < theController.maxValue; row++)
-            {
-                for (int col = 0; col < theController.maxValue; col++)
-                {
-                    int cellIndex = col + row * theController.maxValue;
-                    cellValueS = gameDataString[cellIndex].ToString();
-                    btnName = "btn_" + row.ToString() + "_" + col.ToString();
-                    Control c = Controls.Find(btnName, true)[0];
-                    if (cellValueS == "0")
-                    {
-                        c.Text = "";
-                    }
-                    else
-                    {
-                        c.Text = cellValueS;
-                    }
-                }
-            }
-        }
-
+        // Add click event to each button on GameBoard.
         public void SetClicks()
         {
             foreach (Control c in GameBoard.Controls)
@@ -138,6 +116,7 @@ namespace MySudokuGame
             }
         }
 
+        // Game buttons click event.
         public void WhoClicked(object sender, EventArgs e)
         {
             Button btnWho = sender as Button;
@@ -147,8 +126,7 @@ namespace MySudokuGame
             {
                 theController.ChangeValue(ClickedText, btnWho.Name);
                 GameValueDisplay(theController.sudokuString);
-
-
+                this.DisplayVaildArea();
             }
             else if (btnWho.Name.StartsWith("iptBtn_"))
             {
@@ -156,6 +134,128 @@ namespace MySudokuGame
             }
         }
 
+        // Put each cell value on each game button.
+        public void GameValueDisplay(string gameDataString)
+        {
+            string btnName;
+            string cellValueS;
+
+            for (int row = 0; row < theController.maxValue; row++)
+            {
+                for (int col = 0; col < theController.maxValue; col++)
+                {
+                    int cellIndex = col + row * theController.maxValue;
+                    cellValueS = gameDataString[cellIndex].ToString();
+                    btnName = "btn_" + row.ToString() + "_" + col.ToString();
+
+                    Control c = Controls.Find(btnName, true)[0];
+                    if (cellValueS == "0")
+                    {
+                        c.Text = "";
+                    }
+                    else
+                    {
+                        c.Text = cellValueS;
+                    }
+                }
+            }
+            
+        }
+
+        private void DisplayVaildArea()
+        {
+            string btnName;
+            bool isRowVaild, isColVaild, isSquareVaild;
+            for(int i = 0; i < theController.maxValue; i++)
+            {
+                isRowVaild = theController.CheckRowVaild(i);
+                isColVaild = theController.CheckColVaild(i);
+                isSquareVaild = theController.CheckSquareVaild(i);
+
+                if (isRowVaild)
+                {
+                    for (int j =0; j < theController.maxValue; j++)
+                    {
+                        btnName = "btn_" + i.ToString() + "_" + j.ToString();
+                        Control c = Controls.Find(btnName, true)[0];
+                        c.BackColor = Color.DarkSeaGreen;
+                    }
+                }
+
+                if (isColVaild)
+                {
+                    for (int j = 0; j < theController.maxValue; j++)
+                    {
+                        btnName = "btn_" + j.ToString() + "_" + i.ToString();
+                        Control c = Controls.Find(btnName, true)[0];
+                        c.BackColor = Color.DarkSeaGreen;
+                    }
+                }
+
+                if (isSquareVaild)
+                {
+                    for (int j = 0; j < theController.maxValue; j++)
+                    {
+                        int colInd = (i % (theController.maxValue / theController.SquareWidth)) * theController.SquareWidth + (j % theController.SquareWidth);
+                        int rowInd = (i / (theController.maxValue / theController.SquareWidth)) * theController.SquareHeight + (j / theController.SquareWidth);
+                        btnName = "btn_" + rowInd.ToString() + "_" + colInd.ToString();
+                        Control c = Controls.Find(btnName, true)[0];
+                        c.BackColor = Color.DarkSeaGreen;
+                    }
+                }
+            }
+        }
+        // User choose easy game.
+        private void EasyToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            GameBoard.Controls.Clear();
+            gameSelect = "easy";
+            theController.GameSelect(gameSelect);
+            theController.InitGameData();
+            this.GameBoardDisplay();
+            this.GameValueDisplay(theController.sudokuString);
+            SetClicks();
+            
+        }
+
+        // User choose medium game.
+        private void MediumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GameBoard.Controls.Clear();
+            gameSelect = "medium";
+            theController.GameSelect(gameSelect);
+            theController.InitGameData();
+            this.GameBoardDisplay();
+            this.GameValueDisplay(theController.sudokuString);
+            SetClicks();
+        }
+
+        // User choose hard game.
+        private void HardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GameBoard.Controls.Clear();
+            gameSelect = "hard";
+            theController.GameSelect(gameSelect);
+            theController.InitGameData();
+            this.GameBoardDisplay();
+            this.GameValueDisplay(theController.sudokuString);
+            SetClicks();
+        }
+
+        //private void Button1_Click(object sender, EventArgs e)
+        //{
+        //    string path = System.AppDomain.CurrentDomain.BaseDirectory;
+        //    string fileName = path + "easy.csv";
+
+        //    StreamReader sr = new StreamReader(fileName, System.Text.Encoding.Default);
+        //    String ls_input = sr.ReadToEnd().TrimStart();
+        //    if (!string.IsNullOrEmpty(ls_input))
+        //    {
+        //        testbox.Text = ls_input;
+        //    }
+
+        //    sr.Close();
+        //}
 
 
         //private void NewGameToolStripMenuItem_Click(object sender, EventArgs e)
@@ -176,58 +276,10 @@ namespace MySudokuGame
         //    {
         //        testbox.Text = ls_input;
         //    }
-                
+
         //    sr.Close();
         //}
 
 
-        private void EasyToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            GameBoard.Controls.Clear();
-            gameSelect = "easy";
-            theController.GameSelect(gameSelect);
-            theController.InitGameData();
-            this.GameBoardDisplay();
-            this.GameValueDisplay(theController.sudokuString);
-            SetClicks();
-            
-        }
-        private void MediumToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            GameBoard.Controls.Clear();
-            gameSelect = "medium";
-            theController.GameSelect(gameSelect);
-            theController.InitGameData();
-            this.GameBoardDisplay();
-            this.GameValueDisplay(theController.sudokuString);
-            SetClicks();
-        }
-        private void HardToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            GameBoard.Controls.Clear();
-            gameSelect = "hard";
-            theController.GameSelect(gameSelect);
-            theController.InitGameData();
-            this.GameBoardDisplay();
-            this.GameValueDisplay(theController.sudokuString);
-            SetClicks();
-        }
-
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            string path = System.AppDomain.CurrentDomain.BaseDirectory;
-            string fileName = path + "easy.csv";
-            
-            StreamReader sr = new StreamReader(fileName, System.Text.Encoding.Default);
-            String ls_input = sr.ReadToEnd().TrimStart();
-            if (!string.IsNullOrEmpty(ls_input))
-            {
-                testbox.Text = ls_input;
-            }
-
-            sr.Close();
-        }
-
-       
     }
 }

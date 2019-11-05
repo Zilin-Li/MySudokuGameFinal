@@ -13,7 +13,6 @@ namespace MySudokuGame
         public void GetButtonInfo(string buttonName)
         {
             string buttonValue = "";
-
             for (int i = 0; i < buttonName.Length; i++)
             {
                 if (Char.IsNumber(buttonName, i) == true)
@@ -34,8 +33,7 @@ namespace MySudokuGame
             {
                 isDef = true;
             }
-            return isDef;
-            
+            return isDef;     
         }
 
         //Other features

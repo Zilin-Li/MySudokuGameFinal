@@ -8,8 +8,6 @@ namespace MySudokuGame
 {
     public partial class SudokuGame : ISet
     {
-        public int arrayIndex;
-
         //Realize interface ISet.
 
         // Set a value by column.
@@ -18,8 +16,8 @@ namespace MySudokuGame
 
             if (value >= 0 && value <= maxValue && rowIndex >= 0 && rowIndex < maxValue && columnIndex >= 0 && columnIndex < maxValue)
             {
-                arrayIndex = columnIndex + rowIndex * maxValue;
-                sudokuArray[arrayIndex] = value;
+               cellIndex = columnIndex + rowIndex * maxValue;
+                sudokuArray[cellIndex + 3] = value;
             }
             else
             {
@@ -34,8 +32,8 @@ namespace MySudokuGame
 
             if (value >= 0 && value <= maxValue && rowIndex >= 0 && rowIndex < maxValue && columnIndex >= 0 && columnIndex < maxValue)
             {
-                arrayIndex = columnIndex + rowIndex * maxValue;
-                sudokuArray[arrayIndex] = value;
+                cellIndex = columnIndex + rowIndex * maxValue;
+                sudokuArray[cellIndex +3] = value;
             }
             else
             {
@@ -54,8 +52,8 @@ namespace MySudokuGame
                 // use colindex and rowindex to set the value
                 colInd = (squareIndex % (maxValue / squareWidth)) * squareWidth + (positionIndex % squareWidth);
                 rowInd = (squareIndex / (maxValue / squareWidth)) * squareHeight + (positionIndex / squareWidth);
-                arrayIndex = colInd + rowInd * maxValue;
-                sudokuArray[arrayIndex] = value;
+                cellIndex = colInd + rowInd * maxValue;
+                sudokuArray[cellIndex + 3] = value;
             }
             else
             {

@@ -12,15 +12,15 @@ namespace MySudokuGame
         //Get a value by Column
         public int GetByColumn(int columnIndex, int rowIndex)
         {
-            arrayIndex = columnIndex + rowIndex * maxValue;
-            return sudokuArray[arrayIndex];
+            cellIndex = columnIndex + rowIndex * maxValue;
+            return sudokuArray[cellIndex + 3];
         }
 
         //Get a value by Row
         public int GetByRow(int rowIndex, int columnIndex)
         {
-            arrayIndex = columnIndex + rowIndex * maxValue;
-            return sudokuArray[arrayIndex];
+            cellIndex = columnIndex + rowIndex * maxValue;
+            return sudokuArray[cellIndex + 3];
         }
 
         //Get a value by Square
@@ -30,8 +30,8 @@ namespace MySudokuGame
             int rowInd;
             colInd = (squareIndex % (maxValue / squareWidth)) * squareWidth + (positionIndex % squareWidth);
             rowInd = (squareIndex / (maxValue / squareWidth)) * squareHeight + (positionIndex / squareWidth);
-            arrayIndex = colInd + rowInd * maxValue;
-            return sudokuArray[arrayIndex];
+            cellIndex = colInd + rowInd * maxValue;
+            return sudokuArray[cellIndex + 3];
         }
 
     }

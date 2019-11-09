@@ -38,14 +38,11 @@ namespace MySudokuGame
         public void InitGameData()
         {
             sudokuArray = game.ToArray();
-
             maxValue = game.GetMaxValue();
             SquareHeight = game.GetSquareHeight();
             SquareWidth = game.GetSquareWidth();
-            defIndexList = game.GetdefIndex(sudokuArray);
-            
+            defIndexList = game.GetdefIndex(sudokuArray);           
             sudokuString = game.ToPrettyString();
-
             game.SetMaxValue(maxValue);
             game.SetSquareHeight(SquareHeight);
             game.SetSquareWidth(SquareWidth);

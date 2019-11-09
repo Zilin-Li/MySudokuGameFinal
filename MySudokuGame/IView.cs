@@ -8,7 +8,6 @@ namespace MySudokuGame
 {
     public interface IView
     {
-  
         void SetController(Controller controller);
     }
 }

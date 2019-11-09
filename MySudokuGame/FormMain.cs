@@ -18,6 +18,7 @@ namespace MySudokuGame
         private Controller theController;
         private string ClickedText = "";
         private string gameSelect;
+        private int timeTicks = 0;
 
         public FormMain()
         {
@@ -27,6 +28,8 @@ namespace MySudokuGame
         {
             theController = contr;
         }
+
+//------------------------------------ Create Controls -----------------------------------------
 
         //Creat game scale, in order to dispaly row number and col number.
         public void MakeGameScale(string name, int num, int row, int column)
@@ -60,7 +63,6 @@ namespace MySudokuGame
         }
 
         //Create game buttons
-
         public void MakeButtons2(string name, string text, int row, int column)
         {
             int squareIndex;
@@ -93,7 +95,14 @@ namespace MySudokuGame
             GameBoard.Controls.Add(btnNew);
         }
 
-        // Create a gameboard and numberboard.
+        //Create game timer
+        
+
+
+
+//------------------------------------ Game Display -----------------------------------------
+
+        // Display gameboard.
         public void GameBoardDisplay()
         {
             string cellValueS = "";
@@ -103,14 +112,14 @@ namespace MySudokuGame
                 {
                     if (row == 0)
                     {
-                        MakeGameScale("Col_", col + 1, row, col+1);
+                        MakeGameScale("Col_", col + 1, row, col + 1);
                     }
                     if (col == 0)
                     {
-                        MakeGameScale("Row_", row + 1, row+1, col);
+                        MakeGameScale("Row_", row + 1, row + 1, col);
                     }
-                   
-                        MakeButtons2("btn_", cellValueS, row, col); 
+
+                    MakeButtons2("btn_", cellValueS, row, col);
                 }
             }
 
@@ -128,40 +137,7 @@ namespace MySudokuGame
             }
         }
 
-        // Add click event to each button on GameBoard.
-        public void SetClicks()
-        {
-            foreach (Control c in GameBoard.Controls)
-            {
-                if (c is Button)
-                {
-                    Button who = c as Button;
-                    who.Click += new EventHandler(WhoClicked);
-                }
-            }
-        }
-
-        // Game buttons click event.
-        public void WhoClicked(object sender, EventArgs e)
-        {
-            Button btnWho = sender as Button;
-            Text = btnWho.Name;
-
-            if (btnWho.Name.StartsWith("btn"))
-            {
-                
-                theController.ChangeValue(ClickedText, btnWho.Name);
-                GameValueDisplay(theController.sudokuString);
-                this.DisplayVaildArea();
-                this.IsComplete();
-            }
-            else if (btnWho.Name.StartsWith("iptBtn_"))
-            {
-                ClickedText = btnWho.Text;
-            }
-        }
-
-        // Put each cell value on each game button.
+        // Display sudoku value on the board.
         public void GameValueDisplay(string gameDataString)
         {
             string btnName;
@@ -176,7 +152,11 @@ namespace MySudokuGame
                     btnName = "btn_" + row.ToString() + "_" + col.ToString();
 
                     Control c = Controls.Find(btnName, true)[0];
-                    
+                    if (theController.defIndexList.Contains(cellIndex))
+                    {
+                        c.ForeColor = Color.DeepPink;
+                    }
+
                     if (cellValueS == "0")
                     {
                         c.Text = "";
@@ -188,8 +168,9 @@ namespace MySudokuGame
                 }
             }   
         }
+
         // Show the vaild area, including vaild row,col,square.
-        private void DisplayVaildArea()
+        private void VaildAreaDisplay()
         {
             string btnName;
             string textName;
@@ -202,18 +183,30 @@ namespace MySudokuGame
                 isColVaild = theController.CheckColVaild(i);
                 isSquareVaild = theController.CheckSquareVaild(i);
 
-
                 if (isRowVaild)
                 {
                     textName = "Row_" + (i+1).ToString();
                     Control c = Controls.Find(textName, true)[0];
-                    c.ForeColor = Color.Red;
+                    c.ForeColor = Color.Green;
+                }
+                else
+                {
+                    textName = "Row_" + (i + 1).ToString();
+                    Control c = Controls.Find(textName, true)[0];
+                    c.ForeColor = Color.Black;
                 }
                 if (isColVaild)
                 {
                     textName = "Col_" + (i + 1).ToString();
                     Control c = Controls.Find(textName, true)[0];
-                    c.ForeColor = Color.Red;
+                    c.ForeColor = Color.Green;
+                }
+
+                else
+                {
+                    textName = "Col_" + (i + 1).ToString();
+                    Control c = Controls.Find(textName, true)[0];
+                    c.ForeColor = Color.Black;
                 }
 
                 if (isSquareVaild)
@@ -227,51 +220,98 @@ namespace MySudokuGame
                         c.BackColor = Color.DarkSeaGreen;
                     }
                 }
+                else
+                {   
+                    for (int j = 0; j < theController.maxValue; j++)
+                    {
+                        int colInd = (i % (theController.maxValue / theController.SquareWidth)) * theController.SquareWidth + (j % theController.SquareWidth);
+                        int rowInd = (i / (theController.maxValue / theController.SquareWidth)) * theController.SquareHeight + (j / theController.SquareWidth);
+                        btnName = "btn_" + rowInd.ToString() + "_" + colInd.ToString();
+
+                        Control c = Controls.Find(btnName, true)[0];
+                        c.BackColor = Color.White;
+
+                        if (theController.maxValue == 4)
+                        {
+                            if (i == 0 || i == 3)
+                                c.BackColor = Color.LightBlue;
+                        }
+                        if (theController.maxValue == 6)
+                        {
+                            if (i == 0 || i == 3 || i == 4)
+                                c.BackColor = Color.LightBlue;
+                        }
+                        if (theController.maxValue == 9)
+                        {
+                            if (i % 2 == 0)
+                                c.BackColor = Color.LightBlue;
+                        }
+                    }
+
+                }
+                
             }
         }
 
-        private void IsComplete()
+        // Display Win information.
+        private void WinInfoDisplay()
         {
             if (theController.CheckAllVaild())
             {
-                testbox.Text = "You win!!";
+                TextBox c = new TextBox();
+                c.Font = new Font("Microsoft Sans Serif", 36);
+                c.Text = "You win!!";
+                c.ForeColor = Color.LightCoral;
+                c.Visible = true;
+                c.Location = new Point(50, 200);
+                c.Size = new Size(350, 96);
+                c.TextAlign = HorizontalAlignment.Center;
+
+                GameBoard.Controls.Clear();
+                GameBoard.Controls.Add(c);
+                Mytime.Stop();
             }
         }
 
-        // User choose easy game.
-        private void EasyToolStripMenuItem1_Click(object sender, EventArgs e)
+
+//------------------------------------New Game Options-----------------------------------------
+        //
+        private void SetGame()
         {
+            GameBoard.Visible = true;
             GameBoard.Controls.Clear();
-            gameSelect = "easy";
-            theController.GameSelect(gameSelect);
             theController.InitGameData();
             this.GameBoardDisplay();
             this.GameValueDisplay(theController.sudokuString);
-            SetClicks();        
+            SetClicks();
+            Mytime.Start();
+            Mytime.Tag = "Open";
+            timeTicks = 0;
+
+        }
+        
+        // User choose easy game.
+        private void EasyToolStripMenuItem1_Click(object sender, EventArgs e)
+        {   
+            gameSelect = "easy";
+            theController.GameSelect(gameSelect);
+            SetGame();
         }
 
         // User choose medium game.
         private void MediumToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GameBoard.Controls.Clear();
             gameSelect = "medium";
             theController.GameSelect(gameSelect);
-            theController.InitGameData();
-            this.GameBoardDisplay();
-            this.GameValueDisplay(theController.sudokuString);
-            SetClicks();
+            SetGame();
         }
 
         // User choose hard game.
         private void HardToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GameBoard.Controls.Clear();
             gameSelect = "hard";
             theController.GameSelect(gameSelect);
-            theController.InitGameData();
-            this.GameBoardDisplay();
-            this.GameValueDisplay(theController.sudokuString);
-            SetClicks();
+            SetGame();
         }
 
         //private void Button1_Click(object sender, EventArgs e)
@@ -312,6 +352,86 @@ namespace MySudokuGame
         //    sr.Close();
         //}
 
+//------------------------------------ Play the Game -----------------------------------------
 
+        // Add click event to each button on GameBoard.
+        public void SetClicks()
+        {
+            foreach (Control c in GameBoard.Controls)
+            {
+                if (c is Button)
+                {
+                    Button who = c as Button;
+                    who.Click += new EventHandler(WhoClicked);
+                }
+            }
+        }
+
+        // Game buttons click event.
+        public void WhoClicked(object sender, EventArgs e)
+        {
+            Button btnWho = sender as Button;
+            Text = btnWho.Name;
+
+            if (btnWho.Name.StartsWith("btn"))
+            {
+
+                theController.ChangeValue(ClickedText, btnWho.Name);
+                GameValueDisplay(theController.sudokuString);
+                this.VaildAreaDisplay();
+                this.WinInfoDisplay();
+            }
+
+            else if (btnWho.Name.StartsWith("iptBtn_"))
+            {
+                ClickedText = btnWho.Text;
+            }
+        }
+
+        private void Mytime_Tick(object sender, EventArgs e)
+        {
+            timeTicks++;
+           
+            int seconds = (timeTicks / 10) % 60;
+            int minutes = (timeTicks / 10/60) % 60;
+
+            TimeBox.Text = minutes.ToString("00") + " : " + seconds.ToString("00");
+            //TimeBox.Text = timeTicks.ToString();
+        }
+
+        private void PauseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if((string)Mytime.Tag == "Open" )
+            {
+                Mytime.Stop();
+                Mytime.Tag = "Close";
+                GameBoard.Visible = false;
+                PauseButton.BackColor = Color.Gray;
+            }
+            else
+            {
+                Mytime.Start();
+                Mytime.Tag = "Open";
+                GameBoard.Visible = true;
+                PauseButton.BackColor = Color.Teal;
+            }
+
+        }
+
+        private void PauseButton_Click(object sender, EventArgs e)
+        {
+            PauseToolStripMenuItem_Click(sender, e);
+            
+        }
+
+        private void RestoreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetGame();
+        }
+
+        private void RestoreButton_Click(object sender, EventArgs e)
+        {
+            SetGame();
+        }
     }
 }

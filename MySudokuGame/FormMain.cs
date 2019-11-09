@@ -28,18 +28,34 @@ namespace MySudokuGame
             theController = contr;
         }
 
+        //Creat game scale, in order to dispaly row number and col number.
+        public void MakeGameScale(string name, int num, int row, int column)
+        {
+            TextBox textNew = new TextBox();
+            textNew.Name = name + num.ToString();
+            textNew.Height = 50;
+            textNew.Width = 50;
+            textNew.Font = new Font("Microsoft Sans Serif", 16);
+            textNew.Text = num.ToString();
+            textNew.TextAlign = HorizontalAlignment.Center;
+          
+            textNew.BorderStyle = BorderStyle.None;
+            textNew.Location = new Point(50 + 50 * column, 50 + 52 * row);
+            GameBoard.Controls.Add(textNew);
+        }
+
 
         // Creat number buttons
         public void MakeButtons(string text, int num)
         {
             Button btnNew = new Button();
             btnNew.Name = "iptBtn_" + text;
-            btnNew.Height = 60;
-            btnNew.Width = 60;
+            btnNew.Height = 50;
+            btnNew.Width = 50;
             btnNew.Font = new Font("Arial", 20);
             btnNew.Text = text;
             btnNew.Visible = true;
-            btnNew.Location = new Point(10 + 60 * num, 60 + 60 * theController.maxValue);
+            btnNew.Location = new Point(100 + 50 * num, 150 + 50 * theController.maxValue);
             GameBoard.Controls.Add(btnNew);
         }
 
@@ -52,12 +68,13 @@ namespace MySudokuGame
 
             Button btnNew = new Button();
             btnNew.Name = name + row.ToString() + "_" + column.ToString();
-            btnNew.Height = 60;
-            btnNew.Width = 60;
+            btnNew.Height = 50;
+            btnNew.Width = 50;
             btnNew.Font = new Font("Arial", 20);
             btnNew.Text = text;
             btnNew.Visible = true;
-            btnNew.Location = new Point(10 + 60 * column, 10 + 60 * row);
+            
+            btnNew.Location = new Point(100+ 50 * column, 100 + 50 * row);
             if (theController.maxValue==4)
             {
                 if(squareIndex==0|| squareIndex == 3)
@@ -84,7 +101,16 @@ namespace MySudokuGame
             {
                 for (int col = 0; col < theController.maxValue; col++)
                 {
-                   MakeButtons2("btn_", cellValueS, row, col);
+                    if (row == 0)
+                    {
+                        MakeGameScale("Col_", col + 1, row, col+1);
+                    }
+                    if (col == 0)
+                    {
+                        MakeGameScale("Row_", row + 1, row+1, col);
+                    }
+                   
+                        MakeButtons2("btn_", cellValueS, row, col); 
                 }
             }
 
@@ -123,6 +149,7 @@ namespace MySudokuGame
 
             if (btnWho.Name.StartsWith("btn"))
             {
+                
                 theController.ChangeValue(ClickedText, btnWho.Name);
                 GameValueDisplay(theController.sudokuString);
                 this.DisplayVaildArea();
@@ -149,6 +176,7 @@ namespace MySudokuGame
                     btnName = "btn_" + row.ToString() + "_" + col.ToString();
 
                     Control c = Controls.Find(btnName, true)[0];
+                    
                     if (cellValueS == "0")
                     {
                         c.Text = "";
@@ -164,6 +192,9 @@ namespace MySudokuGame
         private void DisplayVaildArea()
         {
             string btnName;
+            string textName;
+            
+
             bool isRowVaild, isColVaild, isSquareVaild;
             for(int i = 0; i < theController.maxValue; i++)
             {
@@ -171,24 +202,20 @@ namespace MySudokuGame
                 isColVaild = theController.CheckColVaild(i);
                 isSquareVaild = theController.CheckSquareVaild(i);
 
+
                 if (isRowVaild)
                 {
-                    for (int j =0; j < theController.maxValue; j++)
-                    {
-                        btnName = "btn_" + i.ToString() + "_" + j.ToString();
-                        Control c = Controls.Find(btnName, true)[0];
-                        c.BackColor = Color.DarkSeaGreen;
-                    }
+                    textName = "Row_" + (i+1).ToString();
+                    Control c = Controls.Find(textName, true)[0];
+                    c.ForeColor = Color.Red;
                 }
                 if (isColVaild)
                 {
-                    for (int j = 0; j < theController.maxValue; j++)
-                    {
-                        btnName = "btn_" + j.ToString() + "_" + i.ToString();
-                        Control c = Controls.Find(btnName, true)[0];
-                        c.BackColor = Color.DarkSeaGreen;
-                    }
+                    textName = "Col_" + (i + 1).ToString();
+                    Control c = Controls.Find(textName, true)[0];
+                    c.ForeColor = Color.Red;
                 }
+
                 if (isSquareVaild)
                 {
                     for (int j = 0; j < theController.maxValue; j++)

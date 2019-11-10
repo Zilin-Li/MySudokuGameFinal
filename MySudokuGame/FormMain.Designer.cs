@@ -55,6 +55,7 @@
             this.hintToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.GameOption.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -249,14 +250,16 @@
             // loadGameToolStripMenuItem
             // 
             this.loadGameToolStripMenuItem.Name = "loadGameToolStripMenuItem";
-            this.loadGameToolStripMenuItem.Size = new System.Drawing.Size(278, 46);
+            this.loadGameToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
             this.loadGameToolStripMenuItem.Text = "Load Game";
+            this.loadGameToolStripMenuItem.Click += new System.EventHandler(this.LoadGameToolStripMenuItem_Click);
             // 
             // saveGameToolStripMenuItem
             // 
             this.saveGameToolStripMenuItem.Name = "saveGameToolStripMenuItem";
-            this.saveGameToolStripMenuItem.Size = new System.Drawing.Size(278, 46);
+            this.saveGameToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
             this.saveGameToolStripMenuItem.Text = "Save Game";
+            this.saveGameToolStripMenuItem.Click += new System.EventHandler(this.SaveGameToolStripMenuItem_Click);
             // 
             // restoreToolStripMenuItem
             // 
@@ -311,6 +314,13 @@
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(1362, 243);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(561, 29);
+            this.textBox1.TabIndex = 9;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -319,6 +329,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(1994, 1121);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.TimeBox);
             this.Controls.Add(this.label1);
@@ -364,6 +375,7 @@
         private System.Windows.Forms.ToolStripMenuItem hintToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 
 
+
 namespace MySudokuGame
 {
    
@@ -281,7 +282,9 @@ namespace MySudokuGame
             GameBoard.Visible = true;
             GameBoard.Controls.Clear();
             theController.InitGameData();
+            
             this.GameBoardDisplay();
+
             this.GameValueDisplay(theController.sudokuString);
             SetClicks();
             Mytime.Start();
@@ -292,8 +295,9 @@ namespace MySudokuGame
         
         // User choose easy game.
         private void EasyToolStripMenuItem1_Click(object sender, EventArgs e)
-        {   
-            gameSelect = "easy";
+        {
+
+            gameSelect = "easy.csv";
             theController.GameSelect(gameSelect);
             SetGame();
         }
@@ -301,7 +305,7 @@ namespace MySudokuGame
         // User choose medium game.
         private void MediumToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            gameSelect = "medium";
+            gameSelect = "medium.csv";
             theController.GameSelect(gameSelect);
             SetGame();
         }
@@ -309,7 +313,7 @@ namespace MySudokuGame
         // User choose hard game.
         private void HardToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            gameSelect = "hard";
+            gameSelect = "hard.csv";
             theController.GameSelect(gameSelect);
             SetGame();
         }
@@ -432,6 +436,55 @@ namespace MySudokuGame
         private void RestoreButton_Click(object sender, EventArgs e)
         {
             SetGame();
+        }
+
+        private void SaveGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (theController.sudokuArray != null)
+            {
+                theController.GameSave();
+               
+            }
+            
+        }
+
+        // ref: https://www.howtosolutions.net/2012/05/winform-open-file-browser-dialog-examples/#How_to_make_Open_File_Dialog_to_open_in_a_specific_folder
+
+        private void LoadGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string fileName = string.Empty;
+            string path = Directory.GetCurrentDirectory();
+
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.InitialDirectory = path +@"\loadGame";
+
+            dlg.DefaultExt = "csv";
+            dlg.Filter = "Csv Files|*.csv";
+
+
+
+
+            
+            DialogResult result = dlg.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                fileName = dlg.SafeFileName;
+                gameSelect = @"\loadGame\" + fileName;
+
+                theController.GameSelect(gameSelect);
+                SetGame();
+                textBox1.Text = theController.test;
+               
+
+               
+
+            }
+            //else if (result == DialogResult.Cancel)
+            //{
+            //    return;
+            //}
+
+
         }
     }
 }

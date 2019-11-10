@@ -14,6 +14,7 @@ namespace MySudokuGame
         public string CSVFile;
         public string PrettyString;
         public int cellValue;
+        public string defaultInfo;
 
 
         //Realize interface ISerialize
@@ -23,32 +24,11 @@ namespace MySudokuGame
         {
             string path = System.AppDomain.CurrentDomain.BaseDirectory;
             string fileName = "";
-            if (gameselect == "easy")
-            {
-                fileName = path +"easy.csv";
-            }
+            
+            int index1;
 
-            else if(gameselect == "medium")
-            {
-                fileName = path + "medium.csv";
-            }
-
-            else if (gameselect == "hard")
-            {
-                fileName = path + "hard.csv";
-            }
-
-
-            //string fileName = string.Empty;
-            //OpenFileDialog dlg = new OpenFileDialog();
-            //dlg.DefaultExt = "csv";
-            //dlg.Filter = "Csv Files|*.csv";
-            //if (dlg.ShowDialog() == DialogResult.OK)
-            //    fileName = dlg.FileName;
-            //if (fileName == null)
-            //    return;
-
-            //读取文件内容
+            fileName = path + gameselect;
+      
             StreamReader sr = new StreamReader(fileName, System.Text.Encoding.Default);
             String ls_input = sr.ReadToEnd().TrimStart();
             if (!string.IsNullOrEmpty(ls_input))
@@ -57,27 +37,38 @@ namespace MySudokuGame
             }
 
             sr.Close();
+
+            // check new game or load game
+            // ref: https://www.geeksforgeeks.org/c-sharp-string-indexof-method-set-1/
+
+            defaultInfo = "";
+            index1 = CSVFile.IndexOf('#');
+            if (index1 != -1)
+            {
+                defaultInfo = CSVFile.Substring(index1+2);
+                CSVFile = CSVFile.Substring(0, index1);  
+            }
+         
         }
 
         //the function to save the game;
-        //change the current sudoku array to CSVfile(a string)
-        //public string ToCSV()
-        //{
-        //    string saveFile = "";
-        //    for (int i = 0; i < sudokuArray.Length; i++)
-        //    {
-        //        saveFile += sudokuArray[i] + ",";
-        //    }
-        //    saveFile += '\n';
+        public string ToCSV()
+        {
+            string saveFile = "";
+            for (int i = 0; i < sudokuArray.Length; i++)
+            {
+                saveFile += sudokuArray[i] + ",";
+            }
+            saveFile += '\n' + "#,";
 
-        //    var csv = new StringBuilder();
-        //    csv.AppendLine(saveFile);
-        //    //get current working directory
-        //    string path = Directory.GetCurrentDirectory();
-        //    string filePath = path + "/mysudoku.csv";
-        //    File.WriteAllText(filePath, csv.ToString());
-        //    return saveFile;
-        //}
+        
+            for(int d = 0; d < defIndexList.Count; d++)
+            {
+                saveFile += defIndexList[d] + ",";
+            }
+            //saveFile += '\n';
+            return saveFile;
+        }
 
         //Set a value by cell
         public void SetCell(int value, int gridIndex)

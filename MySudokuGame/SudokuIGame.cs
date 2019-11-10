@@ -33,6 +33,7 @@ namespace MySudokuGame
         {
             //  defData 是用来储存初始游戏数据的字符串。
             string defData = "";
+            int[] array1;
 
             for (int i = 0; i < CSVFile.Length; i++)
             {
@@ -44,11 +45,11 @@ namespace MySudokuGame
 
             //全局变量sudokuArray 是包含游戏所有值的数组，包含最大值，squareW/H，以及cellvalue.
 
-            sudokuArray = new int[defData.Length];
+            array1 = new int[defData.Length];
             for (int i = 0; i < defData.Length; i++)
-                sudokuArray[i] = Int32.Parse(defData[i].ToString());
+                array1[i] = Int32.Parse(defData[i].ToString());
 
-            return sudokuArray;
+            return array1;
 
         }
 
@@ -97,14 +98,24 @@ namespace MySudokuGame
         {
             //defIndexList 是用来记录游戏默认值位置的。
             defIndexList = new List<int>();
-            
-            for (int i = 3; i < gameArray.Length; i++)
+        
+            if(defaultInfo == "")
             {
-                if (gameArray[i] != 0)
+                for (int i = 3; i < gameArray.Length; i++)
                 {
-                    defIndexList.Add(i-3);
-                }
+                    if (gameArray[i] != 0)
+                    {
+                        defIndexList.Add(i-3);
+                    }
+                }   
             }
+            else
+            {
+                defaultInfo = defaultInfo.Replace(",\r\n", string.Empty);
+                int[] nums = Array.ConvertAll(defaultInfo.Split(','), int.Parse);
+                defIndexList = nums.ToList();
+            }
+
             return defIndexList;
         }
     }

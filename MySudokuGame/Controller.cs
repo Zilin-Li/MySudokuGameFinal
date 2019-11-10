@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace MySudokuGame
 {
@@ -14,13 +15,13 @@ namespace MySudokuGame
     {
         protected IView view;
         protected SudokuGame game;
-        public List<int[]> sudokuList;
+        // public List<int[]> sudokuList;
+        public string test;
 
         public int maxValue, SquareHeight, SquareWidth;
+        public int numOfArchiving = 1;
         public string sudokuString;
-        //public int rowIndex, colIndex, cellIndex;
-      
-        //public string vaildValue;
+       
         public int[] sudokuArray;
         public List<int> defIndexList;
 
@@ -35,9 +36,27 @@ namespace MySudokuGame
             game.FromCSV(gameselect);
         }
 
+        public string GameSave()
+        {
+            string filePath;
+            string mess;
+
+            var csv = new StringBuilder();
+            csv.AppendLine(game.ToCSV());
+
+            string path = Directory.GetCurrentDirectory();
+
+            //Directory.CreateDirectory(path);
+            DateTime now = DateTime.Now;
+            mess = "1";
+            filePath = path + @"\loadGame\" + mess + ".csv";
+            File.WriteAllText(filePath, csv.ToString());
+            return filePath;
+        } 
         public void InitGameData()
         {
             sudokuArray = game.ToArray();
+            game.Set(sudokuArray);
             maxValue = game.GetMaxValue();
             SquareHeight = game.GetSquareHeight();
             SquareWidth = game.GetSquareWidth();
@@ -46,9 +65,26 @@ namespace MySudokuGame
             game.SetMaxValue(maxValue);
             game.SetSquareHeight(SquareHeight);
             game.SetSquareWidth(SquareWidth);
-            game.Set(sudokuArray);
+            test = game.defaultInfo;
+            
         }
-        
+
+        //public void GetDefIndex(string defInfo="")
+        //{
+        //    if(defInfo == "")
+        //    {
+        //        defIndexList = game.GetdefIndex(sudokuArray);
+        //    }
+        //    else
+        //    {
+        //        for(int i = 0; i < defInfo.Length; i++)
+        //        {
+        //            defIndexList.Add(defInfo[i]);
+        //        }
+        //    }
+            
+        //}
+
 
         public void ChangeValue(string value, string buttonName)
         {
@@ -86,6 +122,7 @@ namespace MySudokuGame
         {
             return game.AllVaild();
         }
+
 
 
     }

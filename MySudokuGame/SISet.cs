@@ -8,7 +8,7 @@ namespace MySudokuGame
 {
     public partial class SudokuGame : ISet
     {
-        //Realize interface ISet.
+        public int rowIndex, colIndex, cellIndex;
 
         // Set a value by column.
         public void SetByColumn(int value, int columnIndex, int rowIndex)

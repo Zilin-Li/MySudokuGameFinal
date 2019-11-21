@@ -17,7 +17,7 @@ namespace MySudokuGame
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             FormMain frmMain = new FormMain();
-            Controller sc = new Controller(frmMain, new SudokuGame());
+            Controller sc = new Controller(frmMain, new NewSudoku());
             Application.Run(frmMain);
         }
     }

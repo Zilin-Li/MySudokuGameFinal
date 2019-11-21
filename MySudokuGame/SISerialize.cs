@@ -14,7 +14,8 @@ namespace MySudokuGame
         public string CSVFile;
         public string PrettyString;
         public int cellValue;
-        public string defaultInfo;
+        public string defaultInfo,timeInfo;
+        public List<int> defIndexList;
 
 
         //Realize interface ISerialize
@@ -25,7 +26,7 @@ namespace MySudokuGame
             string path = System.AppDomain.CurrentDomain.BaseDirectory;
             string fileName = "";
             
-            int index1;
+            int index1,index2;
 
             fileName = path + gameselect;
       
@@ -35,23 +36,22 @@ namespace MySudokuGame
             {
                 CSVFile = ls_input;
             }
-
             sr.Close();
 
             // check new game or load game
-            // ref: https://www.geeksforgeeks.org/c-sharp-string-indexof-method-set-1/
-
+  
             defaultInfo = "";
             index1 = CSVFile.IndexOf('#');
+            index2 = CSVFile.IndexOf('T');
             if (index1 != -1)
             {
-                defaultInfo = CSVFile.Substring(index1+2);
+                timeInfo = CSVFile.Substring(index2 + 2);
+                defaultInfo = CSVFile.Substring(index1+2, index2-(index1 + 2));
                 CSVFile = CSVFile.Substring(0, index1);  
-            }
-         
+            }       
         }
 
-        //the function to save the game;
+        // Trans the game value and dafault number information into CSV format string;
         public string ToCSV()
         {
             string saveFile = "";
@@ -61,12 +61,10 @@ namespace MySudokuGame
             }
             saveFile += '\n' + "#,";
 
-        
             for(int d = 0; d < defIndexList.Count; d++)
             {
                 saveFile += defIndexList[d] + ",";
             }
-            //saveFile += '\n';
             return saveFile;
         }
 
@@ -80,21 +78,19 @@ namespace MySudokuGame
             
         }
 
-        ////Get a value by cell
-        //public int GetCell(int gridIndex)
-        //{
-        //    if (gridIndex >= 0 && gridIndex < maxValue * maxValue)
-        //    {
-        //        cellValue = sudokuArray[gridIndex];
-        //    }
-        //    else
-        //    {
-        //        cellValue = 0;
-        //    }
-        //    return cellValue;
-        //}
-
-
+        //Get a value by cell
+        public int GetCell(int gridIndex)
+        {
+            if (gridIndex >= 0 && gridIndex < maxValue * maxValue)
+            {
+                cellValue = sudokuArray[gridIndex];
+            }
+            else
+            {
+                cellValue = 0;
+            }
+            return cellValue;
+        }
 
         //这个功能是用来把sudokuArray的数据转变成string格式的
         public string ToPrettyString()

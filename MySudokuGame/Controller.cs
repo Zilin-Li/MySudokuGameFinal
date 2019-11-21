@@ -14,18 +14,17 @@ namespace MySudokuGame
     public class Controller
     {
         protected IView view;
-        protected SudokuGame game;
-        // public List<int[]> sudokuList;
+        protected NewSudoku game;
         public string test;
-
         public int maxValue, SquareHeight, SquareWidth;
+        public int seconds, minutes;
         public int numOfArchiving = 1;
         public string sudokuString;
        
         public int[] sudokuArray;
         public List<int> defIndexList;
 
-        public Controller(IView theView, SudokuGame theGame)
+        public Controller(IView theView, NewSudoku theGame)
         {
             view = theView;
             view.SetController(this);
@@ -36,31 +35,36 @@ namespace MySudokuGame
             game.FromCSV(gameselect);
         }
 
-        public string GameSave()
+        // Save the game: game values , default information and time information.
+        public string GameSave(int second, int min)
         {
             string filePath;
             string mess;
+            string timelog;
+            //Form send time info through parameters to controller.
+            timelog = '\n' + "T," + min + "," + second;
 
             var csv = new StringBuilder();
-            csv.AppendLine(game.ToCSV());
-
+            csv.AppendLine(game.ToCSV() + timelog);
             string path = Directory.GetCurrentDirectory();
-
-            //Directory.CreateDirectory(path);
             DateTime now = DateTime.Now;
             mess = "1";
             filePath = path + @"\loadGame\" + mess + ".csv";
             File.WriteAllText(filePath, csv.ToString());
             return filePath;
         } 
+
+        // 游戏初始化
         public void InitGameData()
         {
             sudokuArray = game.ToArray();
             game.Set(sudokuArray);
             maxValue = game.GetMaxValue();
-            SquareHeight = game.GetSquareHeight();
-            SquareWidth = game.GetSquareWidth();
-            defIndexList = game.GetdefIndex(sudokuArray);           
+            SquareHeight = sudokuArray[1];
+            SquareWidth = sudokuArray[2];
+            defIndexList = game.LoadGameInfo(sudokuArray);
+            seconds = game.seconds;
+            minutes = game.minutes;
             sudokuString = game.ToPrettyString();
             game.SetMaxValue(maxValue);
             game.SetSquareHeight(SquareHeight);
@@ -69,23 +73,7 @@ namespace MySudokuGame
             
         }
 
-        //public void GetDefIndex(string defInfo="")
-        //{
-        //    if(defInfo == "")
-        //    {
-        //        defIndexList = game.GetdefIndex(sudokuArray);
-        //    }
-        //    else
-        //    {
-        //        for(int i = 0; i < defInfo.Length; i++)
-        //        {
-        //            defIndexList.Add(defInfo[i]);
-        //        }
-        //    }
-            
-        //}
-
-
+        // 改变游戏值
         public void ChangeValue(string value, string buttonName)
         {
             int cellvalue;
@@ -105,6 +93,7 @@ namespace MySudokuGame
             }
         }
 
+        // check row col square vaild.
         public bool CheckRowVaild(int row)
         {
             return game.RowVaild(row);
@@ -117,11 +106,24 @@ namespace MySudokuGame
         {
             return game.SquareVaild(cellindex);
         }
-
         public bool CheckAllVaild()
         {
             return game.AllVaild();
         }
+
+        // Get Score
+
+        public int GetGameScore(int min, int sec)
+        {
+            return game.GetScore(min, sec);
+        }
+
+        public string ScoreList(string name, int score)
+        {
+            return game.AddScore(name, score);
+        }
+
+
 
 
 

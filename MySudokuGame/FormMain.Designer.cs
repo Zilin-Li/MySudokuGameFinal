@@ -56,6 +56,7 @@
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.ScoreMessage = new System.Windows.Forms.Label();
             this.GameOption.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -190,7 +191,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1572, 943);
+            this.button1.Location = new System.Drawing.Point(1546, 841);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(154, 80);
@@ -250,21 +251,21 @@
             // loadGameToolStripMenuItem
             // 
             this.loadGameToolStripMenuItem.Name = "loadGameToolStripMenuItem";
-            this.loadGameToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
+            this.loadGameToolStripMenuItem.Size = new System.Drawing.Size(278, 46);
             this.loadGameToolStripMenuItem.Text = "Load Game";
             this.loadGameToolStripMenuItem.Click += new System.EventHandler(this.LoadGameToolStripMenuItem_Click);
             // 
             // saveGameToolStripMenuItem
             // 
             this.saveGameToolStripMenuItem.Name = "saveGameToolStripMenuItem";
-            this.saveGameToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
+            this.saveGameToolStripMenuItem.Size = new System.Drawing.Size(278, 46);
             this.saveGameToolStripMenuItem.Text = "Save Game";
             this.saveGameToolStripMenuItem.Click += new System.EventHandler(this.SaveGameToolStripMenuItem_Click);
             // 
             // restoreToolStripMenuItem
             // 
             this.restoreToolStripMenuItem.Name = "restoreToolStripMenuItem";
-            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
+            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(278, 46);
             this.restoreToolStripMenuItem.Text = "Restore";
             this.restoreToolStripMenuItem.Click += new System.EventHandler(this.RestoreToolStripMenuItem_Click);
             // 
@@ -320,6 +321,14 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(561, 29);
             this.textBox1.TabIndex = 9;
+            this.textBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
+            // 
+            // ScoreMessage
+            // 
+            this.ScoreMessage.Location = new System.Drawing.Point(1362, 324);
+            this.ScoreMessage.Name = "ScoreMessage";
+            this.ScoreMessage.Size = new System.Drawing.Size(561, 423);
+            this.ScoreMessage.TabIndex = 10;
             // 
             // FormMain
             // 
@@ -329,6 +338,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(1994, 1121);
+            this.Controls.Add(this.ScoreMessage);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.TimeBox);
@@ -376,6 +386,7 @@
         private System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label ScoreMessage;
     }
 }
 

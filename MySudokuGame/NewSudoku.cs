@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace MySudokuGame
 {
    
-    public partial class SudokuGame
+    public class NewSudoku: SudokuGame
     {
-        public int rowIndex, colIndex, cellIndex;
+        public int seconds, minutes;
+        public List<KeyValuePair<string, int>> scoreList;
+        public string scoreOutput = "";
+
+
         public void GetButtonInfo(string buttonName)
         {
             string buttonValue = "";
@@ -26,6 +31,42 @@ namespace MySudokuGame
             cellIndex = colIndex + rowIndex * maxValue;
         }
 
+        public List<int> LoadGameInfo(int[] gameArray)
+        {
+            //defIndexList 是用来记录游戏默认值位置的。
+            defIndexList = new List<int>();
+
+            if (defaultInfo == "")
+            {
+                for (int i = 3; i < gameArray.Length; i++)
+                {
+                    if (gameArray[i] != 0)
+                    {
+                        defIndexList.Add(i - 3);
+                    }
+                }
+                seconds = 0;
+                minutes = 0;
+            }
+            else
+            {
+                defaultInfo = defaultInfo.Replace(",\n", string.Empty);
+                int[] nums = Array.ConvertAll(defaultInfo.Split(','), int.Parse);
+                defIndexList = nums.ToList();
+
+                timeInfo = timeInfo.Replace(",\r\n", string.Empty);
+                int[] time = Array.ConvertAll(timeInfo.Split(','), int.Parse);
+                minutes = time[0];
+                seconds = time[1];
+            }
+
+            return defIndexList;
+        }
+        
+
+
+        
+
         public bool IsDefault()
         {
             bool isDef = false;
@@ -38,21 +79,21 @@ namespace MySudokuGame
 
         //Other features
 
-        //feature 1: check whether a row is vaild.
-        public bool RowVaild(int RowNumber)
+        // Feature 1: check whether a row is vaild.
+        public bool RowVaild(int rowNumber)
         {
             bool isVaildRow = true;
 
             int[] rowValue = new int[maxValue];
-            //put every value of the row into an int array.
-            //for next step to check
+            // Put every value of the row into an int array.
+            // For next step to check.
             for (int i = 0; i < maxValue; i++)
             {
-                rowValue[i] = GetByRow(RowNumber, i);
+                rowValue[i] = GetByRow(rowNumber, i);
             }
 
-            //sort the value, the vaild value should be 1~maxValue.
-            //if not return false.
+            // Sort the value, the vaild value should be 1~maxValue.
+            // If not return false.
 
             Array.Sort(rowValue);
             for (int a = 0; a < maxValue; a++)
@@ -65,21 +106,21 @@ namespace MySudokuGame
             return isVaildRow;
         }
 
-        //feature 2: check whether a column is vaild.
-        public bool ColumnVaild(int ColumnNumber)
+        // Feature 2: check whether a column is vaild.
+        public bool ColumnVaild(int columnNumber)
         {
             bool isVaildColumn = true;
 
             int[] ColumnValue = new int[maxValue];
-            //put each value of the Column into an int array.
-            //for next step to check
+            // Put each value of the Column into an int array.
+            // For next step to check.
             for (int i = 0; i < maxValue; i++)
             {
-                ColumnValue[i] = GetByColumn(ColumnNumber, i);
+                ColumnValue[i] = GetByColumn(columnNumber, i);
             }
 
-            //sort the value, the vaild value should be 1~maxValue.
-            //if not return false.
+            // Sort the value, the vaild value should be 1~maxValue.
+            // If not return false.
 
             Array.Sort(ColumnValue);
             for (int a = 0; a < maxValue; a++)
@@ -216,14 +257,7 @@ namespace MySudokuGame
             {
                 squareVaildValue.Add(i);
             }
-
-            // get the squareIndex   *****************************incorrect
-            //int columnIndex = gridIndex % maxValue;
-            //int rowIndex = gridIndex / maxValue;
-            // squareIndex = (rowIndex / squareHeight) * squareHeight + columnIndex % squareWidth;
-
             int squareIndex = 0;
-            //use below method to get squreIndex *********************************************************
             for (int i = 0; i < maxValue; i++)
             {
                 for (int j = 0; j < maxValue; j++)
@@ -281,5 +315,74 @@ namespace MySudokuGame
             return VaildValue;
         }
 
+        public int GetScore(int min, int sec)
+        {    
+            int gameScore;
+            gameScore = (int)((1.0 / (min * 60 + sec)) * 100000 * maxValue);  
+            return gameScore;
+        }
+
+        public string AddScore(string name, int score)
+        {
+            scoreOutput = "";
+            scoreList = new List<KeyValuePair<string, int>>();
+
+            StreamReader sr = new StreamReader("SavedLists.txt");
+
+            //Read the first line of text
+            String line = sr.ReadLine();
+
+            //Continue to read until you reach end of file
+            while (line != null)
+            {
+                //write the lie to console window
+                Console.WriteLine(line);
+                string[] results = line.Split(',');
+                System.Console.WriteLine(results[1]);
+                scoreList.Add(new KeyValuePair<string, int>(results[0], Int32.Parse(results[1])));
+                //Read the next line
+                line = sr.ReadLine();
+            }
+            sr.Close();
+
+            if (scoreList.Count < 5)
+            {
+                scoreList.Add(new KeyValuePair<string, int>(name, score));
+
+
+                FormInput frmInput = new FormInput();
+                frmInput.Show();
+
+
+
+            }
+            else
+            {
+                if(scoreList[scoreList.Count-1].Value < score)
+                {
+                    scoreList.RemoveAt(scoreList.Count-1);
+                    scoreList.Add(new KeyValuePair<string, int>(name, score));
+                }
+            }
+            scoreList.Sort((x, y) => (y.Value.CompareTo(x.Value)));
+
+
+
+
+            TextWriter tw = new StreamWriter("SavedLists.txt");
+            foreach (var value in scoreList)
+            {
+                scoreOutput += (value.Key + " : " + value.Value + "\n");
+
+                
+                tw.WriteLine(value.Key + "," + value.Value);
+                
+            }
+            tw.Close();
+            return scoreOutput;
+        }
+
+
+        
     }
 }

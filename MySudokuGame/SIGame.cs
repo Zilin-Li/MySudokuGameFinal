@@ -10,10 +10,9 @@ namespace MySudokuGame
     {
         public int maxValue;
         public int squareHeight;
-        public int squareWidth;
-       
+        public int squareWidth;    
         public int[] sudokuArray;
-        public List<int> defIndexList;
+        
 
         //Realize interface IGame.
         public void SetMaxValue(int maximum)
@@ -27,11 +26,10 @@ namespace MySudokuGame
             int Value = sudokuArray[0];
             return Value;
         }
-
-        
-        public int[] ToArray()//返回含有游戏默认值的int 数组
-        {
-            //  defData 是用来储存初始游戏数据的字符串。
+        // CSVstring to Sudoku int array.
+        //int[] array1 including maxvalue，squareW/H，cellvalues.
+        public int[] ToArray()
+        {    
             string defData = "";
             int[] array1;
 
@@ -42,15 +40,12 @@ namespace MySudokuGame
                     defData += CSVFile.Substring(i, 1);
                 }
             }
-
-            //全局变量sudokuArray 是包含游戏所有值的数组，包含最大值，squareW/H，以及cellvalue.
-
+         
             array1 = new int[defData.Length];
             for (int i = 0; i < defData.Length; i++)
                 array1[i] = Int32.Parse(defData[i].ToString());
 
             return array1;
-
         }
 
         //Get the initial game value, and input to the program 
@@ -58,65 +53,24 @@ namespace MySudokuGame
         {
             sudokuArray = cellValues;
         }
-
-        //直接从defData提取 SquareWidth 
-        public int GetSquareWidth()
-        {
-            int Width = sudokuArray[2];
-            return Width;
-        }
-
+ 
         //Set SquareWidth to the program
         public void SetSquareWidth(int Width)
         {
             squareWidth = Width;
         }
-
-        //直接从defData提取 SquareHeight 
-        public int GetSquareHeight()
-        {
-            int Height = sudokuArray[1];
-            return Height;
-        }
-
+    
         //Set SquareHeight to the program
         public void SetSquareHeight(int Height)
         {
             squareHeight = Height;
         }
 
-
         //Restart the game.
         public void Restart()
         {
             this.Set(this.ToArray());
-
         }
 
-
-        public List<int> GetdefIndex(int[] gameArray)
-        {
-            //defIndexList 是用来记录游戏默认值位置的。
-            defIndexList = new List<int>();
-        
-            if(defaultInfo == "")
-            {
-                for (int i = 3; i < gameArray.Length; i++)
-                {
-                    if (gameArray[i] != 0)
-                    {
-                        defIndexList.Add(i-3);
-                    }
-                }   
-            }
-            else
-            {
-                defaultInfo = defaultInfo.Replace(",\r\n", string.Empty);
-                int[] nums = Array.ConvertAll(defaultInfo.Split(','), int.Parse);
-                defIndexList = nums.ToList();
-            }
-
-            return defIndexList;
-        }
     }
 }

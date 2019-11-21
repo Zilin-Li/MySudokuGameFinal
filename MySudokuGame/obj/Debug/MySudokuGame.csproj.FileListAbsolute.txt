@@ -8,3 +8,4 @@ C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\obj\Debug\MySudokuGame
 C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\obj\Debug\MySudokuGame.exe
 C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\obj\Debug\MySudokuGame.pdb
 C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\obj\Debug\MySudokuGame.csprojAssemblyReference.cache
+C:\ProjectsLynn\BCPR238FinalAss\MySudokuGame\MySudokuGame\obj\Debug\MySudokuGame.FormInput.resources

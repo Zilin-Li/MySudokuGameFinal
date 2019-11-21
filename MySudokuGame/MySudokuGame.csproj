@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormInput.Designer.cs">
+      <DependentUpon>FormInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,12 +65,15 @@
     <Compile Include="IView.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SudokuFeature.cs" />
+    <Compile Include="NewSudoku.cs" />
     <Compile Include="Controller.cs" />
-    <Compile Include="SudokuIGame.cs" />
-    <Compile Include="SudokuIGet.cs" />
-    <Compile Include="SudokuISerialize.cs" />
-    <Compile Include="SudokuISet.cs" />
+    <Compile Include="SIGame.cs" />
+    <Compile Include="SIGet.cs" />
+    <Compile Include="SISerialize.cs" />
+    <Compile Include="SISet.cs" />
+    <EmbeddedResource Include="FormInput.resx">
+      <DependentUpon>FormInput.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>

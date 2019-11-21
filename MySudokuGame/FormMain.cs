@@ -13,13 +13,17 @@ using System.IO;
 
 namespace MySudokuGame
 {
-   
+
     public partial class FormMain : Form, IView
     {
         private Controller theController;
         private string ClickedText = "";
         private string gameSelect;
         private int timeTicks = 0;
+        private int seconds;
+    
+        private int minutes = 0;
+
 
         public FormMain()
         {
@@ -30,9 +34,9 @@ namespace MySudokuGame
             theController = contr;
         }
 
-//------------------------------------ Create Controls -----------------------------------------
+        //------------------------------------ Create Controls -----------------------------------------
 
-        //Creat game scale, in order to dispaly row number and col number.
+        // Creat game scale, in order to dispaly row number and col number.
         public void MakeGameScale(string name, int num, int row, int column)
         {
             TextBox textNew = new TextBox();
@@ -42,14 +46,14 @@ namespace MySudokuGame
             textNew.Font = new Font("Microsoft Sans Serif", 16);
             textNew.Text = num.ToString();
             textNew.TextAlign = HorizontalAlignment.Center;
-          
+
             textNew.BorderStyle = BorderStyle.None;
             textNew.Location = new Point(50 + 50 * column, 50 + 52 * row);
             GameBoard.Controls.Add(textNew);
         }
 
 
-        // Creat number buttons
+        // Creat number buttons.
         public void MakeButtons(string text, int num)
         {
             Button btnNew = new Button();
@@ -63,7 +67,7 @@ namespace MySudokuGame
             GameBoard.Controls.Add(btnNew);
         }
 
-        //Create game buttons
+        // Create game buttons.
         public void MakeButtons2(string name, string text, int row, int column)
         {
             int squareIndex;
@@ -76,11 +80,11 @@ namespace MySudokuGame
             btnNew.Font = new Font("Arial", 20);
             btnNew.Text = text;
             btnNew.Visible = true;
-            
-            btnNew.Location = new Point(100+ 50 * column, 100 + 50 * row);
-            if (theController.maxValue==4)
+
+            btnNew.Location = new Point(100 + 50 * column, 100 + 50 * row);
+            if (theController.maxValue == 4)
             {
-                if(squareIndex==0|| squareIndex == 3)
+                if (squareIndex == 0 || squareIndex == 3)
                     btnNew.BackColor = Color.LightBlue;
             }
             if (theController.maxValue == 6)
@@ -90,18 +94,58 @@ namespace MySudokuGame
             }
             if (theController.maxValue == 9)
             {
-                if (squareIndex%2==0)
+                if (squareIndex % 2 == 0)
                     btnNew.BackColor = Color.LightBlue;
             }
             GameBoard.Controls.Add(btnNew);
         }
 
+        // Add click event to each button on GameBoard.
+        public void SetClicks()
+        {
+            foreach (Control c in GameBoard.Controls)
+            {
+                if (c is Button)
+                {
+                    Button who = c as Button;
+                    who.Click += new EventHandler(WhoClicked);
+                }
+            }
+        }
+
+        // Game buttons click event.
+        public void WhoClicked(object sender, EventArgs e)
+        {
+            Button btnWho = sender as Button;
+            Text = btnWho.Name;
+
+            if (btnWho.Name.StartsWith("btn"))
+            {
+
+                theController.ChangeValue(ClickedText, btnWho.Name);
+                GameValueDisplay(theController.sudokuString);
+                this.VaildAreaDisplay();
+                this.WinInfoDisplay();
+            }
+
+            else if (btnWho.Name.StartsWith("iptBtn_"))
+            {
+                ClickedText = btnWho.Text;
+            }
+        }
+
         //Create game timer
-        
+        private void Mytime_Tick(object sender, EventArgs e)
+        {
+            timeTicks++;
+            seconds = theController.seconds;
+            minutes = theController.minutes;
+            seconds += (timeTicks / 10) % 60;
+            minutes += (timeTicks / 10 / 60) % 60;
+            TimeBox.Text = minutes.ToString("00") + " : " + seconds.ToString("00");
+            //TimeBox.Text = timeTicks.ToString();
+        }
 
-
-
-//------------------------------------ Game Display -----------------------------------------
 
         // Display gameboard.
         public void GameBoardDisplay()
@@ -167,7 +211,7 @@ namespace MySudokuGame
                         c.Text = cellValueS;
                     }
                 }
-            }   
+            }
         }
 
         // Show the vaild area, including vaild row,col,square.
@@ -175,10 +219,10 @@ namespace MySudokuGame
         {
             string btnName;
             string textName;
-            
+
 
             bool isRowVaild, isColVaild, isSquareVaild;
-            for(int i = 0; i < theController.maxValue; i++)
+            for (int i = 0; i < theController.maxValue; i++)
             {
                 isRowVaild = theController.CheckRowVaild(i);
                 isColVaild = theController.CheckColVaild(i);
@@ -186,7 +230,7 @@ namespace MySudokuGame
 
                 if (isRowVaild)
                 {
-                    textName = "Row_" + (i+1).ToString();
+                    textName = "Row_" + (i + 1).ToString();
                     Control c = Controls.Find(textName, true)[0];
                     c.ForeColor = Color.Green;
                 }
@@ -222,7 +266,7 @@ namespace MySudokuGame
                     }
                 }
                 else
-                {   
+                {
                     for (int j = 0; j < theController.maxValue; j++)
                     {
                         int colInd = (i % (theController.maxValue / theController.SquareWidth)) * theController.SquareWidth + (j % theController.SquareWidth);
@@ -248,41 +292,43 @@ namespace MySudokuGame
                                 c.BackColor = Color.LightBlue;
                         }
                     }
-
                 }
-                
             }
         }
 
         // Display Win information.
         private void WinInfoDisplay()
         {
+           
             if (theController.CheckAllVaild())
             {
                 TextBox c = new TextBox();
-                c.Font = new Font("Microsoft Sans Serif", 36);
-                c.Text = "You win!!";
+                c.Font = new Font("Microsoft Sans Serif", 15);
+                c.Text = "You win!! \n"+ "Your Score is: " + theController.GetGameScore(minutes, seconds);
                 c.ForeColor = Color.LightCoral;
                 c.Visible = true;
                 c.Location = new Point(50, 200);
-                c.Size = new Size(350, 96);
+                c.Size = new Size(400, 96);
                 c.TextAlign = HorizontalAlignment.Center;
 
                 GameBoard.Controls.Clear();
                 GameBoard.Controls.Add(c);
+             
                 Mytime.Stop();
+
+                ScoreMessage.Visible = true;
+                ScoreMessage.Text = theController.ScoreList("li", theController.GetGameScore(minutes, seconds));
             }
         }
+        
 
-
-//------------------------------------New Game Options-----------------------------------------
-        //
+        //游戏流程
         private void SetGame()
         {
             GameBoard.Visible = true;
             GameBoard.Controls.Clear();
             theController.InitGameData();
-            
+
             this.GameBoardDisplay();
 
             this.GameValueDisplay(theController.sudokuString);
@@ -290,9 +336,12 @@ namespace MySudokuGame
             Mytime.Start();
             Mytime.Tag = "Open";
             timeTicks = 0;
-
         }
-        
+
+
+//------------------------------------游戏选择-----------------------------------------
+
+
         // User choose easy game.
         private void EasyToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -318,114 +367,55 @@ namespace MySudokuGame
             SetGame();
         }
 
-        //private void Button1_Click(object sender, EventArgs e)
-        //{
-        //    string path = System.AppDomain.CurrentDomain.BaseDirectory;
-        //    string fileName = path + "easy.csv";
-
-        //    StreamReader sr = new StreamReader(fileName, System.Text.Encoding.Default);
-        //    String ls_input = sr.ReadToEnd().TrimStart();
-        //    if (!string.IsNullOrEmpty(ls_input))
-        //    {
-        //        testbox.Text = ls_input;
-        //    }
-
-        //    sr.Close();
-        //}
-
-
-        //private void NewGameToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    string fileName = string.Empty;
-        //    OpenFileDialog dlg = new OpenFileDialog();
-        //    dlg.DefaultExt = "csv";
-        //    dlg.Filter = "Csv Files|*.csv";
-        //    if (dlg.ShowDialog() == DialogResult.OK)
-        //        fileName = dlg.FileName;
-        //    if (fileName == null)
-        //        return;
-
-        //    //读取文件内容
-        //    StreamReader sr = new StreamReader(fileName, System.Text.Encoding.Default);
-        //    String ls_input = sr.ReadToEnd().TrimStart();
-        //    if (!string.IsNullOrEmpty(ls_input))
-        //    {
-        //        testbox.Text = ls_input;
-        //    }
-
-        //    sr.Close();
-        //}
-
-//------------------------------------ Play the Game -----------------------------------------
-
-        // Add click event to each button on GameBoard.
-        public void SetClicks()
+        //加载存档游戏。
+        private void LoadGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (Control c in GameBoard.Controls)
+            string fileName = string.Empty;
+            string path = Directory.GetCurrentDirectory();
+
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.InitialDirectory = path + @"\loadGame";
+
+            dlg.DefaultExt = "csv";
+            dlg.Filter = "Csv Files|*.csv";
+
+            DialogResult result = dlg.ShowDialog();
+            if (result == DialogResult.OK)
             {
-                if (c is Button)
-                {
-                    Button who = c as Button;
-                    who.Click += new EventHandler(WhoClicked);
-                }
+                fileName = dlg.SafeFileName;
+                gameSelect = @"\loadGame\" + fileName;
+
+                theController.GameSelect(gameSelect);
+                SetGame();
+                textBox1.Text = theController.test;
+
             }
         }
 
-        // Game buttons click event.
-        public void WhoClicked(object sender, EventArgs e)
-        {
-            Button btnWho = sender as Button;
-            Text = btnWho.Name;
 
-            if (btnWho.Name.StartsWith("btn"))
-            {
-
-                theController.ChangeValue(ClickedText, btnWho.Name);
-                GameValueDisplay(theController.sudokuString);
-                this.VaildAreaDisplay();
-                this.WinInfoDisplay();
-            }
-
-            else if (btnWho.Name.StartsWith("iptBtn_"))
-            {
-                ClickedText = btnWho.Text;
-            }
-        }
-
-        private void Mytime_Tick(object sender, EventArgs e)
-        {
-            timeTicks++;
-           
-            int seconds = (timeTicks / 10) % 60;
-            int minutes = (timeTicks / 10/60) % 60;
-
-            TimeBox.Text = minutes.ToString("00") + " : " + seconds.ToString("00");
-            //TimeBox.Text = timeTicks.ToString();
-        }
-
+//------------------------------------ 游戏按键功能 -----------------------------------------
         private void PauseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if((string)Mytime.Tag == "Open" )
+            if ((string)Mytime.Tag == "Open")
             {
                 Mytime.Stop();
                 Mytime.Tag = "Close";
                 GameBoard.Visible = false;
-                PauseButton.BackColor = Color.Gray;
+                PauseButton.Text = "Continue";
+                pauseToolStripMenuItem.Text = "Continue";
             }
             else
             {
                 Mytime.Start();
                 Mytime.Tag = "Open";
                 GameBoard.Visible = true;
-                PauseButton.BackColor = Color.Teal;
+                PauseButton.Text = "Pause";
+                pauseToolStripMenuItem.Text = "Pause";
             }
-
         }
-
         private void PauseButton_Click(object sender, EventArgs e)
         {
             PauseToolStripMenuItem_Click(sender, e);
-            
         }
 
         private void RestoreToolStripMenuItem_Click(object sender, EventArgs e)
@@ -442,48 +432,13 @@ namespace MySudokuGame
         {
             if (theController.sudokuArray != null)
             {
-                theController.GameSave();
-               
+                theController.GameSave(seconds, minutes);
             }
-            
+
         }
 
-        // ref: https://www.howtosolutions.net/2012/05/winform-open-file-browser-dialog-examples/#How_to_make_Open_File_Dialog_to_open_in_a_specific_folder
-
-        private void LoadGameToolStripMenuItem_Click(object sender, EventArgs e)
+        private void TextBox1_TextChanged(object sender, EventArgs e)
         {
-            string fileName = string.Empty;
-            string path = Directory.GetCurrentDirectory();
-
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.InitialDirectory = path +@"\loadGame";
-
-            dlg.DefaultExt = "csv";
-            dlg.Filter = "Csv Files|*.csv";
-
-
-
-
-            
-            DialogResult result = dlg.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                fileName = dlg.SafeFileName;
-                gameSelect = @"\loadGame\" + fileName;
-
-                theController.GameSelect(gameSelect);
-                SetGame();
-                textBox1.Text = theController.test;
-               
-
-               
-
-            }
-            //else if (result == DialogResult.Cancel)
-            //{
-            //    return;
-            //}
-
 
         }
     }

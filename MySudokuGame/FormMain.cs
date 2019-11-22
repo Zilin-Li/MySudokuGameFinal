@@ -145,6 +145,7 @@ namespace MySudokuGame
                 else
                 {
                     theController.ChangeValue(ClickedText, btnWho.Name);
+                  
                     ClearNumberBoard();
                     GameValueDisplay(theController.sudokuString);
                     this.VaildAreaDisplay();
@@ -364,11 +365,43 @@ namespace MySudokuGame
                 GameBoard.Controls.Add(c);           
                 Mytime.Stop();
                 ScoreMessage.Visible = true;
-                ScoreMessage.Text = theController.ScoreList
-                    ("li", theController.GetGameScore(minutes, seconds));
+
+
+
+                var username = Prompt.ShowDialog("Please enter your name:", "username");
+                //replace "," from user's name
+                username = username.Replace(",", string.Empty);
+                username = username == "" ? "No name" : username;
+                ScoreMessage.Text = theController.ScoreList(username, theController.GetGameScore(minutes, seconds));
             }
         }
-        
+
+        //used for creating new WinForm
+        public static class Prompt
+        {
+            public static string ShowDialog(string text, string caption)
+            {
+                Form prompt = new Form()
+                {
+                    Width = 500,
+                    Height = 150,
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    Text = caption,
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+                Label textLabel = new Label() { Left = 50, Top = 20, Text = text };
+                TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
+                Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
+                confirmation.Click += (sender, e) => { prompt.Close(); };
+                prompt.Controls.Add(textBox);
+                prompt.Controls.Add(confirmation);
+                prompt.Controls.Add(textLabel);
+                prompt.AcceptButton = confirmation;
+
+                return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
+            }
+        }
+
         private void HintVaildValue(List<int> vaildValue)
         {
             string btnName;
@@ -528,6 +561,16 @@ namespace MySudokuGame
         private void TextBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void UndoButton_Click(object sender, EventArgs e)
+        {
+            theController.undo();
+        }
+
+        private void RedoButton_Click(object sender, EventArgs e)
+        {
+            theController.redo();
         }
     }
 }

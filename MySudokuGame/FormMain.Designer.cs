@@ -122,6 +122,7 @@
             this.UndoButton.TabIndex = 0;
             this.UndoButton.Text = "Undo";
             this.UndoButton.UseVisualStyleBackColor = false;
+            this.UndoButton.Click += new System.EventHandler(this.UndoButton_Click);
             // 
             // PauseButton
             // 
@@ -149,6 +150,7 @@
             this.RedoButton.TabIndex = 1;
             this.RedoButton.Text = "Redo";
             this.RedoButton.UseVisualStyleBackColor = false;
+            this.RedoButton.Click += new System.EventHandler(this.RedoButton_Click);
             // 
             // Mytime
             // 
@@ -294,11 +296,10 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(1362, 217);
+            this.textBox1.Location = new System.Drawing.Point(1362, 249);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(561, 29);
             this.textBox1.TabIndex = 9;
-            this.textBox1.Visible = false;
             this.textBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
             // 
             // ScoreMessage

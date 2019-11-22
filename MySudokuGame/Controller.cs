@@ -20,9 +20,15 @@ namespace MySudokuGame
         public int seconds, minutes;
         public int numOfArchiving = 1;
         public string sudokuString;
+   
        
         public int[] sudokuArray;
         public List<int> defIndexList;
+
+
+        public List<string> historyList = new List<string>();
+        public int stepNumber = 0;
+        public string stepDetails;
 
         public Controller(IView theView, NewSudoku theGame)
         {
@@ -88,10 +94,59 @@ namespace MySudokuGame
                 {
                     cellvalue = int.Parse(value);
                 }
+
+                string indexNumber = game.cellIndex.ToString();
+                string oldNumber = game.GetCell(game.cellIndex).ToString();
+                string newNumber = cellvalue.ToString();
+
+              
+
+                historyList.Add(indexNumber + "," + oldNumber + "," + newNumber);
+
+                stepNumber = historyList.Count;
                 game.SetCell(cellvalue, game.cellIndex);
                 sudokuString = game.ToPrettyString();
+
             }
         }
+
+
+        public void undo()
+        {
+            if (historyList.Count > 0 && stepNumber >= 1)
+            {
+                stepDetails = historyList[stepNumber - 1];
+                string[] info = stepDetails.Split(',');
+                var index = Int32.Parse(info[0]);
+                var oldnumber = Int32.Parse(info[1]);
+                var newNumber = Int32.Parse(info[2]);
+                game.SetCell(oldnumber, index);
+                stepNumber--;
+
+                sudokuString = game.ToPrettyString();
+                view.GameValueDisplay(sudokuString);
+            }
+
+        }
+
+        public void redo()
+        {
+            if (historyList.Count > stepNumber)
+            {
+                stepDetails = historyList[stepNumber];
+                string[] info = stepDetails.Split(',');
+                var index = Int32.Parse(info[0]);
+                var oldnumber = Int32.Parse(info[1]);
+                var newNumber = Int32.Parse(info[2]);
+                game.SetCell(newNumber, index);
+                stepNumber++;
+                sudokuString = game.ToPrettyString();
+                view.GameValueDisplay(sudokuString);
+            }
+        }
+
+
+
 
         public string SelectPromptMethod(string buttonName)
         {

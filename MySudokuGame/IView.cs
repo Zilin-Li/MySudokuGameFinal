@@ -9,5 +9,6 @@ namespace MySudokuGame
     public interface IView
     {
         void SetController(Controller controller);
+        void GameValueDisplay(string gameDataString);
     }
 }

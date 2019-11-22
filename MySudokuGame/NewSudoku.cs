@@ -60,7 +60,6 @@ namespace MySudokuGame
                 minutes = time[0];
                 seconds = time[1];
             }
-
             return defIndexList;
         }
         

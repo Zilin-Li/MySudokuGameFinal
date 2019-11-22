@@ -33,7 +33,6 @@
             this.GameOption = new System.Windows.Forms.Panel();
             this.RestoreButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
-            this.HintButton = new System.Windows.Forms.Button();
             this.UndoButton = new System.Windows.Forms.Button();
             this.PauseButton = new System.Windows.Forms.Button();
             this.RedoButton = new System.Windows.Forms.Button();
@@ -52,7 +51,6 @@
             this.restoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hintToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -76,7 +74,6 @@
             this.GameOption.BackColor = System.Drawing.SystemColors.ControlLight;
             this.GameOption.Controls.Add(this.RestoreButton);
             this.GameOption.Controls.Add(this.SaveButton);
-            this.GameOption.Controls.Add(this.HintButton);
             this.GameOption.Controls.Add(this.UndoButton);
             this.GameOption.Controls.Add(this.PauseButton);
             this.GameOption.Controls.Add(this.RedoButton);
@@ -91,7 +88,7 @@
             this.RestoreButton.BackColor = System.Drawing.Color.Teal;
             this.RestoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RestoreButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.RestoreButton.Location = new System.Drawing.Point(50, 782);
+            this.RestoreButton.Location = new System.Drawing.Point(50, 631);
             this.RestoreButton.Margin = new System.Windows.Forms.Padding(2);
             this.RestoreButton.Name = "RestoreButton";
             this.RestoreButton.Size = new System.Drawing.Size(189, 74);
@@ -105,26 +102,13 @@
             this.SaveButton.BackColor = System.Drawing.Color.Teal;
             this.SaveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SaveButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.SaveButton.Location = new System.Drawing.Point(50, 643);
+            this.SaveButton.Location = new System.Drawing.Point(50, 497);
             this.SaveButton.Margin = new System.Windows.Forms.Padding(2);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(189, 74);
             this.SaveButton.TabIndex = 4;
             this.SaveButton.Text = "Save Game";
             this.SaveButton.UseVisualStyleBackColor = false;
-            // 
-            // HintButton
-            // 
-            this.HintButton.BackColor = System.Drawing.Color.Teal;
-            this.HintButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HintButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.HintButton.Location = new System.Drawing.Point(50, 504);
-            this.HintButton.Margin = new System.Windows.Forms.Padding(2);
-            this.HintButton.Name = "HintButton";
-            this.HintButton.Size = new System.Drawing.Size(189, 74);
-            this.HintButton.TabIndex = 3;
-            this.HintButton.Text = "Hint";
-            this.HintButton.UseVisualStyleBackColor = false;
             // 
             // UndoButton
             // 
@@ -214,28 +198,28 @@
             // easyToolStripMenuItem1
             // 
             this.easyToolStripMenuItem1.Name = "easyToolStripMenuItem1";
-            this.easyToolStripMenuItem1.Size = new System.Drawing.Size(315, 46);
+            this.easyToolStripMenuItem1.Size = new System.Drawing.Size(257, 46);
             this.easyToolStripMenuItem1.Text = "Easy";
             this.easyToolStripMenuItem1.Click += new System.EventHandler(this.EasyToolStripMenuItem1_Click);
             // 
             // mediumToolStripMenuItem
             // 
             this.mediumToolStripMenuItem.Name = "mediumToolStripMenuItem";
-            this.mediumToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
+            this.mediumToolStripMenuItem.Size = new System.Drawing.Size(257, 46);
             this.mediumToolStripMenuItem.Text = "Medium";
             this.mediumToolStripMenuItem.Click += new System.EventHandler(this.MediumToolStripMenuItem_Click);
             // 
             // hardToolStripMenuItem
             // 
             this.hardToolStripMenuItem.Name = "hardToolStripMenuItem";
-            this.hardToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
+            this.hardToolStripMenuItem.Size = new System.Drawing.Size(257, 46);
             this.hardToolStripMenuItem.Text = "Hard";
             this.hardToolStripMenuItem.Click += new System.EventHandler(this.HardToolStripMenuItem_Click);
             // 
             // xSudokuToolStripMenuItem
             // 
             this.xSudokuToolStripMenuItem.Name = "xSudokuToolStripMenuItem";
-            this.xSudokuToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
+            this.xSudokuToolStripMenuItem.Size = new System.Drawing.Size(257, 46);
             this.xSudokuToolStripMenuItem.Text = "X Sudoku";
             // 
             // optionsToolStripMenuItem1
@@ -281,12 +265,6 @@
             this.redoToolStripMenuItem.Size = new System.Drawing.Size(99, 41);
             this.redoToolStripMenuItem.Text = "Redo";
             // 
-            // hintToolStripMenuItem
-            // 
-            this.hintToolStripMenuItem.Name = "hintToolStripMenuItem";
-            this.hintToolStripMenuItem.Size = new System.Drawing.Size(87, 41);
-            this.hintToolStripMenuItem.Text = "Hint";
-            // 
             // pauseToolStripMenuItem
             // 
             this.pauseToolStripMenuItem.Name = "pauseToolStripMenuItem";
@@ -306,7 +284,6 @@
             this.optionsToolStripMenuItem1,
             this.undoToolStripMenuItem,
             this.redoToolStripMenuItem,
-            this.hintToolStripMenuItem,
             this.pauseToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -317,10 +294,11 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(1362, 243);
+            this.textBox1.Location = new System.Drawing.Point(1362, 217);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(561, 29);
             this.textBox1.TabIndex = 9;
+            this.textBox1.Visible = false;
             this.textBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
             // 
             // ScoreMessage
@@ -364,7 +342,6 @@
         private System.Windows.Forms.Button UndoButton;
         private System.Windows.Forms.Button RestoreButton;
         private System.Windows.Forms.Button SaveButton;
-        private System.Windows.Forms.Button HintButton;
         private System.Windows.Forms.Button PauseButton;
         private System.Windows.Forms.Button RedoButton;
         private System.Windows.Forms.Timer Mytime;
@@ -382,7 +359,6 @@
         private System.Windows.Forms.ToolStripMenuItem restoreToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem hintToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.TextBox textBox1;

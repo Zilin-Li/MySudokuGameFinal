@@ -136,7 +136,6 @@ namespace MySudokuGame
                             ClearGameBoard(colInd, rowInd);
                         }                
                     }
-
                     if (promptMethod == "showRepeatNumber")
                     {
                         HintRepeatNumber(theController.HintForRepeatNumber(btnWho.Name));
@@ -152,7 +151,6 @@ namespace MySudokuGame
                     this.WinInfoDisplay();
                 }
             }
-
             else if (btnWho.Name.StartsWith("iptBtn_"))
             {
                 ClickedText = btnWho.Text;            
@@ -168,7 +166,6 @@ namespace MySudokuGame
             seconds += (timeTicks / 10) % 60;
             minutes += (timeTicks / 10 / 60) % 60;
             TimeBox.Text = minutes.ToString("00") + " : " + seconds.ToString("00");
-            //TimeBox.Text = timeTicks.ToString();
         }
 
         // Display gameboard.
@@ -289,8 +286,6 @@ namespace MySudokuGame
         {
             string btnName;
             string textName;
-
-
             bool isRowVaild, isColVaild, isSquareVaild;
             for (int i = 0; i < theController.maxValue; i++)
             {
@@ -328,8 +323,10 @@ namespace MySudokuGame
                 {
                     for (int j = 0; j < theController.maxValue; j++)
                     {
-                        int colInd = (i % (theController.maxValue / theController.SquareWidth)) * theController.SquareWidth + (j % theController.SquareWidth);
-                        int rowInd = (i / (theController.maxValue / theController.SquareWidth)) * theController.SquareHeight + (j / theController.SquareWidth);
+                        int colInd = (i % (theController.maxValue / theController.SquareWidth))
+                            * theController.SquareWidth + (j % theController.SquareWidth);
+                        int rowInd = (i / (theController.maxValue / theController.SquareWidth)) 
+                            * theController.SquareHeight + (j / theController.SquareWidth);
                         btnName = "btn_" + rowInd.ToString() + "_" + colInd.ToString();
                         Control c = Controls.Find(btnName, true)[0];
                         c.BackColor = Color.DarkSeaGreen;
@@ -339,8 +336,10 @@ namespace MySudokuGame
                 {
                     for (int j = 0; j < theController.maxValue; j++)
                     {
-                        int colInd = (i % (theController.maxValue / theController.SquareWidth)) * theController.SquareWidth + (j % theController.SquareWidth);
-                        int rowInd = (i / (theController.maxValue / theController.SquareWidth)) * theController.SquareHeight + (j / theController.SquareWidth);
+                        int colInd = (i % (theController.maxValue / theController.SquareWidth)) 
+                            * theController.SquareWidth + (j % theController.SquareWidth);
+                        int rowInd = (i / (theController.maxValue / theController.SquareWidth)) 
+                            * theController.SquareHeight + (j / theController.SquareWidth);
                         ClearGameBoard(colInd, rowInd);
                     }
                 }
@@ -349,26 +348,24 @@ namespace MySudokuGame
 
         // Display Win information.
         private void WinInfoDisplay()
-        {
-           
+        {   
             if (theController.CheckAllVaild())
             {
                 TextBox c = new TextBox();
                 c.Font = new Font("Microsoft Sans Serif", 15);
-                c.Text = "You win!! \n"+ "Your Score is: " + theController.GetGameScore(minutes, seconds);
+                c.Text = "You win!! \n"+ "Your Score is: " + 
+                    theController.GetGameScore(minutes, seconds);
                 c.ForeColor = Color.LightCoral;
                 c.Visible = true;
                 c.Location = new Point(50, 200);
                 c.Size = new Size(400, 96);
                 c.TextAlign = HorizontalAlignment.Center;
-
                 GameBoard.Controls.Clear();
-                GameBoard.Controls.Add(c);
-             
+                GameBoard.Controls.Add(c);           
                 Mytime.Stop();
-
                 ScoreMessage.Visible = true;
-                ScoreMessage.Text = theController.ScoreList("li", theController.GetGameScore(minutes, seconds));
+                ScoreMessage.Text = theController.ScoreList
+                    ("li", theController.GetGameScore(minutes, seconds));
             }
         }
         

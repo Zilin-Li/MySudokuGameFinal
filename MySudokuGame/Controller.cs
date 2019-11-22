@@ -99,11 +99,17 @@ namespace MySudokuGame
                 string oldNumber = game.GetCell(game.cellIndex).ToString();
                 string newNumber = cellvalue.ToString();
 
+
+                
+                while(historyList.Count > stepNumber)
+                {
+                    historyList.RemoveAt(historyList.Count-1);
+                }  
               
 
-                historyList.Add(indexNumber + "," + oldNumber + "," + newNumber);
+               historyList.Add(indexNumber + "," + oldNumber + "," + newNumber);
+               stepNumber = historyList.Count;
 
-                stepNumber = historyList.Count;
                 game.SetCell(cellvalue, game.cellIndex);
                 sudokuString = game.ToPrettyString();
 

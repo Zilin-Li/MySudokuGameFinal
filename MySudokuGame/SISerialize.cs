@@ -71,24 +71,13 @@ namespace MySudokuGame
         //Set a value by cell
         public void SetCell(int value, int gridIndex)
         {
-            if (value >= 0 && value <= maxValue && gridIndex >= 0 && gridIndex < maxValue * maxValue)
-            {
-                sudokuArray[gridIndex+3] = value;
-            }
-            
+            sudokuArray[gridIndex+3] = value;  
         }
 
         //Get a value by cell
         public int GetCell(int gridIndex)
-        {
-            if (gridIndex >= 0 && gridIndex < maxValue * maxValue)
-            {
-                cellValue = sudokuArray[gridIndex];
-            }
-            else
-            {
-                cellValue = 0;
-            }
+        {        
+            cellValue = sudokuArray[gridIndex+3];
             return cellValue;
         }
 

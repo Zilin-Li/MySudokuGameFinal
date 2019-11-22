@@ -93,6 +93,35 @@ namespace MySudokuGame
             }
         }
 
+        public string SelectPromptMethod(string buttonName)
+        {
+            string promptMethod;
+            int cellIndex = game.GetButtonInfo(buttonName);
+            int cellValue = game.GetCell(cellIndex);
+            if(cellValue != 0)
+            {
+                promptMethod = "showRepeatNumber";
+            }
+            else
+            {
+                promptMethod = "showVaildValue";
+            }
+            return promptMethod;
+
+        }
+        public List<int> HintForVaildValue(string buttonName)
+        {
+            return game.VaildValueByCell(game.GetButtonInfo(buttonName));
+        }
+
+        public List<int> HintForRepeatNumber(string buttonName)
+        {
+            int cellIndex = game.GetButtonInfo(buttonName);
+            int cellValue = game.GetCell(cellIndex);
+
+            return game.GetRepeatNumberIndex(cellValue);
+        }
+
         // check row col square vaild.
         public bool CheckRowVaild(int row)
         {

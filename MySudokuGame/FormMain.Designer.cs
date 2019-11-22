@@ -214,28 +214,28 @@
             // easyToolStripMenuItem1
             // 
             this.easyToolStripMenuItem1.Name = "easyToolStripMenuItem1";
-            this.easyToolStripMenuItem1.Size = new System.Drawing.Size(257, 46);
+            this.easyToolStripMenuItem1.Size = new System.Drawing.Size(315, 46);
             this.easyToolStripMenuItem1.Text = "Easy";
             this.easyToolStripMenuItem1.Click += new System.EventHandler(this.EasyToolStripMenuItem1_Click);
             // 
             // mediumToolStripMenuItem
             // 
             this.mediumToolStripMenuItem.Name = "mediumToolStripMenuItem";
-            this.mediumToolStripMenuItem.Size = new System.Drawing.Size(257, 46);
+            this.mediumToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
             this.mediumToolStripMenuItem.Text = "Medium";
             this.mediumToolStripMenuItem.Click += new System.EventHandler(this.MediumToolStripMenuItem_Click);
             // 
             // hardToolStripMenuItem
             // 
             this.hardToolStripMenuItem.Name = "hardToolStripMenuItem";
-            this.hardToolStripMenuItem.Size = new System.Drawing.Size(257, 46);
+            this.hardToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
             this.hardToolStripMenuItem.Text = "Hard";
             this.hardToolStripMenuItem.Click += new System.EventHandler(this.HardToolStripMenuItem_Click);
             // 
             // xSudokuToolStripMenuItem
             // 
             this.xSudokuToolStripMenuItem.Name = "xSudokuToolStripMenuItem";
-            this.xSudokuToolStripMenuItem.Size = new System.Drawing.Size(257, 46);
+            this.xSudokuToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
             this.xSudokuToolStripMenuItem.Text = "X Sudoku";
             // 
             // optionsToolStripMenuItem1

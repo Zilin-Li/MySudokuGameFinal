@@ -15,7 +15,7 @@ namespace MySudokuGame
         public string scoreOutput = "";
 
 
-        public void GetButtonInfo(string buttonName)
+        public int GetButtonInfo(string buttonName)
         {
             string buttonValue = "";
             for (int i = 0; i < buttonName.Length; i++)
@@ -29,6 +29,7 @@ namespace MySudokuGame
             rowIndex = Int32.Parse(buttonValue[0].ToString());
             colIndex = Int32.Parse(buttonValue[1].ToString());
             cellIndex = colIndex + rowIndex * maxValue;
+            return cellIndex;
         }
 
         public List<int> LoadGameInfo(int[] gameArray)
@@ -63,10 +64,6 @@ namespace MySudokuGame
             return defIndexList;
         }
         
-
-
-        
-
         public bool IsDefault()
         {
             bool isDef = false;
@@ -75,6 +72,19 @@ namespace MySudokuGame
                 isDef = true;
             }
             return isDef;     
+        }
+
+        public List<int> GetRepeatNumberIndex(int value)
+        {
+            List<int> repeatNumList = new List<int>();
+            for (int i =3; i < sudokuArray.Length; i++)
+            {
+                if(sudokuArray[i] == value)
+                {
+                    repeatNumList.Add(i);
+                }
+            }
+            return repeatNumList;
         }
 
         //Other features

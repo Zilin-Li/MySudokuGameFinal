@@ -61,9 +61,10 @@ namespace MySudokuGame
             btnNew.Height = 50;
             btnNew.Width = 50;
             btnNew.Font = new Font("Arial", 20);
-            btnNew.Text = text;
+            //btnNew.Text = text;
             btnNew.Visible = true;
-            btnNew.Location = new Point(100 + 50 * num, 150 + 50 * theController.maxValue);
+            btnNew.Location = new Point(50 + 50 * num, 150 + 50 * theController.maxValue);
+            btnNew.BackColor = Color.White;
             GameBoard.Controls.Add(btnNew);
         }
 
@@ -121,16 +122,40 @@ namespace MySudokuGame
 
             if (btnWho.Name.StartsWith("btn"))
             {
+                if (ClickedText == "?")
+                {
+                    string promptMethod;
+                    promptMethod = theController.SelectPromptMethod(btnWho.Name);
+                    if (promptMethod == "showVaildValue")
+                    {
+                        HintVaildValue(theController.HintForVaildValue(btnWho.Name));
+                        for (int i = 0; i < theController.maxValue * theController.maxValue; i++)
+                        {
+                            int colInd = i % theController.maxValue;
+                            int rowInd = i / theController.maxValue;
+                            ClearGameBoard(colInd, rowInd);
+                        }                
+                    }
 
-                theController.ChangeValue(ClickedText, btnWho.Name);
-                GameValueDisplay(theController.sudokuString);
-                this.VaildAreaDisplay();
-                this.WinInfoDisplay();
+                    if (promptMethod == "showRepeatNumber")
+                    {
+                        HintRepeatNumber(theController.HintForRepeatNumber(btnWho.Name));
+                        ClearNumberBoard();         
+                    }
+                }
+                else
+                {
+                    theController.ChangeValue(ClickedText, btnWho.Name);
+                    ClearNumberBoard();
+                    GameValueDisplay(theController.sudokuString);
+                    this.VaildAreaDisplay();
+                    this.WinInfoDisplay();
+                }
             }
 
             else if (btnWho.Name.StartsWith("iptBtn_"))
             {
-                ClickedText = btnWho.Text;
+                ClickedText = btnWho.Text;            
             }
         }
 
@@ -145,7 +170,6 @@ namespace MySudokuGame
             TimeBox.Text = minutes.ToString("00") + " : " + seconds.ToString("00");
             //TimeBox.Text = timeTicks.ToString();
         }
-
 
         // Display gameboard.
         public void GameBoardDisplay()
@@ -167,18 +191,9 @@ namespace MySudokuGame
                     MakeButtons2("btn_", cellValueS, row, col);
                 }
             }
-
-            for (int i = 0; i <= theController.maxValue; i++)
-            {
-                string text = (i + 1).ToString();
-                if (i != theController.maxValue)
-                {
-                    MakeButtons(text, i);
-                }
-                else
-                {
-                    MakeButtons("", i);
-                }
+            for (int i = 0; i <= theController.maxValue + 1; i++)
+            { 
+                MakeButtons((i+1).ToString(), i);    
             }
         }
 
@@ -212,9 +227,64 @@ namespace MySudokuGame
                     }
                 }
             }
+            for (int i = 1; i <= theController.maxValue+2 ; i++)
+            {
+                btnName = "iptBtn_" + i.ToString();
+                Control c = Controls.Find(btnName, true)[0];
+
+                if (i == theController.maxValue+2)
+                {
+                    c.Text = "?";
+                }
+                else if (i == theController.maxValue+1)
+                {
+                    c.Text = "";
+                }
+                else
+                {
+                    c.Text = i.ToString();
+                }
+            }
+
+        }
+
+        public void ClearNumberBoard()
+        {
+            for (int i = 1; i <= theController.maxValue; i++)
+            {
+                string btnName = "iptBtn_" + i.ToString();
+                Control c = Controls.Find(btnName, true)[0];
+                c.BackColor = Color.White;
+            }
+        }
+
+        public void ClearGameBoard(int colInd, int rowInd)
+        {
+            string btnName = "btn_" + rowInd.ToString() + "_" + colInd.ToString();
+            Control button = Controls.Find(btnName, true)[0];
+            int squareIndex = rowInd / theController.SquareHeight * theController.SquareHeight + colInd / theController.SquareWidth;
+            button.BackColor = Color.White;
+
+            if (theController.maxValue == 4)
+            {
+                if (squareIndex == 0 || squareIndex == 3)
+                    button.BackColor = Color.LightBlue;
+            }
+            if (theController.maxValue == 6)
+            {
+                if (squareIndex == 0 || squareIndex == 3 || squareIndex == 4)
+                    button.BackColor = Color.LightBlue;
+            }
+            if (theController.maxValue == 9)
+            {
+                if (squareIndex % 2 == 0)
+                    button.BackColor = Color.LightBlue;
+            }
+           
         }
 
         // Show the vaild area, including vaild row,col,square.
+
         private void VaildAreaDisplay()
         {
             string btnName;
@@ -271,26 +341,7 @@ namespace MySudokuGame
                     {
                         int colInd = (i % (theController.maxValue / theController.SquareWidth)) * theController.SquareWidth + (j % theController.SquareWidth);
                         int rowInd = (i / (theController.maxValue / theController.SquareWidth)) * theController.SquareHeight + (j / theController.SquareWidth);
-                        btnName = "btn_" + rowInd.ToString() + "_" + colInd.ToString();
-
-                        Control c = Controls.Find(btnName, true)[0];
-                        c.BackColor = Color.White;
-
-                        if (theController.maxValue == 4)
-                        {
-                            if (i == 0 || i == 3)
-                                c.BackColor = Color.LightBlue;
-                        }
-                        if (theController.maxValue == 6)
-                        {
-                            if (i == 0 || i == 3 || i == 4)
-                                c.BackColor = Color.LightBlue;
-                        }
-                        if (theController.maxValue == 9)
-                        {
-                            if (i % 2 == 0)
-                                c.BackColor = Color.LightBlue;
-                        }
+                        ClearGameBoard(colInd, rowInd);
                     }
                 }
             }
@@ -321,6 +372,46 @@ namespace MySudokuGame
             }
         }
         
+        private void HintVaildValue(List<int> vaildValue)
+        {
+            string btnName;
+            for(int i = 1; i <= theController.maxValue; i++)
+            {
+                btnName = "iptBtn_" + i.ToString();
+                Control c = Controls.Find(btnName, true)[0];
+                c.BackColor = Color.White;
+                if (vaildValue.Contains(i))
+                {
+                   c.BackColor = Color.Pink;
+                }
+            }       
+        }
+        private void HintRepeatNumber(List<int> vaildValue)
+        {
+            string list="";
+            foreach(int i in vaildValue)
+            {
+                list += i.ToString()+",";
+            }
+            textBox1.Text = list;
+
+            for (int i =0; i < theController.maxValue*theController.maxValue; i++)
+            {
+                int colInd = i % theController.maxValue;
+                int rowInd = i / theController.maxValue;
+                string btnName = "btn_" + rowInd.ToString() + "_" + colInd.ToString();
+                Control button = Controls.Find(btnName, true)[0];
+
+                if (vaildValue.Contains(i+3))
+                {
+                    button.BackColor = Color.Pink;
+                }
+                else
+                {
+                    ClearGameBoard(colInd, rowInd);   
+                }
+            }
+        }
 
         //游戏流程
         private void SetGame()

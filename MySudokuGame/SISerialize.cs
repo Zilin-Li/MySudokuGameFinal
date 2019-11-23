@@ -78,10 +78,12 @@ namespace MySudokuGame
         public int GetCell(int gridIndex)
         {        
             cellValue = sudokuArray[gridIndex+3];
+
             return cellValue;
         }
 
-        //这个功能是用来把sudokuArray的数据转变成string格式的
+        // Trans sudokuArray to string.
+        // Do not including the max value, Height, Weight.
         public string ToPrettyString()
         {
             PrettyString = "";

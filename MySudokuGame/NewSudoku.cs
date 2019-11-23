@@ -13,8 +13,13 @@ namespace MySudokuGame
         public int seconds, minutes;
         public List<KeyValuePair<string, int>> scoreList;
         public string scoreOutput = "";
+        public List<string> historyList = new List<string>();
+        public int stepNumber = 0;
+        public string stepDetails;
+        public int[] X1Index;
+        public int[] X2Index;
 
-
+        // Get button names, like "btn_0_1", trans it to cellindex.
         public int GetButtonInfo(string buttonName)
         {
             string buttonValue = "";
@@ -32,6 +37,7 @@ namespace MySudokuGame
             return cellIndex;
         }
 
+        // Get default value index information from sudokuarray.
         public List<int> LoadGameInfo(int[] gameArray)
         {
             //defIndexList 是用来记录游戏默认值位置的。
@@ -62,7 +68,8 @@ namespace MySudokuGame
             }
             return defIndexList;
         }
-        
+
+        // Determines whether a value is a default value。
         public bool IsDefault()
         {
             bool isDef = false;
@@ -73,6 +80,8 @@ namespace MySudokuGame
             return isDef;     
         }
 
+        // Give a value, find the location of all values that are identical to this value.
+        // Return a int list including the value indexes.
         public List<int> GetRepeatNumberIndex(int value)
         {
             List<int> repeatNumList = new List<int>();
@@ -86,9 +95,9 @@ namespace MySudokuGame
             return repeatNumList;
         }
 
-        //Other features
+     
 
-        // Feature 1: check whether a row is vaild.
+        // Check whether a row is complete.
         public bool RowVaild(int rowNumber)
         {
             bool isVaildRow = true;
@@ -115,7 +124,7 @@ namespace MySudokuGame
             return isVaildRow;
         }
 
-        // Feature 2: check whether a column is vaild.
+        // Check whether a column is complete.
         public bool ColumnVaild(int columnNumber)
         {
             bool isVaildColumn = true;
@@ -142,7 +151,7 @@ namespace MySudokuGame
             return isVaildColumn;
         }
 
-        //feature 3: check whether a square is vaild.
+        // Check whether a square is complete.
         public bool SquareVaild(int squareNumber)
         {
             bool isVaildSquare = true;
@@ -169,6 +178,86 @@ namespace MySudokuGame
             return isVaildSquare;
         }
 
+        // XSudoku Index array
+        public int[] GetX1Index()
+        {
+            X1Index = new int[maxValue];
+            for (int i = 0; i < maxValue; i++)
+            {
+                X1Index[i] = maxValue * i + i;
+            }
+            return X1Index;
+        }
+        // XSudoku Index array
+        public int[] GetX2Index()
+        {
+            X2Index = new int[maxValue];
+            for (int i = 1; i <= maxValue; i++)
+            {
+                X2Index[i - 1] = maxValue * i - i;
+            }
+            return X2Index;
+        }
+
+        // Xsudoku
+        // Check whether the X1 complete.
+        public bool X1Vaild()
+        {
+            bool isVaildX1 = true;
+
+            int[] X1Value = new int[maxValue];
+            //put every value of the Square into an int array.
+            //for next step to check
+            for (int i = 0; i < maxValue; i++)
+            {
+                X1Value[i] = GetCell(X1Index[i]);
+            }
+
+            //sort the value, the vaild value should be 1~maxValue.
+            //if not return false.
+
+            Array.Sort(X1Value);
+            for (int a = 0; a < maxValue; a++)
+            {
+                if (X1Value[a] != a + 1)
+                {
+                    isVaildX1 = false;
+                }
+            }
+            return isVaildX1;
+        }
+
+        // Xsudoku
+        // Check whether the X2 complete.
+        public bool X2Vaild()
+        {
+            bool isVaildX2 = true;
+
+            int[] X2Value = new int[maxValue];
+            //put every value of the Square into an int array.
+            //for next step to check
+            for (int i = 0; i < maxValue; i++)
+            {
+                X2Value[i] = GetCell(X2Index[i]);
+            }
+
+            //sort the value, the vaild value should be 1~maxValue.
+            //if not return false.
+
+            Array.Sort(X2Value);
+            for (int a = 0; a < maxValue; a++)
+            {
+                if (X2Value[a] != a + 1)
+                {
+                    isVaildX2 = false;
+                }
+            }
+            return isVaildX2;
+        }
+
+        // Check whether the game complete.
+        // Except for x sudoku 
+
         public bool AllVaild()
         {
             bool isAllVaild = true;
@@ -193,7 +282,22 @@ namespace MySudokuGame
             return isAllVaild;
         }
 
-        //feature 4: list vaild value by Row.
+        // XSudoku
+        // Check whether the game complete.
+        public bool XGameAllVaild()
+        {
+            bool isXAllVaild = false;
+
+            if (AllVaild() && X1Vaild() && X2Vaild())
+            {
+                isXAllVaild = true;
+            }
+            
+            return isXAllVaild;
+        }
+
+
+        // List all possible values of the row.
         public List<int> VaildValueByRow(int gridIndex)
         {
 
@@ -224,7 +328,7 @@ namespace MySudokuGame
             return rowVaildValue;
         }
 
-        //feature 5: list vaild value by Column.
+        // List all possible values of the Column.
         public List<int> VaildValueByColumn(int gridIndex)
         {
 
@@ -255,7 +359,7 @@ namespace MySudokuGame
             return ColumnVaildValue;
         }
 
-        //feature 6: list vaild value by Square.
+        // List all possible values of the Square.
         public List<int> VaildValueBySquare(int gridIndex)
         {
 
@@ -292,7 +396,65 @@ namespace MySudokuGame
             return squareVaildValue;
         }
 
-        //feature 7: Input a cell index, return all vaild value.
+        public List<int> VaildValueByX1()
+        {
+
+            //step1: put all value(1-maxvalue) into list.
+            List<int> X1VaildValue = new List<int>();
+
+            for (int i = 1; i <= maxValue; i++)
+            {
+                X1VaildValue.Add(i);
+            }
+            
+            //step2: use get GetBySquare() to get each value of the square
+            for (int a = 0; a < maxValue; a++)
+            {
+                int eachX1Value = GetCell(X1Index[a]);
+
+                //step3: check whether the squarevalue in the list
+                //if already in the list, remove it.
+                //the remain number is vaild value.
+                if (X1VaildValue.Contains(eachX1Value))
+                {
+                    X1VaildValue.Remove(eachX1Value);
+                }
+
+            }
+            return X1VaildValue;
+        }
+
+        public List<int> VaildValueByX2()
+        {
+
+            //step1: put all value(1-maxvalue) into list.
+            List<int> X2VaildValue = new List<int>();
+
+            for (int i = 1; i <= maxValue; i++)
+            {
+                X2VaildValue.Add(i);
+            }
+
+            //step2: use get GetBySquare() to get each value of the square
+            for (int a = 0; a < maxValue; a++)
+            {
+                int eachX2Value = GetCell(X2Index[a]);
+
+                //step3: check whether the squarevalue in the list
+                //if already in the list, remove it.
+                //the remain number is vaild value.
+                if (X2VaildValue.Contains(eachX2Value))
+                {
+                    X2VaildValue.Remove(eachX2Value);
+                }
+
+            }
+            return X2VaildValue;
+        }
+
+
+        // List all possible values of a cell.
+        // Except for x sudoku 
         public List<int> VaildValueByCell(int gridIndex)
         {
             List<int> VaildValue = new List<int>();
@@ -324,6 +486,48 @@ namespace MySudokuGame
             return VaildValue;
         }
 
+        public List<int> XVaildByCell(int gridIndex)
+        {
+            List<int> VaildValue = new List<int>();
+
+            for (int i = 1; i <= maxValue; i++)
+            {
+                VaildValue.Add(i);
+            }
+            List<int> RowVaildValue = VaildValueByRow(gridIndex);
+            List<int> ColumnVaildValue = VaildValueByColumn(gridIndex);
+            List<int> SquareVaildValue = VaildValueBySquare(gridIndex);
+            List<int> X1VaildValue = VaildValueByX1();
+            List<int> X2VaildValue = VaildValueByX2();
+
+            for (int i = 1; i <= maxValue; i++)
+            {
+                if (!RowVaildValue.Contains(i))
+                {
+                    VaildValue.Remove(i);
+                }
+                if (!ColumnVaildValue.Contains(i))
+                {
+                    VaildValue.Remove(i);
+                }
+                if (!SquareVaildValue.Contains(i))
+                {
+                    VaildValue.Remove(i);
+                }
+                if (!X1VaildValue.Contains(i))
+                {
+                    VaildValue.Remove(i);
+                }
+                if (!X2VaildValue.Contains(i))
+                {
+                    VaildValue.Remove(i);
+                }
+
+            }
+            return VaildValue;
+        }
+
+        // Get game score when game complete.
         public int GetScore(int min, int sec)
         {    
             int gameScore;
@@ -331,12 +535,17 @@ namespace MySudokuGame
             return gameScore;
         }
 
+
+        // Step 1: Get User name and score.
+        // Step 2: Read history score frome file.
+        // Step 3: Sort all scores.
+        // Step 4: Write top 5 score to file.
         public string AddScore(string name, int score)
         {
             scoreOutput = "";
             scoreList = new List<KeyValuePair<string, int>>();
 
-            StreamReader sr = new StreamReader("SavedLists.txt");
+            StreamReader sr = new StreamReader("HistoryScoreLists.txt");
 
             //Read the first line of text
             String line = sr.ReadLine();
@@ -357,13 +566,8 @@ namespace MySudokuGame
             if (scoreList.Count < 5)
             {
                 scoreList.Add(new KeyValuePair<string, int>(name, score));
-
-
                 FormInput frmInput = new FormInput();
                 frmInput.Show();
-
-
-
             }
             else
             {
@@ -375,23 +579,69 @@ namespace MySudokuGame
             }
             scoreList.Sort((x, y) => (y.Value.CompareTo(x.Value)));
 
-
-
-
-            TextWriter tw = new StreamWriter("SavedLists.txt");
+            TextWriter tw = new StreamWriter("HistoryScoreLists.txt");
             foreach (var value in scoreList)
             {
-                scoreOutput += (value.Key + " : " + value.Value + "\n");
-
-                
-                tw.WriteLine(value.Key + "," + value.Value);
-                
+                scoreOutput += (value.Key + " : " + value.Value + "\n");          
+                tw.WriteLine(value.Key + "," + value.Value);          
             }
             tw.Close();
             return scoreOutput;
         }
 
+        // Record the steps.
+        public void RecordStep(int cellvalue)
+        {
+            string indexNumber = cellIndex.ToString();
+            string oldNumber = GetCell(cellIndex).ToString();
+            string newNumber = cellvalue.ToString();
 
-        
+            while (historyList.Count > stepNumber)
+            {
+                historyList.RemoveAt(historyList.Count - 1);
+            }
+
+
+            historyList.Add(indexNumber + "," + oldNumber + "," + newNumber);
+            stepNumber = historyList.Count;
+        }
+
+        // Undo by step.
+        public void Undo()
+        {
+            if (historyList.Count > 0 && stepNumber >= 1)
+            {
+                stepDetails = historyList[stepNumber - 1];
+                string[] info = stepDetails.Split(',');
+                int index = Int32.Parse(info[0]);
+                int oldnumber = Int32.Parse(info[1]);
+                //int newNumber = Int32.Parse(info[2]);
+                SetCell(oldnumber, index);
+                stepNumber--; 
+            }
+        }
+
+        // Redo by step.
+        public void Redo()
+        {
+            if (historyList.Count > stepNumber)
+            {
+                stepDetails = historyList[stepNumber];
+                string[] info = stepDetails.Split(',');
+                var index = Int32.Parse(info[0]);
+                //var oldnumber = Int32.Parse(info[1]);
+                var newNumber = Int32.Parse(info[2]);
+                SetCell(newNumber, index);
+                stepNumber++;      
+            }
+        }
+
+       
+
+
+
+
+
+
     }
 }

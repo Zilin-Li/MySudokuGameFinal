@@ -15,20 +15,14 @@ namespace MySudokuGame
     {
         protected IView view;
         protected NewSudoku game;
-        public string test;
         public int maxValue, SquareHeight, SquareWidth;
         public int seconds, minutes;
-        public int numOfArchiving = 1;
-        public string sudokuString;
-   
-       
+        public string sudokuString;    
         public int[] sudokuArray;
+        public int[] X1Index;
+        public int[] X2Index;
         public List<int> defIndexList;
-
-
-        public List<string> historyList = new List<string>();
-        public int stepNumber = 0;
-        public string stepDetails;
+        public string test;
 
         public Controller(IView theView, NewSudoku theGame)
         {
@@ -41,7 +35,163 @@ namespace MySudokuGame
             game.FromCSV(gameselect);
         }
 
-        // Save the game: game values , default information and time information.
+        // Initialize the game.
+        public void InitGameData()
+        {
+            sudokuArray = game.ToArray();
+            game.Set(sudokuArray);
+            maxValue = game.GetMaxValue();
+            SquareHeight = sudokuArray[1];
+            SquareWidth = sudokuArray[2];
+            defIndexList = game.LoadGameInfo(sudokuArray);
+            seconds = game.seconds;
+            minutes = game.minutes;
+            sudokuString = game.ToPrettyString();
+            game.SetMaxValue(maxValue);
+            game.SetSquareHeight(SquareHeight);
+            game.SetSquareWidth(SquareWidth);
+            test = game.defaultInfo;
+            X1Index = game.GetX1Index();
+            X2Index = game.GetX2Index();
+        }
+
+        // When user click game buttons, determines whether the game value can be changed.
+        // If the value clicked is not the default value, change the game value.
+        public void ChangeValue(string value, string buttonName)
+        {
+            int cellvalue;
+            game.GetButtonInfo(buttonName);
+            if (!game.IsDefault())
+            {
+                if (value == "")
+                {
+                    cellvalue = 0;
+                }
+                else
+                {
+                    cellvalue = int.Parse(value);
+                }
+
+                game.RecordStep(cellvalue);
+
+
+                game.SetCell(cellvalue, game.cellIndex);
+                // Record the number of steps played and the value changed.
+
+
+                
+                sudokuString = game.ToPrettyString();
+
+            }
+        }
+
+        // Undo
+        public void Undo()
+        {
+            game.Undo();
+            sudokuString = game.ToPrettyString();
+            view.GameValueDisplay(sudokuString);
+        }
+       
+        // Redo
+        public void Redo()
+        {
+            game.Redo();
+            sudokuString = game.ToPrettyString();
+            view.GameValueDisplay(sudokuString);
+        }
+
+        // If the user selects a cell value of 0, return "showVaildValue".
+        // If the user selects a cell value of non-0, return "showRepeatNumber".
+        public string SelectPromptMethod(string buttonName)
+        {
+            string promptMethod;
+            int cellIndex = game.GetButtonInfo(buttonName);
+            int cellValue = game.GetCell(cellIndex);
+            if(cellValue != 0)
+            {
+                promptMethod = "showRepeatNumber";
+            }
+            else
+            {
+                promptMethod = "showVaildValue";
+            }
+            return promptMethod;
+        }
+
+        // Return a list including all possible values of the cell.
+        public List<int> HintForVaildValue(string buttonName)
+        {
+            return game.VaildValueByCell(game.GetButtonInfo(buttonName));
+            //return game.XVaildByCell(game.GetButtonInfo(buttonName));
+        }
+
+        // Return a list including all RepeatNumber's index.
+        public List<int> HintForRepeatNumber(string buttonName)
+        {
+            int cellIndex = game.GetButtonInfo(buttonName);
+            int cellValue = game.GetCell(cellIndex);
+
+            return game.GetRepeatNumberIndex(cellValue);
+        }
+
+        // Check whether a row completed.
+        public bool CheckRowVaild(int row)
+        {
+            return game.RowVaild(row);
+        }
+
+        // Check whether a column completed.
+        public bool CheckColVaild(int col)
+        {
+            return game.ColumnVaild(col);
+        }
+
+        // Check whether a square completed.
+        public bool CheckSquareVaild(int cellindex)
+        {
+            return game.SquareVaild(cellindex);
+        }
+
+        // Check whether the game completed.
+        // Except for X sudoku.
+        public bool CheckAllVaild()
+        {
+            return game.AllVaild();
+        }
+
+        // Check whether X1 completed.
+        public bool CheckX1Vaild()
+        {
+            return game.X1Vaild();
+        }
+        // Check whether X2 completed.
+        public bool CheckX2Vaild()
+        {
+            return game.X2Vaild();
+        }
+
+        // Check whether the X sudoku game completed.
+
+        public bool CheckXAllVaild()
+        {
+            return game.XGameAllVaild();
+        }
+
+        // Calculate game score.
+        public int GetGameScore(int min, int sec)
+        {
+            return game.GetScore(min, sec);
+        }
+
+        // Get Top 5 score.
+        public string ScoreList(string name, int score)
+        {
+            return game.AddScore(name, score);
+        }
+
+        // Save the game
+        // Including game values , default information and time information.
         public string GameSave(int second, int min)
         {
             string filePath;
@@ -58,164 +208,7 @@ namespace MySudokuGame
             filePath = path + @"\loadGame\" + mess + ".csv";
             File.WriteAllText(filePath, csv.ToString());
             return filePath;
-        } 
-
-        // 游戏初始化
-        public void InitGameData()
-        {
-            sudokuArray = game.ToArray();
-            game.Set(sudokuArray);
-            maxValue = game.GetMaxValue();
-            SquareHeight = sudokuArray[1];
-            SquareWidth = sudokuArray[2];
-            defIndexList = game.LoadGameInfo(sudokuArray);
-            seconds = game.seconds;
-            minutes = game.minutes;
-            sudokuString = game.ToPrettyString();
-            game.SetMaxValue(maxValue);
-            game.SetSquareHeight(SquareHeight);
-            game.SetSquareWidth(SquareWidth);
-            test = game.defaultInfo;
-            
         }
-
-        // 改变游戏值
-        public void ChangeValue(string value, string buttonName)
-        {
-            int cellvalue;
-            game.GetButtonInfo(buttonName);
-            if (!game.IsDefault())
-            {
-                if (value == "")
-                {
-                    cellvalue = 0;
-                }
-                else
-                {
-                    cellvalue = int.Parse(value);
-                }
-
-                string indexNumber = game.cellIndex.ToString();
-                string oldNumber = game.GetCell(game.cellIndex).ToString();
-                string newNumber = cellvalue.ToString();
-
-
-                
-                while(historyList.Count > stepNumber)
-                {
-                    historyList.RemoveAt(historyList.Count-1);
-                }  
-              
-
-               historyList.Add(indexNumber + "," + oldNumber + "," + newNumber);
-               stepNumber = historyList.Count;
-
-                game.SetCell(cellvalue, game.cellIndex);
-                sudokuString = game.ToPrettyString();
-
-            }
-        }
-
-
-        public void undo()
-        {
-            if (historyList.Count > 0 && stepNumber >= 1)
-            {
-                stepDetails = historyList[stepNumber - 1];
-                string[] info = stepDetails.Split(',');
-                var index = Int32.Parse(info[0]);
-                var oldnumber = Int32.Parse(info[1]);
-                var newNumber = Int32.Parse(info[2]);
-                game.SetCell(oldnumber, index);
-                stepNumber--;
-
-                sudokuString = game.ToPrettyString();
-                view.GameValueDisplay(sudokuString);
-            }
-
-        }
-
-        public void redo()
-        {
-            if (historyList.Count > stepNumber)
-            {
-                stepDetails = historyList[stepNumber];
-                string[] info = stepDetails.Split(',');
-                var index = Int32.Parse(info[0]);
-                var oldnumber = Int32.Parse(info[1]);
-                var newNumber = Int32.Parse(info[2]);
-                game.SetCell(newNumber, index);
-                stepNumber++;
-                sudokuString = game.ToPrettyString();
-                view.GameValueDisplay(sudokuString);
-            }
-        }
-
-
-
-
-        public string SelectPromptMethod(string buttonName)
-        {
-            string promptMethod;
-            int cellIndex = game.GetButtonInfo(buttonName);
-            int cellValue = game.GetCell(cellIndex);
-            if(cellValue != 0)
-            {
-                promptMethod = "showRepeatNumber";
-            }
-            else
-            {
-                promptMethod = "showVaildValue";
-            }
-            return promptMethod;
-
-        }
-        public List<int> HintForVaildValue(string buttonName)
-        {
-            return game.VaildValueByCell(game.GetButtonInfo(buttonName));
-        }
-
-        public List<int> HintForRepeatNumber(string buttonName)
-        {
-            int cellIndex = game.GetButtonInfo(buttonName);
-            int cellValue = game.GetCell(cellIndex);
-
-            return game.GetRepeatNumberIndex(cellValue);
-        }
-
-        // check row col square vaild.
-        public bool CheckRowVaild(int row)
-        {
-            return game.RowVaild(row);
-        }
-        public bool CheckColVaild(int col)
-        {
-            return game.ColumnVaild(col);
-        }
-        public bool CheckSquareVaild(int cellindex)
-        {
-            return game.SquareVaild(cellindex);
-        }
-        public bool CheckAllVaild()
-        {
-            return game.AllVaild();
-        }
-
-        // Get Score
-
-        public int GetGameScore(int min, int sec)
-        {
-            return game.GetScore(min, sec);
-        }
-
-        public string ScoreList(string name, int score)
-        {
-            return game.AddScore(name, score);
-        }
-
-
-
-
 
     }
 }

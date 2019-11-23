@@ -134,27 +134,29 @@ namespace MySudokuGame
                             int colInd = i % theController.maxValue;
                             int rowInd = i / theController.maxValue;
                             ClearGameBoard(colInd, rowInd);
-                        }                
+                        }
                     }
                     if (promptMethod == "showRepeatNumber")
                     {
                         HintRepeatNumber(theController.HintForRepeatNumber(btnWho.Name));
-                        ClearNumberBoard();         
+                        ClearNumberBoard();
                     }
                 }
                 else
                 {
                     theController.ChangeValue(ClickedText, btnWho.Name);
-                  
                     ClearNumberBoard();
                     GameValueDisplay(theController.sudokuString);
-                    this.VaildAreaDisplay();
-                    this.WinInfoDisplay();
+                    VaildAreaDisplay();
+
+                    //VaildXDisplay();
+                    WinInfoDisplay();
+                
                 }
             }
             else if (btnWho.Name.StartsWith("iptBtn_"))
             {
-                ClickedText = btnWho.Text;            
+                ClickedText = btnWho.Text;
             }
         }
 
@@ -347,14 +349,48 @@ namespace MySudokuGame
             }
         }
 
+        private void VaildXDisplay()
+        {
+            string btnName;
+            
+            bool isX1Vaild = theController.CheckX1Vaild();
+            bool isX2Vaild = theController.CheckX2Vaild();
+            if (isX1Vaild)
+            {
+                for(int i = 0; i < theController.maxValue; i++)
+                {
+                    int cellIndex = theController.X1Index[i];
+                    int col = cellIndex / theController.maxValue;
+                    int row = cellIndex % theController.maxValue;
+                    btnName = "btn_" + row.ToString() + "_" + col.ToString();
+                    Control c = Controls.Find(btnName, true)[0];
+                    c.BackColor = Color.Green;
+                }
+            }
+
+            if (isX2Vaild)
+            {
+                for (int i = 0; i < theController.maxValue; i++)
+                {
+                    int cellIndex = theController.X2Index[i];
+                    int col = cellIndex / theController.maxValue;
+                    int row = cellIndex % theController.maxValue;
+                    btnName = "btn_" + row.ToString() + "_" + col.ToString();
+                    Control c = Controls.Find(btnName, true)[0];
+                    c.BackColor = Color.Green;
+                }
+            }
+
+        }
+
         // Display Win information.
         private void WinInfoDisplay()
-        {   
+        {
             if (theController.CheckAllVaild())
             {
                 TextBox c = new TextBox();
                 c.Font = new Font("Microsoft Sans Serif", 15);
-                c.Text = "You win!! \n"+ "Your Score is: " + 
+                c.Text = "You win!! \n" + "Your Score is: " +
                     theController.GetGameScore(minutes, seconds);
                 c.ForeColor = Color.LightCoral;
                 c.Visible = true;
@@ -362,7 +398,7 @@ namespace MySudokuGame
                 c.Size = new Size(400, 96);
                 c.TextAlign = HorizontalAlignment.Center;
                 GameBoard.Controls.Clear();
-                GameBoard.Controls.Add(c);           
+                GameBoard.Controls.Add(c);
                 Mytime.Stop();
                 ScoreMessage.Visible = true;
 
@@ -374,8 +410,9 @@ namespace MySudokuGame
                 username = username == "" ? "No name" : username;
                 ScoreMessage.Text = theController.ScoreList(username, theController.GetGameScore(minutes, seconds));
             }
+           
         }
-
+        
         //used for creating new WinForm
         public static class Prompt
         {
@@ -487,6 +524,13 @@ namespace MySudokuGame
             theController.GameSelect(gameSelect);
             SetGame();
         }
+        // User choose X sudoku game.
+        private void XSudokuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            gameSelect = "Xsudoku.csv";
+            theController.GameSelect(gameSelect);
+            SetGame();
+        }
 
         //加载存档游戏。
         private void LoadGameToolStripMenuItem_Click(object sender, EventArgs e)
@@ -512,7 +556,6 @@ namespace MySudokuGame
 
             }
         }
-
 
 //------------------------------------ 游戏按键功能 -----------------------------------------
         private void PauseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -565,12 +608,24 @@ namespace MySudokuGame
 
         private void UndoButton_Click(object sender, EventArgs e)
         {
-            theController.undo();
+            theController.Undo();
         }
 
         private void RedoButton_Click(object sender, EventArgs e)
         {
-            theController.redo();
+            theController.Redo();
         }
+
+        private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            theController.Undo();
+        }
+
+        private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            theController.Redo();
+        }
+
+        
     }
 }

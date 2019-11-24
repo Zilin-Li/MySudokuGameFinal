@@ -1,5 +1,5 @@
-No name,900000
-No name,450000
-No name,100000
-No name,90000
-li,57142
+Lynn5,57142
+Lynn6,57142
+lynn7,50000
+Lynn1,44444
+Lynn4,36363

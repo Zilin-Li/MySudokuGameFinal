@@ -93,9 +93,7 @@ namespace MySudokuGame
                 }
             }
             return repeatNumList;
-        }
-
-     
+        }   
 
         // Check whether a row is complete.
         public bool RowVaild(int rowNumber)
@@ -163,7 +161,6 @@ namespace MySudokuGame
             {
                 SquareValue[i] = GetBySquare(squareNumber, i);
             }
-
             //sort the value, the vaild value should be 1~maxValue.
             //if not return false.
 
@@ -204,7 +201,6 @@ namespace MySudokuGame
         public bool X1Vaild()
         {
             bool isVaildX1 = true;
-
             int[] X1Value = new int[maxValue];
             //put every value of the Square into an int array.
             //for next step to check
@@ -212,10 +208,8 @@ namespace MySudokuGame
             {
                 X1Value[i] = GetCell(X1Index[i]);
             }
-
             //sort the value, the vaild value should be 1~maxValue.
             //if not return false.
-
             Array.Sort(X1Value);
             for (int a = 0; a < maxValue; a++)
             {
@@ -232,7 +226,6 @@ namespace MySudokuGame
         public bool X2Vaild()
         {
             bool isVaildX2 = true;
-
             int[] X2Value = new int[maxValue];
             //put every value of the Square into an int array.
             //for next step to check
@@ -240,10 +233,8 @@ namespace MySudokuGame
             {
                 X2Value[i] = GetCell(X2Index[i]);
             }
-
             //sort the value, the vaild value should be 1~maxValue.
             //if not return false.
-
             Array.Sort(X2Value);
             for (int a = 0; a < maxValue; a++)
             {
@@ -257,7 +248,6 @@ namespace MySudokuGame
 
         // Check whether the game complete.
         // Except for x sudoku 
-
         public bool AllVaild()
         {
             bool isAllVaild = true;
@@ -291,23 +281,19 @@ namespace MySudokuGame
             if (AllVaild() && X1Vaild() && X2Vaild())
             {
                 isXAllVaild = true;
-            }
-            
+            }          
             return isXAllVaild;
         }
-
 
         // List all possible values of the row.
         public List<int> VaildValueByRow(int gridIndex)
         {
-
             //step1: put all value(1-maxvalue) into list.
             List<int> rowVaildValue = new List<int>();
             for (int i = 1; i <= maxValue; i++)
             {
                 rowVaildValue.Add(i);
             }
-
             // get the rowIndex
             int rowIndex = gridIndex / maxValue;
 
@@ -323,22 +309,18 @@ namespace MySudokuGame
                 {
                     rowVaildValue.Remove(eachRowValue);
                 }
-
             }
             return rowVaildValue;
         }
-
         // List all possible values of the Column.
         public List<int> VaildValueByColumn(int gridIndex)
         {
-
             //step1: put all value(1-maxvalue) into list.
             List<int> ColumnVaildValue = new List<int>();
             for (int i = 1; i <= maxValue; i++)
             {
                 ColumnVaildValue.Add(i);
             }
-
             // get the columnIndex
             int columnIndex = gridIndex % maxValue;
 
@@ -354,7 +336,6 @@ namespace MySudokuGame
                 {
                     ColumnVaildValue.Remove(eachColumnValue);
                 }
-
             }
             return ColumnVaildValue;
         }
@@ -362,10 +343,8 @@ namespace MySudokuGame
         // List all possible values of the Square.
         public List<int> VaildValueBySquare(int gridIndex)
         {
-
             //step1: put all value(1-maxvalue) into list.
             List<int> squareVaildValue = new List<int>();
-
             for (int i = 1; i <= maxValue; i++)
             {
                 squareVaildValue.Add(i);
@@ -391,70 +370,50 @@ namespace MySudokuGame
                 {
                     squareVaildValue.Remove(eachSquareValue);
                 }
-
             }
             return squareVaildValue;
         }
 
         public List<int> VaildValueByX1()
         {
-
-            //step1: put all value(1-maxvalue) into list.
             List<int> X1VaildValue = new List<int>();
 
             for (int i = 1; i <= maxValue; i++)
             {
                 X1VaildValue.Add(i);
             }
-            
-            //step2: use get GetBySquare() to get each value of the square
             for (int a = 0; a < maxValue; a++)
             {
                 int eachX1Value = GetCell(X1Index[a]);
-
-                //step3: check whether the squarevalue in the list
-                //if already in the list, remove it.
-                //the remain number is vaild value.
                 if (X1VaildValue.Contains(eachX1Value))
                 {
                     X1VaildValue.Remove(eachX1Value);
                 }
-
             }
             return X1VaildValue;
         }
 
         public List<int> VaildValueByX2()
         {
-
-            //step1: put all value(1-maxvalue) into list.
             List<int> X2VaildValue = new List<int>();
 
             for (int i = 1; i <= maxValue; i++)
             {
                 X2VaildValue.Add(i);
             }
-
-            //step2: use get GetBySquare() to get each value of the square
             for (int a = 0; a < maxValue; a++)
             {
                 int eachX2Value = GetCell(X2Index[a]);
-
-                //step3: check whether the squarevalue in the list
-                //if already in the list, remove it.
-                //the remain number is vaild value.
                 if (X2VaildValue.Contains(eachX2Value))
                 {
                     X2VaildValue.Remove(eachX2Value);
                 }
-
             }
             return X2VaildValue;
         }
 
 
         // List all possible values of a cell.
-        // Except for x sudoku 
         public List<int> VaildValueByCell(int gridIndex)
         {
             List<int> VaildValue = new List<int>();
@@ -486,47 +445,6 @@ namespace MySudokuGame
             return VaildValue;
         }
 
-        public List<int> XVaildByCell(int gridIndex)
-        {
-            List<int> VaildValue = new List<int>();
-
-            for (int i = 1; i <= maxValue; i++)
-            {
-                VaildValue.Add(i);
-            }
-            List<int> RowVaildValue = VaildValueByRow(gridIndex);
-            List<int> ColumnVaildValue = VaildValueByColumn(gridIndex);
-            List<int> SquareVaildValue = VaildValueBySquare(gridIndex);
-            List<int> X1VaildValue = VaildValueByX1();
-            List<int> X2VaildValue = VaildValueByX2();
-
-            for (int i = 1; i <= maxValue; i++)
-            {
-                if (!RowVaildValue.Contains(i))
-                {
-                    VaildValue.Remove(i);
-                }
-                if (!ColumnVaildValue.Contains(i))
-                {
-                    VaildValue.Remove(i);
-                }
-                if (!SquareVaildValue.Contains(i))
-                {
-                    VaildValue.Remove(i);
-                }
-                if (!X1VaildValue.Contains(i))
-                {
-                    VaildValue.Remove(i);
-                }
-                if (!X2VaildValue.Contains(i))
-                {
-                    VaildValue.Remove(i);
-                }
-
-            }
-            return VaildValue;
-        }
-
         // Get game score when game complete.
         public int GetScore(int min, int sec)
         {    
@@ -544,30 +462,22 @@ namespace MySudokuGame
         {
             scoreOutput = "";
             scoreList = new List<KeyValuePair<string, int>>();
-
             StreamReader sr = new StreamReader("HistoryScoreLists.txt");
-
             //Read the first line of text
             String line = sr.ReadLine();
-
             //Continue to read until you reach end of file
-            while (line != null)
-            {
-                //write the lie to console window
-                Console.WriteLine(line);
+            while (line != ""&& line != null)
+            {              
                 string[] results = line.Split(',');
-                System.Console.WriteLine(results[1]);
+               
                 scoreList.Add(new KeyValuePair<string, int>(results[0], Int32.Parse(results[1])));
                 //Read the next line
                 line = sr.ReadLine();
             }
             sr.Close();
-
             if (scoreList.Count < 5)
             {
-                scoreList.Add(new KeyValuePair<string, int>(name, score));
-                FormInput frmInput = new FormInput();
-                frmInput.Show();
+                scoreList.Add(new KeyValuePair<string, int>(name, score));          
             }
             else
             {
@@ -595,12 +505,10 @@ namespace MySudokuGame
             string indexNumber = cellIndex.ToString();
             string oldNumber = GetCell(cellIndex).ToString();
             string newNumber = cellvalue.ToString();
-
             while (historyList.Count > stepNumber)
             {
                 historyList.RemoveAt(historyList.Count - 1);
             }
-
 
             historyList.Add(indexNumber + "," + oldNumber + "," + newNumber);
             stepNumber = historyList.Count;

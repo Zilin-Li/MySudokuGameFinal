@@ -46,12 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormInput.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormInput.Designer.cs">
-      <DependentUpon>FormInput.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -71,9 +65,6 @@
     <Compile Include="SIGet.cs" />
     <Compile Include="SISerialize.cs" />
     <Compile Include="SISet.cs" />
-    <EmbeddedResource Include="FormInput.resx">
-      <DependentUpon>FormInput.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>

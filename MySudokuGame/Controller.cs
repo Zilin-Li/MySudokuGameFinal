@@ -71,28 +71,19 @@ namespace MySudokuGame
                 {
                     cellvalue = int.Parse(value);
                 }
-
                 game.RecordStep(cellvalue);
-
-
                 game.SetCell(cellvalue, game.cellIndex);
-                // Record the number of steps played and the value changed.
-
-
-                
+                // Record the number of steps played and the value changed.          
                 sudokuString = game.ToPrettyString();
-
             }
         }
-
         // Undo
         public void Undo()
         {
             game.Undo();
             sudokuString = game.ToPrettyString();
             view.GameValueDisplay(sudokuString);
-        }
-       
+        }      
         // Redo
         public void Redo()
         {
@@ -123,7 +114,6 @@ namespace MySudokuGame
         public List<int> HintForVaildValue(string buttonName)
         {
             return game.VaildValueByCell(game.GetButtonInfo(buttonName));
-            //return game.XVaildByCell(game.GetButtonInfo(buttonName));
         }
 
         // Return a list including all RepeatNumber's index.

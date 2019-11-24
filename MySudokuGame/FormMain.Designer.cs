@@ -55,6 +55,8 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.ScoreMessage = new System.Windows.Forms.Label();
+            this.LoadButton = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.GameOption.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -72,6 +74,7 @@
             // 
             this.GameOption.AutoSize = true;
             this.GameOption.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.GameOption.Controls.Add(this.LoadButton);
             this.GameOption.Controls.Add(this.RestoreButton);
             this.GameOption.Controls.Add(this.SaveButton);
             this.GameOption.Controls.Add(this.UndoButton);
@@ -88,7 +91,7 @@
             this.RestoreButton.BackColor = System.Drawing.Color.Teal;
             this.RestoreButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RestoreButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.RestoreButton.Location = new System.Drawing.Point(50, 631);
+            this.RestoreButton.Location = new System.Drawing.Point(49, 688);
             this.RestoreButton.Margin = new System.Windows.Forms.Padding(2);
             this.RestoreButton.Name = "RestoreButton";
             this.RestoreButton.Size = new System.Drawing.Size(189, 74);
@@ -102,20 +105,21 @@
             this.SaveButton.BackColor = System.Drawing.Color.Teal;
             this.SaveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SaveButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.SaveButton.Location = new System.Drawing.Point(50, 497);
+            this.SaveButton.Location = new System.Drawing.Point(49, 450);
             this.SaveButton.Margin = new System.Windows.Forms.Padding(2);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(189, 74);
             this.SaveButton.TabIndex = 4;
             this.SaveButton.Text = "Save Game";
             this.SaveButton.UseVisualStyleBackColor = false;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // UndoButton
             // 
             this.UndoButton.BackColor = System.Drawing.Color.Teal;
             this.UndoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UndoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.UndoButton.Location = new System.Drawing.Point(50, 85);
+            this.UndoButton.Location = new System.Drawing.Point(49, 105);
             this.UndoButton.Margin = new System.Windows.Forms.Padding(2);
             this.UndoButton.Name = "UndoButton";
             this.UndoButton.Size = new System.Drawing.Size(189, 74);
@@ -129,7 +133,7 @@
             this.PauseButton.BackColor = System.Drawing.Color.Teal;
             this.PauseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PauseButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.PauseButton.Location = new System.Drawing.Point(50, 360);
+            this.PauseButton.Location = new System.Drawing.Point(49, 332);
             this.PauseButton.Margin = new System.Windows.Forms.Padding(2);
             this.PauseButton.Name = "PauseButton";
             this.PauseButton.Size = new System.Drawing.Size(189, 74);
@@ -143,7 +147,7 @@
             this.RedoButton.BackColor = System.Drawing.Color.Teal;
             this.RedoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RedoButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.RedoButton.Location = new System.Drawing.Point(50, 226);
+            this.RedoButton.Location = new System.Drawing.Point(49, 220);
             this.RedoButton.Margin = new System.Windows.Forms.Padding(2);
             this.RedoButton.Name = "RedoButton";
             this.RedoButton.Size = new System.Drawing.Size(189, 74);
@@ -184,6 +188,7 @@
             this.button1.TabIndex = 8;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             // 
             // newGameToolStripMenuItem
             // 
@@ -200,28 +205,28 @@
             // easyToolStripMenuItem1
             // 
             this.easyToolStripMenuItem1.Name = "easyToolStripMenuItem1";
-            this.easyToolStripMenuItem1.Size = new System.Drawing.Size(315, 46);
+            this.easyToolStripMenuItem1.Size = new System.Drawing.Size(257, 46);
             this.easyToolStripMenuItem1.Text = "Easy";
             this.easyToolStripMenuItem1.Click += new System.EventHandler(this.EasyToolStripMenuItem1_Click);
             // 
             // mediumToolStripMenuItem
             // 
             this.mediumToolStripMenuItem.Name = "mediumToolStripMenuItem";
-            this.mediumToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
+            this.mediumToolStripMenuItem.Size = new System.Drawing.Size(257, 46);
             this.mediumToolStripMenuItem.Text = "Medium";
             this.mediumToolStripMenuItem.Click += new System.EventHandler(this.MediumToolStripMenuItem_Click);
             // 
             // hardToolStripMenuItem
             // 
             this.hardToolStripMenuItem.Name = "hardToolStripMenuItem";
-            this.hardToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
+            this.hardToolStripMenuItem.Size = new System.Drawing.Size(257, 46);
             this.hardToolStripMenuItem.Text = "Hard";
             this.hardToolStripMenuItem.Click += new System.EventHandler(this.HardToolStripMenuItem_Click);
             // 
             // xSudokuToolStripMenuItem
             // 
             this.xSudokuToolStripMenuItem.Name = "xSudokuToolStripMenuItem";
-            this.xSudokuToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
+            this.xSudokuToolStripMenuItem.Size = new System.Drawing.Size(257, 46);
             this.xSudokuToolStripMenuItem.Text = "X Sudoku";
             this.xSudokuToolStripMenuItem.Click += new System.EventHandler(this.XSudokuToolStripMenuItem_Click);
             // 
@@ -238,21 +243,20 @@
             // loadGameToolStripMenuItem
             // 
             this.loadGameToolStripMenuItem.Name = "loadGameToolStripMenuItem";
-            this.loadGameToolStripMenuItem.Size = new System.Drawing.Size(278, 46);
+            this.loadGameToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
             this.loadGameToolStripMenuItem.Text = "Load Game";
             this.loadGameToolStripMenuItem.Click += new System.EventHandler(this.LoadGameToolStripMenuItem_Click);
             // 
             // saveGameToolStripMenuItem
             // 
             this.saveGameToolStripMenuItem.Name = "saveGameToolStripMenuItem";
-            this.saveGameToolStripMenuItem.Size = new System.Drawing.Size(278, 46);
+            this.saveGameToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
             this.saveGameToolStripMenuItem.Text = "Save Game";
-            this.saveGameToolStripMenuItem.Click += new System.EventHandler(this.SaveGameToolStripMenuItem_Click);
             // 
             // restoreToolStripMenuItem
             // 
             this.restoreToolStripMenuItem.Name = "restoreToolStripMenuItem";
-            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(278, 46);
+            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
             this.restoreToolStripMenuItem.Text = "Restore";
             this.restoreToolStripMenuItem.Click += new System.EventHandler(this.RestoreToolStripMenuItem_Click);
             // 
@@ -293,24 +297,51 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(2, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1994, 45);
+            this.menuStrip1.Size = new System.Drawing.Size(2364, 45);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(1362, 249);
+            this.textBox1.Location = new System.Drawing.Point(1546, 217);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(561, 29);
             this.textBox1.TabIndex = 9;
-            this.textBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
+            this.textBox1.Visible = false;
             // 
             // ScoreMessage
             // 
-            this.ScoreMessage.Location = new System.Drawing.Point(1362, 324);
+            this.ScoreMessage.BackColor = System.Drawing.SystemColors.Info;
+            this.ScoreMessage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ScoreMessage.Location = new System.Drawing.Point(1546, 382);
             this.ScoreMessage.Name = "ScoreMessage";
             this.ScoreMessage.Size = new System.Drawing.Size(561, 423);
             this.ScoreMessage.TabIndex = 10;
+            // 
+            // LoadButton
+            // 
+            this.LoadButton.BackColor = System.Drawing.Color.Teal;
+            this.LoadButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.LoadButton.Location = new System.Drawing.Point(49, 572);
+            this.LoadButton.Margin = new System.Windows.Forms.Padding(2);
+            this.LoadButton.Name = "LoadButton";
+            this.LoadButton.Size = new System.Drawing.Size(189, 74);
+            this.LoadButton.TabIndex = 6;
+            this.LoadButton.Text = "Load Game";
+            this.LoadButton.UseVisualStyleBackColor = false;
+            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.14286F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Tomato;
+            this.label2.Location = new System.Drawing.Point(1539, 334);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(211, 39);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Top 5 Score:";
             // 
             // FormMain
             // 
@@ -319,7 +350,8 @@
             this.AutoScroll = true;
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(1994, 1121);
+            this.ClientSize = new System.Drawing.Size(2364, 1121);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.ScoreMessage);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
@@ -367,6 +399,8 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label ScoreMessage;
+        private System.Windows.Forms.Button LoadButton;
+        private System.Windows.Forms.Label label2;
     }
 }
 

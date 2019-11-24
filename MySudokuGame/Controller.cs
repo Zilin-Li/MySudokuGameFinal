@@ -77,6 +77,7 @@ namespace MySudokuGame
                 sudokuString = game.ToPrettyString();
             }
         }
+
         // Undo
         public void Undo()
         {
@@ -84,6 +85,7 @@ namespace MySudokuGame
             sudokuString = game.ToPrettyString();
             view.GameValueDisplay(sudokuString);
         }      
+
         // Redo
         public void Redo()
         {
@@ -92,6 +94,7 @@ namespace MySudokuGame
             view.GameValueDisplay(sudokuString);
         }
 
+        // This feature is used to determine which prompt to provide to the user.
         // If the user selects a cell value of 0, return "showVaildValue".
         // If the user selects a cell value of non-0, return "showRepeatNumber".
         public string SelectPromptMethod(string buttonName)
@@ -121,7 +124,6 @@ namespace MySudokuGame
         {
             int cellIndex = game.GetButtonInfo(buttonName);
             int cellValue = game.GetCell(cellIndex);
-
             return game.GetRepeatNumberIndex(cellValue);
         }
 
@@ -155,6 +157,7 @@ namespace MySudokuGame
         {
             return game.X1Vaild();
         }
+
         // Check whether X2 completed.
         public bool CheckX2Vaild()
         {
@@ -184,24 +187,12 @@ namespace MySudokuGame
         // Including game values , default information and time information.
         public void GameSave(int second, int min, string saveFileName)
         {
-            //string filePath;
-            //string mess;
             string timelog;
             //Form send time info through parameters to controller.
             timelog = '\n' + "T," + min + "," + second;
-
             StringBuilder csv = new StringBuilder();
             csv.AppendLine(game.ToCSV() + timelog);
-            //string path = Directory.GetCurrentDirectory();
-            
-            //mess = "1";
-            //filePath = path + @"\loadGame\" + saveFileName + ".csv";
-            //File.WriteAllText(filePath, csv.ToString());
-
-
             File.WriteAllText(saveFileName, csv.ToString());
-
-            //return filePath;
         }
 
     }

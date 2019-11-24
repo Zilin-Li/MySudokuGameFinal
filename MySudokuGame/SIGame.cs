@@ -20,14 +20,15 @@ namespace MySudokuGame
             maxValue = maximum;
         }
 
-        //直接从defData提取最大值
+        // Get max value.
         public int GetMaxValue()
         {
             int Value = sudokuArray[0];
             return Value;
         }
+
         // CSVstring to Sudoku int array.
-        //int[] array1 including maxvalue，squareW/H，cellvalues.
+        // int[] array1 including maxvalue，squareW/H，cellvalues.
         public int[] ToArray()
         {    
             string defData = "";
@@ -40,11 +41,9 @@ namespace MySudokuGame
                     defData += CSVFile.Substring(i, 1);
                 }
             }
-         
             array1 = new int[defData.Length];
             for (int i = 0; i < defData.Length; i++)
                 array1[i] = Int32.Parse(defData[i].ToString());
-
             return array1;
         }
 

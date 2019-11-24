@@ -20,11 +20,8 @@ namespace MySudokuGame
         private string ClickedText = "";
         private string gameSelect;
         private int timeTicks = 0;
-        private int seconds;
-    
+        private int seconds;    
         private int minutes = 0;
-
-
         public FormMain()
         {
             InitializeComponent();
@@ -33,7 +30,6 @@ namespace MySudokuGame
         {
             theController = contr;
         }
-
         //------------------------------------ Create Controls -----------------------------------------
 
         // Creat game scale, in order to dispaly row number and col number.
@@ -46,12 +42,10 @@ namespace MySudokuGame
             textNew.Font = new Font("Microsoft Sans Serif", 16);
             textNew.Text = num.ToString();
             textNew.TextAlign = HorizontalAlignment.Center;
-
             textNew.BorderStyle = BorderStyle.None;
             textNew.Location = new Point(50 + 50 * column, 50 + 52 * row);
             GameBoard.Controls.Add(textNew);
         }
-
 
         // Creat number buttons.
         public void MakeButtons(string text, int num)
@@ -61,7 +55,6 @@ namespace MySudokuGame
             btnNew.Height = 50;
             btnNew.Width = 50;
             btnNew.Font = new Font("Arial", 20);
-            //btnNew.Text = text;
             btnNew.Visible = true;
             btnNew.Location = new Point(50 + 50 * num, 150 + 50 * theController.maxValue);
             btnNew.BackColor = Color.White;
@@ -73,7 +66,6 @@ namespace MySudokuGame
         {
             int squareIndex;
             squareIndex = row / theController.SquareHeight * theController.SquareHeight + column / theController.SquareWidth;
-
             Button btnNew = new Button();
             btnNew.Name = name + row.ToString() + "_" + column.ToString();
             btnNew.Height = 50;
@@ -81,7 +73,6 @@ namespace MySudokuGame
             btnNew.Font = new Font("Arial", 20);
             btnNew.Text = text;
             btnNew.Visible = true;
-
             btnNew.Location = new Point(100 + 50 * column, 100 + 50 * row);
             if (theController.maxValue == 4)
             {
@@ -119,7 +110,7 @@ namespace MySudokuGame
         {
             Button btnWho = sender as Button;
             Text = btnWho.Name;
-            //textBox1.Visible = false;
+            textBox1.Visible = false;
 
             if (btnWho.Name.StartsWith("btn"))
             {
@@ -181,6 +172,31 @@ namespace MySudokuGame
             TimeBox.Text = minutes.ToString("00") + " : " + seconds.ToString("00");
         }
 
+        //used for creating new WinForm
+        public string ShowDialog(string text, string caption)
+        {
+            Form prompt = new Form()
+            {
+                Width = 500,
+                Height = 150,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = caption,
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            Label textLabel = new Label() { Left = 50, Top = 20, Text = text };
+            TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
+            Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(textLabel);
+            prompt.AcceptButton = confirmation;
+
+            return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
+        }
+
+        //---------- User interface display ------------
+
         // Display gameboard.
         public void GameBoardDisplay()
         {
@@ -226,7 +242,6 @@ namespace MySudokuGame
                     {
                         c.ForeColor = Color.DeepPink;
                     }
-
                     if (cellValueS == "0")
                     {
                         c.Text = "";
@@ -255,9 +270,9 @@ namespace MySudokuGame
                     c.Text = i.ToString();
                 }
             }
-
         }
 
+        // This function is used to restore the digital layout to its original state.
         public void ClearNumberBoard()
         {
             for (int i = 1; i <= theController.maxValue; i++)
@@ -268,6 +283,7 @@ namespace MySudokuGame
             }
         }
 
+        // This function is used to restore the gameboard layout to its original state.
         public void ClearGameBoard(int colInd, int rowInd)
         {
             string btnName = "btn_" + rowInd.ToString() + "_" + colInd.ToString();
@@ -294,7 +310,6 @@ namespace MySudokuGame
         }
 
         // Show the vaild area, including vaild row,col,square.
-
         private void VaildAreaDisplay()
         {
             string btnName;
@@ -359,6 +374,7 @@ namespace MySudokuGame
             }
         }
 
+        // Show the vaild area, including X diagonal.
         private void VaildXDisplay()
         {
             string btnName;
@@ -377,7 +393,6 @@ namespace MySudokuGame
                     c.BackColor = Color.Green;
                 }
             }
-
             if (isX2Vaild)
             {
                 for (int i = 0; i < theController.maxValue; i++)
@@ -390,12 +405,12 @@ namespace MySudokuGame
                     c.BackColor = Color.Green;
                 }
             }
-
         }
 
         // Display Win information.
         private void WinInfoDisplay()
-        { 
+        {
+            string username;
             TextBox c = new TextBox();
             c.Font = new Font("Microsoft Sans Serif", 15);
             c.Text = "You win!! \n" + "Your Score is: " +
@@ -409,40 +424,13 @@ namespace MySudokuGame
             GameBoard.Controls.Add(c);
             Mytime.Stop();
             ScoreMessage.Visible = true;
-
-            var username = Prompt.ShowDialog("Please enter your name:", "username");
-            //replace "," from user's name
+            username = ShowDialog("Please enter your name:", "username");
             username = username.Replace(",", string.Empty);
             username = username == "" ? "No name" : username;
             ScoreMessage.Text = theController.ScoreList(username, theController.GetGameScore(minutes, seconds));
         }
-        
-        //used for creating new WinForm
-        public static class Prompt
-        {
-            public static string ShowDialog(string text, string caption)
-            {
-                Form prompt = new Form()
-                {
-                    Width = 500,
-                    Height = 150,
-                    FormBorderStyle = FormBorderStyle.FixedDialog,
-                    Text = caption,
-                    StartPosition = FormStartPosition.CenterScreen
-                };
-                Label textLabel = new Label() { Left = 50, Top = 20, Text = text };
-                TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
-                Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
-                confirmation.Click += (sender, e) => { prompt.Close(); };
-                prompt.Controls.Add(textBox);
-                prompt.Controls.Add(confirmation);
-                prompt.Controls.Add(textLabel);
-                prompt.AcceptButton = confirmation;
 
-                return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
-            }
-        }
-
+        // Display all vaild value on number board.
         private void HintVaildValue(List<int> vaildValue)
         {
             string btnName;
@@ -457,6 +445,8 @@ namespace MySudokuGame
                 }
             }       
         }
+
+        // Display all same value on game board.
         private void HintRepeatNumber(List<int> vaildValue)
         {
             string list="";
@@ -484,16 +474,14 @@ namespace MySudokuGame
             }
         }
 
-        //游戏流程
+        // This function including necessary procedures of new game load.
         private void SetGame()
         {
             GameBoard.Visible = true;
-            //textBox1.Visible = false;
+            textBox1.Visible = false;
             GameBoard.Controls.Clear();
             theController.InitGameData();
-
             this.GameBoardDisplay();
-
             this.GameValueDisplay(theController.sudokuString);
             SetClicks();
             Mytime.Start();
@@ -502,13 +490,10 @@ namespace MySudokuGame
         }
 
 
-//------------------------------------游戏选择-----------------------------------------
-
-
+        //---------Select game--------
         // User choose easy game.
         private void EasyToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
             gameSelect = "easy.csv";
             theController.GameSelect(gameSelect);
             SetGame();
@@ -529,6 +514,7 @@ namespace MySudokuGame
             theController.GameSelect(gameSelect);
             SetGame();
         }
+
         // User choose X sudoku game.
         private void XSudokuToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -537,54 +523,30 @@ namespace MySudokuGame
             SetGame();
         }
 
-        //加载存档游戏。
+        // User load old game by menu bar.
         private void LoadGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string fileName = string.Empty;
-            /*
-            string path = Directory.GetCurrentDirectory();
-
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.InitialDirectory = path + @"\loadGame";
-
-            dlg.DefaultExt = "csv";
-            dlg.Filter = "Csv Files|*.csv";
-
-            DialogResult result = dlg.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                fileName = dlg.SafeFileName;
-                gameSelect = @"\loadGame\" + fileName;
-
-                theController.GameSelect(gameSelect);
-                SetGame();
-                textBox1.Text = theController.test;
-
-            }
-            */
-
+            string fileName = string.Empty;         
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 fileName = openFileDialog1.FileName;
                 theController.GameSelect(fileName);
                 SetGame();
             }
-
-
-
         }
 
+        // User load old game by side bar.
         private void LoadButton_Click(object sender, EventArgs e)
         {
             LoadGameToolStripMenuItem_Click(sender, e);
         }
 
+        // User save game by menu bar.
         private void SaveGameToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string saveFileName = saveFileDialog1.FileName;
-
                 if (theController.sudokuArray != null)
                 {
                     theController.GameSave(seconds, minutes, saveFileName);
@@ -594,12 +556,16 @@ namespace MySudokuGame
                 }
             }
         }
+
+        // User save game by side bar.
         private void SaveButton_Click(object sender, EventArgs e)
         {
             SaveGameToolStripMenuItem_Click_1(sender, e);
         }
-        
-        //------------------------------------ 游戏按键功能 -----------------------------------------
+
+        //--------- game button functions -------
+
+        // Pause the game by menu bar.
         private void PauseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (gameSelect != null && gameSelect != "")
@@ -619,26 +585,26 @@ namespace MySudokuGame
                     GameBoard.Visible = true;
                     PauseButton.Text = "Pause";
                     pauseToolStripMenuItem.Text = "Pause";
-                }
-                
+                }  
             }
         }
 
+        // Pause the game by side bar.
         private void PauseButton_Click(object sender, EventArgs e)
         {
             PauseToolStripMenuItem_Click(sender, e);
         }
 
-
+        // Restore the game by menu bar.
         private void RestoreToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (gameSelect != null&& gameSelect !="")
             {
                 SetGame();
-            }
-            
+            } 
         }
 
+        // Restore the game by side bar.
         private void RestoreButton_Click(object sender, EventArgs e)
         {
             if (gameSelect != null && gameSelect != "")
@@ -647,17 +613,25 @@ namespace MySudokuGame
             }
         }
 
-
-
+        // Undo by side bar.
         private void UndoButton_Click(object sender, EventArgs e)
         {
             if (gameSelect != null && gameSelect != "")
             {
                 theController.Undo();
-            }
-            
+            } 
         }
 
+        // Undo by menu bar.
+        private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (gameSelect != null && gameSelect != "")
+            {
+                theController.Undo();
+            }
+        }
+
+        // Redo by side bar.
         private void RedoButton_Click(object sender, EventArgs e)
         {
             if (gameSelect != null && gameSelect != "")
@@ -667,14 +641,7 @@ namespace MySudokuGame
             
         }
 
-        private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (gameSelect != null && gameSelect != "")
-            {
-                theController.Undo();
-            }
-        }
-
+        // Redo by menu bar.
         private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (gameSelect != null && gameSelect != "")
@@ -684,11 +651,11 @@ namespace MySudokuGame
 
         }
 
-       
-
+        // Exit the game.
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
+
     }
 }

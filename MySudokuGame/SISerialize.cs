@@ -24,12 +24,7 @@ namespace MySudokuGame
         public void FromCSV(string gameselect)
         {
             string path = System.AppDomain.CurrentDomain.BaseDirectory;
-            //string fileName = "";
-            
             int index1,index2;
-
-            //fileName = path + gameselect;
-      
             StreamReader sr = new StreamReader(gameselect, System.Text.Encoding.Default);
             String ls_input = sr.ReadToEnd().TrimStart();
             if (!string.IsNullOrEmpty(ls_input))
@@ -39,7 +34,6 @@ namespace MySudokuGame
             sr.Close();
 
             // check new game or load game
-  
             defaultInfo = "";
             index1 = CSVFile.IndexOf('#');
             index2 = CSVFile.IndexOf('T');
@@ -78,7 +72,6 @@ namespace MySudokuGame
         public int GetCell(int gridIndex)
         {        
             cellValue = sudokuArray[gridIndex+3];
-
             return cellValue;
         }
 
@@ -87,14 +80,12 @@ namespace MySudokuGame
         public string ToPrettyString()
         {
             PrettyString = "";
-
             for (int i = 3; i < sudokuArray.Length; i++)
             {             
                 PrettyString += sudokuArray[i];                
             }
             return PrettyString;
         }
-
     }
 }
 

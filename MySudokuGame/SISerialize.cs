@@ -24,13 +24,13 @@ namespace MySudokuGame
         public void FromCSV(string gameselect)
         {
             string path = System.AppDomain.CurrentDomain.BaseDirectory;
-            string fileName = "";
+            //string fileName = "";
             
             int index1,index2;
 
-            fileName = path + gameselect;
+            //fileName = path + gameselect;
       
-            StreamReader sr = new StreamReader(fileName, System.Text.Encoding.Default);
+            StreamReader sr = new StreamReader(gameselect, System.Text.Encoding.Default);
             String ls_input = sr.ReadToEnd().TrimStart();
             if (!string.IsNullOrEmpty(ls_input))
             {

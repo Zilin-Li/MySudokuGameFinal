@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.GameBoard = new System.Windows.Forms.Panel();
             this.GameOption = new System.Windows.Forms.Panel();
+            this.LoadButton = new System.Windows.Forms.Button();
             this.RestoreButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
             this.UndoButton = new System.Windows.Forms.Button();
@@ -53,10 +54,12 @@
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.ScoreMessage = new System.Windows.Forms.Label();
-            this.LoadButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.GameOption.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -85,6 +88,20 @@
             this.GameOption.Name = "GameOption";
             this.GameOption.Size = new System.Drawing.Size(284, 925);
             this.GameOption.TabIndex = 3;
+            // 
+            // LoadButton
+            // 
+            this.LoadButton.BackColor = System.Drawing.Color.Teal;
+            this.LoadButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoadButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.LoadButton.Location = new System.Drawing.Point(49, 572);
+            this.LoadButton.Margin = new System.Windows.Forms.Padding(2);
+            this.LoadButton.Name = "LoadButton";
+            this.LoadButton.Size = new System.Drawing.Size(189, 74);
+            this.LoadButton.TabIndex = 6;
+            this.LoadButton.Text = "Load Game";
+            this.LoadButton.UseVisualStyleBackColor = false;
+            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
             // 
             // RestoreButton
             // 
@@ -243,20 +260,21 @@
             // loadGameToolStripMenuItem
             // 
             this.loadGameToolStripMenuItem.Name = "loadGameToolStripMenuItem";
-            this.loadGameToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
+            this.loadGameToolStripMenuItem.Size = new System.Drawing.Size(278, 46);
             this.loadGameToolStripMenuItem.Text = "Load Game";
             this.loadGameToolStripMenuItem.Click += new System.EventHandler(this.LoadGameToolStripMenuItem_Click);
             // 
             // saveGameToolStripMenuItem
             // 
             this.saveGameToolStripMenuItem.Name = "saveGameToolStripMenuItem";
-            this.saveGameToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
+            this.saveGameToolStripMenuItem.Size = new System.Drawing.Size(278, 46);
             this.saveGameToolStripMenuItem.Text = "Save Game";
+            this.saveGameToolStripMenuItem.Click += new System.EventHandler(this.SaveGameToolStripMenuItem_Click_1);
             // 
             // restoreToolStripMenuItem
             // 
             this.restoreToolStripMenuItem.Name = "restoreToolStripMenuItem";
-            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(315, 46);
+            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(278, 46);
             this.restoreToolStripMenuItem.Text = "Restore";
             this.restoreToolStripMenuItem.Click += new System.EventHandler(this.RestoreToolStripMenuItem_Click);
             // 
@@ -293,7 +311,8 @@
             this.optionsToolStripMenuItem1,
             this.undoToolStripMenuItem,
             this.redoToolStripMenuItem,
-            this.pauseToolStripMenuItem});
+            this.pauseToolStripMenuItem,
+            this.exitToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(2, 2, 0, 2);
@@ -301,13 +320,19 @@
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(78, 41);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
+            // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(1546, 217);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(561, 29);
             this.textBox1.TabIndex = 9;
-            this.textBox1.Visible = false;
             // 
             // ScoreMessage
             // 
@@ -317,20 +342,6 @@
             this.ScoreMessage.Name = "ScoreMessage";
             this.ScoreMessage.Size = new System.Drawing.Size(561, 423);
             this.ScoreMessage.TabIndex = 10;
-            // 
-            // LoadButton
-            // 
-            this.LoadButton.BackColor = System.Drawing.Color.Teal;
-            this.LoadButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoadButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.LoadButton.Location = new System.Drawing.Point(49, 572);
-            this.LoadButton.Margin = new System.Windows.Forms.Padding(2);
-            this.LoadButton.Name = "LoadButton";
-            this.LoadButton.Size = new System.Drawing.Size(189, 74);
-            this.LoadButton.TabIndex = 6;
-            this.LoadButton.Text = "Load Game";
-            this.LoadButton.UseVisualStyleBackColor = false;
-            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
             // 
             // label2
             // 
@@ -342,6 +353,15 @@
             this.label2.Size = new System.Drawing.Size(211, 39);
             this.label2.TabIndex = 11;
             this.label2.Text = "Top 5 Score:";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "CSV Files (*.csv)|*.csv|TXT Files (*.txt)|*.txt";
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.Filter = "CSV Files (*.csv)|*.csv|TXT Files (*.txt)|*.txt";
             // 
             // FormMain
             // 
@@ -401,6 +421,9 @@
         private System.Windows.Forms.Label ScoreMessage;
         private System.Windows.Forms.Button LoadButton;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }
 

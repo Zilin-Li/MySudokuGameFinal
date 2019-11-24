@@ -182,22 +182,26 @@ namespace MySudokuGame
 
         // Save the game
         // Including game values , default information and time information.
-        public string GameSave(int second, int min)
+        public void GameSave(int second, int min, string saveFileName)
         {
-            string filePath;
-            string mess;
+            //string filePath;
+            //string mess;
             string timelog;
             //Form send time info through parameters to controller.
             timelog = '\n' + "T," + min + "," + second;
 
-            var csv = new StringBuilder();
+            StringBuilder csv = new StringBuilder();
             csv.AppendLine(game.ToCSV() + timelog);
-            string path = Directory.GetCurrentDirectory();
-            DateTime now = DateTime.Now;
-            mess = "1";
-            filePath = path + @"\loadGame\" + mess + ".csv";
-            File.WriteAllText(filePath, csv.ToString());
-            return filePath;
+            //string path = Directory.GetCurrentDirectory();
+            
+            //mess = "1";
+            //filePath = path + @"\loadGame\" + saveFileName + ".csv";
+            //File.WriteAllText(filePath, csv.ToString());
+
+
+            File.WriteAllText(saveFileName, csv.ToString());
+
+            //return filePath;
         }
 
     }

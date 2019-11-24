@@ -119,7 +119,7 @@ namespace MySudokuGame
         {
             Button btnWho = sender as Button;
             Text = btnWho.Name;
-            textBox1.Visible = false;
+            //textBox1.Visible = false;
 
             if (btnWho.Name.StartsWith("btn"))
             {
@@ -488,7 +488,7 @@ namespace MySudokuGame
         private void SetGame()
         {
             GameBoard.Visible = true;
-            textBox1.Visible = false;
+            //textBox1.Visible = false;
             GameBoard.Controls.Clear();
             theController.InitGameData();
 
@@ -541,6 +541,7 @@ namespace MySudokuGame
         private void LoadGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string fileName = string.Empty;
+            /*
             string path = Directory.GetCurrentDirectory();
 
             OpenFileDialog dlg = new OpenFileDialog();
@@ -560,6 +561,17 @@ namespace MySudokuGame
                 textBox1.Text = theController.test;
 
             }
+            */
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                fileName = openFileDialog1.FileName;
+                theController.GameSelect(fileName);
+                SetGame();
+            }
+
+
+
         }
 
         private void LoadButton_Click(object sender, EventArgs e)
@@ -567,40 +579,48 @@ namespace MySudokuGame
             LoadGameToolStripMenuItem_Click(sender, e);
         }
 
-        private void SaveGameToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveGameToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            if (theController.sudokuArray != null)
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                theController.GameSave(seconds, minutes);
-                textBox1.Text = "You game have been saved.";
-                textBox1.Font = new Font("Microsoft Sans Serif", 15);
-                textBox1.Visible = true;
-            }
+                string saveFileName = saveFileDialog1.FileName;
 
+                if (theController.sudokuArray != null)
+                {
+                    theController.GameSave(seconds, minutes, saveFileName);
+                    textBox1.Text = "You game have been saved.";
+                    textBox1.Font = new Font("Microsoft Sans Serif", 15);
+                    textBox1.Visible = true;
+                }
+            }
         }
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            SaveGameToolStripMenuItem_Click(sender, e);
+            SaveGameToolStripMenuItem_Click_1(sender, e);
         }
-
+        
         //------------------------------------ 游戏按键功能 -----------------------------------------
         private void PauseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if ((string)Mytime.Tag == "Open")
+            if (gameSelect != null && gameSelect != "")
             {
+                if ((string)Mytime.Tag == "Open")
+                {
                 Mytime.Stop();
                 Mytime.Tag = "Close";
                 GameBoard.Visible = false;
                 PauseButton.Text = "Continue";
                 pauseToolStripMenuItem.Text = "Continue";
-            }
-            else
-            {
-                Mytime.Start();
-                Mytime.Tag = "Open";
-                GameBoard.Visible = true;
-                PauseButton.Text = "Pause";
-                pauseToolStripMenuItem.Text = "Pause";
+                }
+                else
+                {
+                    Mytime.Start();
+                    Mytime.Tag = "Open";
+                    GameBoard.Visible = true;
+                    PauseButton.Text = "Pause";
+                    pauseToolStripMenuItem.Text = "Pause";
+                }
+                
             }
         }
 
@@ -612,36 +632,63 @@ namespace MySudokuGame
 
         private void RestoreToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetGame();
+            if (gameSelect != null&& gameSelect !="")
+            {
+                SetGame();
+            }
+            
         }
 
         private void RestoreButton_Click(object sender, EventArgs e)
         {
-            SetGame();
+            if (gameSelect != null && gameSelect != "")
+            {
+                SetGame();
+            }
         }
 
 
 
         private void UndoButton_Click(object sender, EventArgs e)
         {
-            theController.Undo();
+            if (gameSelect != null && gameSelect != "")
+            {
+                theController.Undo();
+            }
+            
         }
 
         private void RedoButton_Click(object sender, EventArgs e)
         {
-            theController.Redo();
+            if (gameSelect != null && gameSelect != "")
+            {
+                theController.Redo();
+            }
+            
         }
 
         private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            theController.Undo();
+            if (gameSelect != null && gameSelect != "")
+            {
+                theController.Undo();
+            }
         }
 
         private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            theController.Redo();
+            if (gameSelect != null && gameSelect != "")
+            {
+                theController.Redo();
+            }
+
         }
 
-        
+       
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

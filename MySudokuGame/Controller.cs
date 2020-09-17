@@ -78,6 +78,13 @@ namespace MySudokuGame
             }
         }
 
+        // Clear history steps.
+
+        public void ClearSteps()
+        {
+            game.ClearSteps();
+        }
+
         // Undo
         public void Undo()
         {

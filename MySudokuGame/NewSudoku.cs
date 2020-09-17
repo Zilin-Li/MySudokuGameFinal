@@ -431,6 +431,10 @@ namespace MySudokuGame
             // Step 4: Write top 5 score to file.
             scoreOutput = "";
             scoreList = new List<KeyValuePair<string, int>>();
+            if (!File.Exists("HistoryScoreLists.txt"))
+            {
+                File.Create("HistoryScoreLists.txt").Close();
+            }
             StreamReader sr = new StreamReader("HistoryScoreLists.txt");
             //Read the first line of text
             String line = sr.ReadLine();
@@ -457,7 +461,7 @@ namespace MySudokuGame
             }
             scoreList.Sort((x, y) => (y.Value.CompareTo(x.Value)));
             TextWriter tw = new StreamWriter("HistoryScoreLists.txt");
-            foreach (var value in scoreList)
+            foreach (KeyValuePair<string, int> value in scoreList)
             {
                 scoreOutput += (value.Key + " : " + value.Value + "\n");          
                 tw.WriteLine(value.Key + "," + value.Value);          
@@ -478,6 +482,12 @@ namespace MySudokuGame
             }
             historyList.Add(indexNumber + "," + oldNumber + "," + newNumber);
             stepNumber = historyList.Count;
+        }
+
+        // Clear all history strps
+        public void ClearSteps()
+        {
+            historyList.Clear();
         }
 
         // Undo by step.
@@ -502,9 +512,9 @@ namespace MySudokuGame
             {
                 stepDetails = historyList[stepNumber];
                 string[] info = stepDetails.Split(',');
-                var index = Int32.Parse(info[0]);
-                //var oldnumber = Int32.Parse(info[1]);
-                var newNumber = Int32.Parse(info[2]);
+                int index = Int32.Parse(info[0]);
+                //int oldnumber = Int32.Parse(info[1]);
+                int newNumber = Int32.Parse(info[2]);
                 SetCell(newNumber, index);
                 stepNumber++;      
             }

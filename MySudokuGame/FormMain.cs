@@ -487,6 +487,7 @@ namespace MySudokuGame
             Mytime.Start();
             Mytime.Tag = "Open";
             timeTicks = 0;
+            theController.ClearSteps();
         }
 
 
